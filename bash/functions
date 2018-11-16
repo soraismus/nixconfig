@@ -1,0 +1,84 @@
+# -------------------------------------------------------------
+# Generate a message that indicates the branch and status     |
+# of a git-controlled directory. The '.bashrc' file uses this |
+# function to determine the value of 'PS1'.                   |
+# -------------------------------------------------------------
+git_prompt () {
+  # ------------------------------------------------------------------
+  # `git rev-parse` interprets a <rev> (i.e., a revision parameter). |
+  # 'HEAD' refers to the content of '.git/HEAD', which is a pointer  |
+  # to the current <ref> (i.e., the file contains a specific path    |
+  # within the '.git/refs/heads' directory). The '--abbrev-ref'      |
+  # option provides the name of the branch.                          |
+  # ------------------------------------------------------------------
+  # If there is an error (e.g., no git repository exists),           |
+  # 'branch' is set to an empty string.                              |
+  # ------------------------------------------------------------------
+  local BRANCH="$( git rev-parse --abbrev-ref HEAD 2> /dev/null )"
+
+  local RESULT=""
+  local STATUS=""
+
+  if [ -n "$BRANCH" ]; then
+    # `git status -z` returns a 1-line response.
+    if [ -n "$(git status -z 2> /dev/null)" ]; then
+      STATUS="✘"
+    else
+      STATUS="✔"
+    fi
+    RESULT="($BRANCH $STATUS) "
+  fi
+
+  echo "$RESULT"
+}
+
+# Return the index number (inode) of the provided file.
+inode () {
+  [ -z "$1" ] && fatal 1 'This function requires an argument'
+  echo "$( ls -iL "$1" | sed 's/ .*//' )"
+}
+
+listRecentFiles () {
+  # List first four files
+  # -F --> with indicator suffixes (*/=>@|)
+  # -t --> sorted by modification time
+  # -1 --> one per line
+  # Then transform each newline to a space.
+  ls -Ft1 | head -4 | tr "\\n" " "
+
+  # Append a newline.
+  echo # Append a newline.
+}
+
+mcd () {
+  mkdir "$1"
+  cd "$1"
+}
+
+# The variable 'PROMPT_COMMAND' is set to
+# the following function in the '.exports' file.
+prompt_command () {
+  # Record the current working directory.
+  pwd > "$HOME/.lastdir"
+  [ "$LASTDIR" != "$PWD" ] && listRecentFiles
+  export LASTDIR="$PWD"
+}
+
+# Toggle between a prompt that displays the full current-working-directory
+# path and a prompt that displays only the bottom-most directory.
+togglePrompt () {
+  # A lowercase 'w' indicates a full path, whereas
+  # an uppercase 'W' indicates an abbreviated path.
+  # Toggle the value of the prompt variable 'PS1'.
+  if [[ "$PS1" =~ w ]]; then
+    PS1="$(echo "$PS1" | sed 's/w/W/g')"
+  else
+    PS1="$(echo "$PS1" | sed 's/W/w/g')"
+  fi
+}
+
+# Search for the path of a file matching the name provided; open it with vim.
+vff () {
+  local file_name="*$1*"
+  vim "$(find . -name "$file_name")"
+}

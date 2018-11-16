@@ -1,0 +1,10 @@
+PS1='\[\033[01;31m\]\!:\#:\[\033[01;34m\]\W\[\033[01;31m\]\$\[\033[00m\] '
+
+case "$TERM" in
+xterm*|rxvt*|screen)
+    # See `git_prompt` in the '.functions' file.
+    PS1="\[\e]0;\W \$(git_prompt)\a\]$PS1"
+    ;;
+*)
+    ;;
+esac

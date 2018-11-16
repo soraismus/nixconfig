@@ -1,0 +1,74 @@
+filetype plugin indent on
+syntax enable
+
+let mapleader = ","
+
+set autoindent
+set autoread
+set background=dark
+set backspace=indent,eol,start
+set breakindent
+set colorcolumn=80,115
+set complete=.,w,b,u,t
+set display=truncate,uhex
+set encoding=utf-8
+set expandtab
+set foldclose=all
+set foldopen=hor,undo
+set formatoptions=tcqj
+set hidden
+set history=1000
+set hlsearch
+set laststatus=2
+set lazyredraw
+set linebreak
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+set matchpairs=(:),[:],{:},<:>
+set modeline
+set mouse=
+set nocompatible
+set nocursorcolumn
+set nocursorline
+set noincsearch
+set nojoinspaces
+set novisualbell
+set nrformats=bin,hex
+set number
+set relativenumber
+set ruler
+set scrolloff=5
+set sessionoptions=blank,buffers,curdir,folds,help,options,tabpages,winsize,terminal
+set shiftround
+set shiftwidth=2
+set showbreak=↪
+set showmatch
+set sidescrolloff=5
+set smarttab
+set t_Co=16
+set tabpagemax=50
+set tabstop=2
+set ttimeout
+set ttimeoutlen=100
+set undodir=.
+set undofile
+set viminfo=!,'100,<50,s10,h
+set virtualedit=block
+set wildmenu
+set wrap
+
+setglobal tags=./tags
+
+noremap <C-H> <C-W>h
+noremap <C-J> <C-W>j
+noremap <C-K> <C-W>k
+noremap <C-L> <C-W>l
+cnoremap w!! %!sudo tee > /dev/null %
+inoremap <C-A> <Esc>I
+inoremap <C-E> <Esc>A
+inoremap jk <Esc>
+inoremap kj <Esc>
+nnoremap Q @q
+nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+inoremap <C-U> <C-G>u<C-U>
+inoremap <C-W> <C-G>u<C-W>
+vnoremap Q :norm @q<CR>
