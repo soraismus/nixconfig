@@ -99,6 +99,7 @@
     scrot # command-line screen-capture utility
     stack # haskell tool stack
     stack2nix # nix utility that transforms stack specs into nix specs
+    tcpdump # network sniffer
     termite # keyboard-centric VTE-based terminal
     tmux # terminal multiplexer
     tmuxinator # tmux-session manager (implemented in ruby)
