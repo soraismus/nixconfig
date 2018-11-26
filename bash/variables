@@ -10,6 +10,7 @@
 # --------
 # export BOOKMARKPATH="$HOME/Documents/bookmarks"
 # export EDITOR="/usr/bin/vim"
+export EDITOR=vim
 # export FILE_ANNOTATIONS="$HOME/.file-annotations"
 # export JAVA_HOME="/usr/local/src/jdk1.7.0_21"
 # export JAVA_BIN="$JAVA_HOME/bin"

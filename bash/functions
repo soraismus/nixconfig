@@ -55,6 +55,10 @@ mcd () {
   cd "$1"
 }
 
+peek () {
+  tmux split-window -p 33 "$EDITOR" "$@" || exit;
+}
+
 # The variable 'PROMPT_COMMAND' is set to
 # the following function in the '.exports' file.
 prompt_command () {
