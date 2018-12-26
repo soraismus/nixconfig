@@ -109,6 +109,7 @@
     virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
     xclip # clipboard utility
     yarn # variant to npm
+    youtube-dl # command-line tool to download videos from video platforms
     zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
     zim # desktop wiki
   ];
