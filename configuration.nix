@@ -92,6 +92,7 @@
     nodejs-10_x # javascript engine
     pandoc # utility that translates between markup formats
     patchelf
+    pavucontrol # PulseAudio volume control
     powertop # utility to analyze power consumption on Intel-based laptops
     psmisc # A package of small utilities that use the proc file-system (fuser, killall, pstree, etc)
     python
@@ -170,8 +171,8 @@
   # services.printing.enable = true;
 
   # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
