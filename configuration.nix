@@ -107,6 +107,7 @@
     tree # commandline directory visualizer
     myVim # text editor
     virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
+    vlc # cross-platform media player and streaming server
     xclip # clipboard utility
     yarn # variant to npm
     youtube-dl # command-line tool to download videos from video platforms
