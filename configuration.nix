@@ -75,6 +75,7 @@
     fzf # command-line fuzzy finder
     gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
     gdrive # command-line utility for interacting with google drive
+    heroku
     # hlint
     htop # interactive process viewer
     idris # haskell-like compiler with dependent types
