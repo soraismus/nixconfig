@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./git
+      ./i3
     ];
 
   # Use the GRUB 2 boot loader.
@@ -32,6 +33,7 @@
   # i18n = {
   #   consoleFont = "Lat2-Terminus16";
   #   consoleKeyMap = "us";
+  #   # consoleKeyMap = "dvorak";
   #   defaultLocale = "en_US.UTF-8";
   # };
 
@@ -44,6 +46,7 @@
   };
 
   environment.theo.programs.git.enable = true;
+  environment.theo.services.i3.enable = true;
 
   environment.interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
     (builtins.readFile ./bash/functions)
@@ -52,6 +55,15 @@
     (builtins.readFile ./bash/variables)
     (builtins.readFile ./bash/direnv-hook)
   ];
+
+  # environment.sessionVariables = {
+    # BROWSER = "qtb";
+    # TERM = "xterm";
+    # TERM = "xterm-256color";
+    # TERM = "rxvt-unicode";
+    # EMAIL = "anonymous@example.com";
+    # PAGER = "less";
+  # };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -82,6 +94,7 @@
     iotop
     irssi # terminal-based IRC client
     jq # command-line json processor
+    libnotify # library that sends desktop notifications to a notification daemon
     libreoffice # open-source office suite
     lsof # utility to list open files
     lynx # terminal web-browser
@@ -95,9 +108,10 @@
     patchelf
     pavucontrol # PulseAudio volume control
     powertop # utility to analyze power consumption on Intel-based laptops
-    psmisc # A package of small utilities that use the proc file-system (fuser, killall, pstree, etc)
+    psmisc # package of small utilities that use the proc file-system (fuser, killall, pstree, etc)
     python
-    ripgrep # A regex utility that's faster than the silver searcher ['rg']
+    ripgrep # regex utility that's faster than the silver searcher ['rg']
+    # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
     scrot # command-line screen-capture utility
     stack # haskell tool stack
     stack2nix # nix utility that transforms stack specs into nix specs
@@ -116,6 +130,25 @@
     zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
     zim # desktop wiki
   ];
+
+  fonts = {
+    enableFontDir = true;
+    enableGhostscriptFonts = true;
+    fonts =
+      [ pkgs.powerline-fonts
+        pkgs.font-awesome-ttf
+        pkgs.hasklig
+        pkgs.inconsolata
+        pkgs.ubuntu_font_family
+        pkgs.liberation_ttf
+        pkgs.unifont
+        pkgs.fira-code
+        pkgs.iosevka
+        pkgs.fira-mono
+        pkgs.terminus_font
+        pkgs.fira
+      ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -153,6 +186,7 @@
       resizeAmount = 10;
       secureSocket = true;
       shortcut = "f";
+      # terminal = "screen-256color";
       terminal = "screen-256color";
     };
   };
@@ -197,22 +231,20 @@
       default = "none";
       xterm.enable = false;
     };
-    layout = "us";
-    xkbOptions = "ctrl:nocaps";
-    synaptics.enable = true; # touchpad
-    windowManager.i3 = {
-      enable = true;
-      configFile = ./i3/config;
-      extraPackages =
-        [ pkgs.dmenu
-          pkgs.i3blocks
-          pkgs.i3lock
-          pkgs.i3status
-          pkgs.rxvt_unicode
-        ];
-      extraSessionCommands = "";
-      package = pkgs.i3-gaps;
+    displayManager = {
+      auto = {
+        enable = true;
+        user = "theo";
+      };
+      sessionCommands = ''
+        ${pkgs.xlibs.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
+      '';
     };
+    # layout = "dvorak";
+    layout = "us";
+    synaptics.enable = true; # touchpad
+    xkbOptions = "ctrl:nocaps";
+    windowManager.default = "i3";
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

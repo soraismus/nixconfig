@@ -7,6 +7,7 @@ pkgs.vim_configurable.customize {
     [ {
         names =
           [ "ale"
+            "awesome-vim-colorschemes"
             "fzf-vim"
             "fzfWrapper"
             "fugitive"

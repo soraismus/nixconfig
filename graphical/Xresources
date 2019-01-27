@@ -1,0 +1,66 @@
+XTerm*faceName: fira:size=11:antialias=true
+URxvt.font:xft:Ubuntu Mono:size=14:antialias=true
+!XTERM
+XTerm*metaSendsEscape: true
+XTerm*saveLines: 512
+XTerm*loginShell: true
+XTerm*Background: black
+XTerm*Foreground: white
+
+!URXVT
+URxvt.loginShell: true
+!URxvt.background: black
+!URxvt.foreground: white
+URxvt.scrollBar: false
+URxvt.underlineURLs:   true
+URxvt*transparent: false
+URxvt.keysym.Control-Tab: \033[27;5;9~
+
+URxvt.keysym.M-C-1: command:\033]710;xft:Ubuntu Mono:size=3:antialias=true\007\033]711;xft:Ubuntu Mono:size=3:antialias=true\007
+URxvt.keysym.M-C-2: command:\033]710;xft:Ubuntu Mono:size=7:antialias=true\007\033]711;xft:Ubuntu Mono:size=7:antialias=true\007
+URxvt.keysym.M-C-3: command:\033]710;xft:Ubuntu Mono:size=10:antialias=true\007\033]711;xft:Ubuntu Mono:size=10:antialias=true\007
+URxvt.keysym.M-C-4: command:\033]710;xft:Ubuntu Mono:size=11:antialias=true\007\033]711;xft:Ubuntu Mono:size=11:antialias=true\007
+URxvt.keysym.M-C-5: command:\033]710;xft:Ubuntu Mono:size=13:antialias=true\007\033]711;xft:Ubuntu Mono:size=13:antialias=true\007
+URxvt.keysym.M-C-6: command:\033]710;xft:Ubuntu Mono:size=15:antialias=true\007\033]711;xft:Ubuntu Mono:size=15:antialias=true\007
+URxvt.keysym.M-C-7: command:\033]710;xft:Ubuntu Mono:size=20:antialias=true\007\033]711;xft:Ubuntu Mono:size=20:antialias=true\007
+URxvt.keysym.M-C-8: command:\033]710;xft:Ubuntu Mono:size=60:antialias=true\007\033]711;xft:Ubuntu Mono:size=60:antialias=true\007
+!urxvt*foreground: white
+!urxvt*background: black
+
+!!BLUE
+!! URxvt - Colors
+URxvt.background: #000000
+URxvt.foreground: #FFFFFF
+!! Black
+URxvt.color0:   #1B1D1E
+URxvt.color8:   #505354
+! Red
+URxvt.color1:   #D63636
+URxvt.color9:   #FF6969
+! Green
+URxvt.color2:   #89B429
+URxvt.color10:  #BDE36B
+! Yellow
+URxvt.color3:   #FD971F
+URxvt.color11:  #FFBE4A
+! Blue
+URxvt.color4:   #0F97FF
+URxvt.color12:  #45BAFF
+! Magenta
+URxvt.color5:   #8C54FE
+URxvt.color13:  #9E6FFE
+! Cyan
+URxvt.color6:   #51828C
+URxvt.color14:  #6CBACF
+! White
+URxvt.color7:   #CCCCC6
+URxvt.color15:  #F8F8F2
+
+! ------------------------------------------------------------------------------
+! ROFI Color theme
+! ------------------------------------------------------------------------------
+rofi.color-enabled: true
+rofi.color-window: argb:ee222222, argb:8efcda93, argb:8bf9d897
+rofi.color-normal: argb:0000000, #d8dee9, argb:0000000, argb:ddfbda97, #1b2b34
+rofi.color-active: argb:0000000, argb:dc9dbbda, argb:0000000, argb:e592b4d5, #1b2b34
+rofi.color-urgent: argb:0000000, argb:e0fab58e, argb:0000000, argb:cffaae84, #1b2b34
