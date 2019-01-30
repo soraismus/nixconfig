@@ -77,9 +77,10 @@
     chromium # browser
     # conky # configurable X system monitor
     coq # interactive theorem prover
-    ctags # A utility for fast source-code browsing (exuberant ctags)
+    ctags # utility for fast source-code browsing (exuberant ctags)
+    dragon-drop # Simple drag-and-drop source/sink for X
     dhall # non-Turing-complete specification language
-    direnv # an environment switcher for the shell
+    direnv # environment switcher for the shell
     docker # containerizer; OS-level virtualization: application container
     elmPackages.elm # haskell-like frontend development platform
     feh # light-weight image viewer
@@ -103,13 +104,14 @@
     nix-bash-completions
     nixops # utility for provisioning NixOS machines
     nix-prefetch-git # nix utility that aids in pinning github revisions
-    nodejs-10_x # javascript engine
+    # nodejs-10_x # javascript engine
     pandoc # utility that translates between markup formats
     patchelf
     pavucontrol # PulseAudio volume control
     powertop # utility to analyze power consumption on Intel-based laptops
     psmisc # package of small utilities that use the proc file-system (fuser, killall, pstree, etc)
     python
+    ranger # file manager
     ripgrep # regex utility that's faster than the silver searcher ['rg']
     # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
     scrot # command-line screen-capture utility
