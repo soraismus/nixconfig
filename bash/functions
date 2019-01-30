@@ -1,3 +1,19 @@
+# Request ids of gdrive records for folders with the specified name.
+gdrive_find_folder_ids_for_name () {
+  local query="name = '$1' and mimeType = 'application/vnd.google-apps.folder'"
+  # 'NR!=1'      # Apply to all rows except 1st row.
+  # '{print $1}' # Print 1st field, which is the record's id.
+  gdrive list --query "$query" | awk 'NR!=1{print $1}'
+}
+
+# Request gdrive records for all folders.
+# As of gdrive's API of 2019 January 29,
+# the following fields will be included in the record:
+# Id, Name, Type, Size, Created
+gdrive_list_folders () {
+  gdrive list --query "mimeType = 'application/vnd.google-apps.folder'"
+}
+
 # -------------------------------------------------------------
 # Generate a message that indicates the branch and status     |
 # of a git-controlled directory. The '.bashrc' file uses this |
