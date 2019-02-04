@@ -10,6 +10,7 @@ let
       ciam = commit -am
       cim = commit -m
       co = checkout
+      cob = checkout -b
       d = diff
       dc = diff --cached
       dump = cat-file -p
