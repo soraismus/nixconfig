@@ -7,5 +7,4 @@ shopt -s globstar
 shopt -s histappend
 shopt -s lithist
 
-# Disables notifications of bg-job termination.
 set -o notify

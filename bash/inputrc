@@ -1,0 +1,39 @@
+# objectmix.com/editors/149072-vi-mode-readline-how-come-closer-vim.html
+set editing-mode vi
+set keymap vi-insert
+"\C-l": clear-screen # CTRL-L
+"\e[2~": quoted-insert # Insert
+"\e[3~": vi-delete # Delete
+"\e[5~": beginning-of-history # PageUp
+"\e[6~": end-of-history # PageDown
+# "\C-p": dynamic-complete-history
+# "\C-n": menu-complete
+
+set keymap vi-command
+"\C-l": clear-screen # CTRL-L
+"\e[2~": quoted-insert # Insert
+"\e[5~": beginning-of-history # PageUp
+"\e[6~": end-of-history # PageDown
+
+# stackoverflow.com/questions/6839006
+$if mode=vi
+	set keymap vi-command
+	"gg": beginning-of-history
+	"G": end-of-history
+	set keymap vi-insert
+	"jk": vi-movement-mode
+	"\C-w": backword-kill-word
+	"\C-p": history-search-backward
+$endif
+
+$if mode=vi
+	set keymap vi-command
+	".": insert-last-argument
+	"\C-a": beginning-of-line
+	"\C-e": end-of-line
+	"\C-l": clear-screen
+
+	set keymap vi-insert
+	"\C-a": beginning-of-line
+	"\C-e": end-of-line
+$endif

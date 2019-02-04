@@ -7,7 +7,11 @@ let
     [alias]
       br = branch
       ci = commit
+      ciam = commit -am
+      cim = commit -m
       co = checkout
+      d = diff
+      dc = diff --cached
       dump = cat-file -p
       hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
       st = status
@@ -23,16 +27,6 @@ in
 
     config = lib.mkIf config.environment.theo.programs.git.enable {
       environment.etc."gitconfig".source = gitConfig;
-      environment.shellAliases = {
-        g = "git";
-        ga = "git add";
-        gc = "git commit";
-        gd = "git diff";
-        gdc = "git diff --cached";
-        gpull = "git pull";
-        gpush = "git push";
-        gst = "git status";
-      };
 
       environment.systemPackages =
         [ pkgs.gitAndTools.git

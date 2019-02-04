@@ -48,13 +48,14 @@
   environment.theo.programs.git.enable = true;
   environment.theo.services.i3.enable = true;
 
+  # bash and inputrc # see also line 166
   environment.interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
     (builtins.readFile ./bash/functions)
-    (builtins.readFile ./bash/prompt)
     (builtins.readFile ./bash/settings)
     (builtins.readFile ./bash/variables)
     (builtins.readFile ./bash/direnv-hook)
   ];
+  environment.etc."inputrc".source = ./bash/inputrc;
 
   # environment.sessionVariables = {
     # BROWSER = "qtb";
@@ -84,7 +85,9 @@
     docker # containerizer; OS-level virtualization: application container
     elmPackages.elm # haskell-like frontend development platform
     feh # light-weight image viewer
+    # fira-code-symbols # FiraCode unicode ligature glyphs in private use area
     firefox-wrapper # browser
+    # fontforge # font editor
     fzf # command-line fuzzy finder
     gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
     gdrive # command-line utility for interacting with google drive
@@ -92,6 +95,7 @@
     # hlint
     htop # interactive process viewer
     idris # haskell-like compiler with dependent types
+    # inkscape # vector-graphics editor
     iotop
     irssi # terminal-based IRC client
     jq # command-line json processor
@@ -99,6 +103,7 @@
     libreoffice # open-source office suite
     lsof # utility to list open files
     lynx # terminal web-browser
+    # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
     mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
     mupdf # parsing engine for PDF, XPS, and EPUB
     nix-bash-completions
@@ -159,6 +164,10 @@
 
   programs = {
     bash = {
+      enableCompletion = true;
+      interactiveShellInit = "";
+      loginShellInit = "";
+      promptInit = builtins.readFile ./bash/prompt;
       shellAliases = {
         b = "cd ..";
         b1 = "cd ..";
@@ -167,10 +176,11 @@
         b4 = "cd ../../../..";
         b5 = "cd ../../../../..";
         l = "ls -alh --color=tty";
-        ls = "ls --color=tty";
+        ls = "ls -a --color=tty";
         quit = "exit";
         v = "vim";
       };
+      shellInit = "";
     };
 
     tmux = {
@@ -188,7 +198,6 @@
       resizeAmount = 10;
       secureSocket = true;
       shortcut = "f";
-      # terminal = "screen-256color";
       terminal = "screen-256color";
     };
   };
