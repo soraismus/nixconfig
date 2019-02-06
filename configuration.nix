@@ -271,15 +271,26 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.guest = {
-  #   isNormalUser = true;
-  #   uid = 1000;
-  # };
   users.users.polytope = {
-    isNormalUser = true;
-    home = "/home/polytope";
+    createHome = false;
+    cryptHomeLuks = null;
     description = "polytope";
     extraGroups = [ "wheel" "networkmanager" ];
+    group = "nogroup";
+    hashedPassword = null;
+    home = "/home/polytope";
+    initialHashedPassword = null;
+    initialPassword = null;
+    isNormalUser = true;
+    isSystemUser = false;
+    packages = [];
+    password = null;
+    passwordFile = null;
+    shell = pkgs.shadow;
+    subGidRanges = [];
+    subUidRanges = [];
+    uid = null;
+    useDefaultShell = false;
   };
 
   # This value determines the NixOS release with which your system is to be
