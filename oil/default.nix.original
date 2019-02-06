@@ -1,0 +1,32 @@
+{ lib, pkgs, src, stdenv, version }:
+stdenv.mkDerivation {
+  buildInputs = [ pkgs.readline ];
+
+  # Stripping breaks the bundles by removing the zip file from the end.
+  dontStrip = true;
+
+  meta = {
+    homepage = https://www.oilshell.org/;
+
+    description = "A new unix shell, still in its early stages";
+
+    license = with lib.licenses; [
+      psfl # Includes a portion of the python interpreter and standard library
+      asl20 # Licence for Oil itself
+    ];
+
+    maintainers = with lib.maintainers; [ lheckemann ];
+  };
+
+  name = "oil-${version}";
+
+  postPatch = ''
+    patchShebangs build
+  '';
+
+  preInstall = ''
+    mkdir -p $out/bin
+  '';
+
+  src = src;
+}

@@ -2,7 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  # pins = import ./oil/pins.nix { inherit (pkgs) fetchgit stdenv; };
+  ...
+}:
 
 {
   imports =
@@ -69,6 +74,11 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    (callPackage ./oil {})
+    # (callPackage ./oil {
+    #   src = pins.oil.src;
+    #   version = pins.oil.version;
+    # })
     # xorg.xmodmap # https://wiki.xfce.org/faq
     # xorg.xev     # https://wiki.xfce.org/faq
     ag # silver-searcher
@@ -91,6 +101,7 @@
     fzf # command-line fuzzy finder
     gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
     gdrive # command-line utility for interacting with google drive
+    haskellPackages.hakyll # static website compiler library
     heroku
     # hlint
     htop # interactive process viewer
@@ -113,8 +124,9 @@
     pandoc # utility that translates between markup formats
     patchelf
     pavucontrol # PulseAudio volume control
+    pijul # distributed version control system inspired by categorical patches
     powertop # utility to analyze power consumption on Intel-based laptops
-    psmisc # package of small utilities that use the proc file-system (fuser, killall, pstree, etc)
+    psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
     python
     ranger # file manager
     ripgrep # regex utility that's faster than the silver searcher ['rg']
