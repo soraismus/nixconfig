@@ -2,13 +2,10 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{
-  config,
-  pkgs,
-  # pins = import ./oil/pins.nix { inherit (pkgs) fetchgit stdenv; };
-  ...
-}:
-
+{ config, pkgs, ... }:
+let
+  oil = pkgs.callPackage ./oil {};
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -74,11 +71,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    (callPackage ./oil {})
-    # (callPackage ./oil {
-    #   src = pins.oil.src;
-    #   version = pins.oil.version;
-    # })
+    oil
     # xorg.xmodmap # https://wiki.xfce.org/faq
     # xorg.xev     # https://wiki.xfce.org/faq
     ag # silver-searcher
@@ -286,7 +279,7 @@
     packages = [];
     password = null;
     passwordFile = null;
-    shell = pkgs.shadow;
+    shell = oil;
     subGidRanges = [];
     subUidRanges = [];
     uid = null;
