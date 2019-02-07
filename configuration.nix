@@ -272,32 +272,11 @@
   };
 
   # New users, don't forget to set a password with ‘passwd’.
-  users = {
-    mutableUsers = true;
-    enforceIdUniqueness = true;
-    users = {
-      polytope = {
-        createHome = true;
-        cryptHomeLuks = null;
-        description = "polytope";
-        extraGroups = [ "wheel" "networkmanager" ];
-        group = "users";
-        hashedPassword = null;
-        home = "/home/polytope";
-        initialHashedPassword = null;
-        initialPassword = null;
-        isNormalUser = true;
-        isSystemUser = false;
-        packages = [];
-        password = null;
-        passwordFile = null;
-        shell = pkgs.shadow;
-        subGidRanges = [];
-        subUidRanges = [];
-        uid = null;
-        useDefaultShell = true;
-      };
-    };
+  users.users.polytope = {
+    isNormalUser = true;
+    home = "/home/polytope";
+    description = "polytope";
+    extraGroups = [ "wheel" "networkmanager" ];
   };
 
   # This value determines the NixOS release with which your system is to be
