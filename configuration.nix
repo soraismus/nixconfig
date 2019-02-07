@@ -3,9 +3,6 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-let
-  oil = pkgs.callPackage ./oil {};
-in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -71,10 +68,10 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    oil
     # xorg.xmodmap # https://wiki.xfce.org/faq
     # xorg.xev     # https://wiki.xfce.org/faq
     ag # silver-searcher
+    # autossh # automatically restart SSH sessions and tunnels
     bc # calculator
     cabal-install # haskell packaging and build system
     cabal2nix # nix utility that transforms cabal specs into nix specs
@@ -98,6 +95,7 @@ in
     heroku
     # hlint
     htop # interactive process viewer
+    # hound # fast code searching (symbolhound.com?)
     idris # haskell-like compiler with dependent types
     # inkscape # vector-graphics editor
     iotop
@@ -109,28 +107,37 @@ in
     lynx # terminal web-browser
     # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
     mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
+    # mopidy # extensible music server that plays music from local, Spotify, etc.
     mupdf # parsing engine for PDF, XPS, and EPUB
+    # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
     nix-bash-completions
     nixops # utility for provisioning NixOS machines
     nix-prefetch-git # nix utility that aids in pinning github revisions
     # nodejs-10_x # javascript engine
     pandoc # utility that translates between markup formats
+    # pass # stores, retrieves, generates, and sychronizes passwords securely
     patchelf
     pavucontrol # PulseAudio volume control
     pijul # distributed version control system inspired by categorical patches
     powertop # utility to analyze power consumption on Intel-based laptops
+    # privoxy # non-caching web proxy with advanced filtering capabilities
     psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
     python
     ranger # file manager
     ripgrep # regex utility that's faster than the silver searcher ['rg']
+    # rofi - window switcher, run dialog and dmenu replacement
     # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
     scrot # command-line screen-capture utility
     stack # haskell tool stack
     stack2nix # nix utility that transforms stack specs into nix specs
     tcpdump # network sniffer
     termite # keyboard-centric VTE-based terminal
+    # tig # text-mode interface for git
+    # tinc # VPN daemon with full mesh routing
     tmux # terminal multiplexer
+    # tmuxp # manage tmux workspaces from JSON and YAML
     tmuxinator # tmux-session manager (implemented in ruby)
+    # tomb # file encryption
     translate-shell # command-line translator
     tree # commandline directory visualizer
     myVim # text editor
@@ -138,6 +145,7 @@ in
     vlc # cross-platform media player and streaming server
     xclip # clipboard utility
     yarn # variant to npm
+    # yi
     youtube-dl # command-line tool to download videos from video platforms
     zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
     zim # desktop wiki
@@ -263,27 +271,33 @@ in
     windowManager.default = "i3";
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.polytope = {
-    createHome = false;
-    cryptHomeLuks = null;
-    description = "polytope";
-    extraGroups = [ "wheel" "networkmanager" ];
-    group = "nogroup";
-    hashedPassword = null;
-    home = "/home/polytope";
-    initialHashedPassword = null;
-    initialPassword = null;
-    isNormalUser = true;
-    isSystemUser = false;
-    packages = [];
-    password = null;
-    passwordFile = null;
-    shell = oil;
-    subGidRanges = [];
-    subUidRanges = [];
-    uid = null;
-    useDefaultShell = false;
+  # New users, don't forget to set a password with ‘passwd’.
+  users = {
+    mutableUsers = true;
+    enforceIdUniqueness = true;
+    users = {
+      polytope = {
+        createHome = true;
+        cryptHomeLuks = null;
+        description = "polytope";
+        extraGroups = [ "wheel" "networkmanager" ];
+        group = "users";
+        hashedPassword = null;
+        home = "/home/polytope";
+        initialHashedPassword = null;
+        initialPassword = null;
+        isNormalUser = true;
+        isSystemUser = false;
+        packages = [];
+        password = null;
+        passwordFile = null;
+        shell = pkgs.shadow;
+        subGidRanges = [];
+        subUidRanges = [];
+        uid = null;
+        useDefaultShell = true;
+      };
+    };
   };
 
   # This value determines the NixOS release with which your system is to be

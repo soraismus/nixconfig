@@ -1,4 +1,4 @@
 result
-*.swo
-*.swp
-*.un~
+**/*.swo
+**/*.swp
+**/*.un~
