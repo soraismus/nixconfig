@@ -9,6 +9,7 @@
       ./hardware-configuration.nix
       ./git
       ./i3
+      ./rofi
     ];
 
   # Use the GRUB 2 boot loader.
@@ -45,6 +46,7 @@
   };
 
   environment.theo.programs.git.enable = true;
+  environment.theo.programs.rofi.enable = true;
   environment.theo.services.i3.enable = true;
 
   # bash and inputrc # see also line 166
@@ -95,7 +97,7 @@
     heroku
     # hlint
     htop # interactive process viewer
-    # hound # fast code searching (symbolhound.com?)
+    hound # fast code searching (react frontend; go backend; regex w/ trigram index)
     idris # haskell-like compiler with dependent types
     # inkscape # vector-graphics editor
     iotop
@@ -113,9 +115,9 @@
     nix-bash-completions
     nixops # utility for provisioning NixOS machines
     nix-prefetch-git # nix utility that aids in pinning github revisions
-    # nodejs-10_x # javascript engine
+    nodejs-10_x # javascript engine
     pandoc # utility that translates between markup formats
-    # pass # stores, retrieves, generates, and sychronizes passwords securely
+    pass # password-store manages passwords securely
     patchelf
     pavucontrol # PulseAudio volume control
     pijul # distributed version control system inspired by categorical patches
@@ -125,7 +127,8 @@
     python
     ranger # file manager
     ripgrep # regex utility that's faster than the silver searcher ['rg']
-    # rofi - window switcher, run dialog and dmenu replacement
+    rofi # window switcher, run dialog and dmenu replacement
+    rofi-pass # script to make rofi work with password-store
     # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
     scrot # command-line screen-capture utility
     stack # haskell tool stack
