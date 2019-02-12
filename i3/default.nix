@@ -41,11 +41,16 @@ let
     bindsym $mod+Shift+q kill
 
     # start dmenu (a program launcher)
-    bindsym $mod+d exec dmenu_run
+    #bindsym $mod+d exec dmenu_run
     # There also is the (new) i3-dmenu-desktop which only displays applications
-    # shipping a .desktop file. It is a wrapper around dmenu, so you need that
-    # installed.
+    # shipping a .desktop file. It is a wrapper around dmenu,
+    # so you need that installed.
     # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+    bindsym $mod+d exec rofi-dme
+    bindsym $mod+BackSpace exec rofi-pow
+    bindsym $mod+c exec ${pkgs.bash}/bin/bash -c rofi-pass
+    bindsym $mod+Shift+w exec rofi-win
+    bindsym $mod+z exec rofi-search
 
     # change focus
     #bindsym $mod+j focus left
