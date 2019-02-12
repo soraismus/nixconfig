@@ -218,8 +218,8 @@ in
 
     config = lib.mkIf config.environment.theo.programs.rofi.enable {
       environment.systemPackages =
-        [ pkgs.rofi-pass
-          pkgs.rofi 
+        [ pkgs.rofi # window switcher and dmenu replacement
+          pkgs.rofi-pass # script to make rofi work with password-store
           rofi-dme
           rofi-search
           rofi-show-window

@@ -1,0 +1,4 @@
+[calendars]
+  [[general]]
+    path = ~/calendars/general/
+    color = dark green

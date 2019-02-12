@@ -6,10 +6,11 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      ./conky # configurable X system monitor
       ./hardware-configuration.nix
       ./git
       ./i3
-      ./rofi
+      ./rofi # window switcher and dmenu replacement
     ];
 
   # Use the GRUB 2 boot loader.
@@ -78,7 +79,6 @@
     cabal-install # haskell packaging and build system
     cabal2nix # nix utility that transforms cabal specs into nix specs
     chromium # browser
-    # conky # configurable X system monitor
     coq # interactive theorem prover
     ctags # utility for fast source-code browsing (exuberant ctags)
     dragon-drop # Simple drag-and-drop source/sink for X
@@ -127,8 +127,6 @@
     python
     ranger # file manager
     ripgrep # regex utility that's faster than the silver searcher ['rg']
-    rofi # window switcher, run dialog and dmenu replacement
-    rofi-pass # script to make rofi work with password-store
     # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
     scrot # command-line screen-capture utility
     stack # haskell tool stack
