@@ -205,7 +205,7 @@ in
           pkgs.i3blocks
           # pkgs.i3lock
           pkgs.i3status
-          pkgs.rxvt_unicode
+          pkgs.rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
         ];
       services.xserver.windowManager.i3 = {
         enable = true;
