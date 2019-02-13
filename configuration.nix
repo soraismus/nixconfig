@@ -85,6 +85,7 @@
     dhall # non-Turing-complete specification language
     direnv # environment switcher for the shell
     docker # containerizer; OS-level virtualization: application container
+    # ekiga # VOIP/video-conferencing app with full SIP and H.323 support
     elmPackages.elm # haskell-like frontend development platform
     feh # light-weight image viewer
     # fira-code-symbols # FiraCode unicode ligature glyphs in private use area
@@ -100,11 +101,13 @@
     hound # fast code searching (react frontend; go backend; regex w/ trigram index)
     idris # haskell-like compiler with dependent types
     # inkscape # vector-graphics editor
-    iotop
+    iotop # tool to view processes' IO-utilization
     irssi # terminal-based IRC client
+    jitsi # open-source video calls and chat
     jq # command-line json processor
     libnotify # library that sends desktop notifications to a notification daemon
     libreoffice # open-source office suite
+    # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
     lsof # utility to list open files
     lynx # terminal web-browser
     # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
@@ -125,11 +128,11 @@
     # privoxy # non-caching web proxy with advanced filtering capabilities
     psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
     python
+    qtox # Qt tox client
     ranger # file manager
     ripgrep # regex utility that's faster than the silver searcher ['rg']
     rofi # window switcher, run dialog and dmenu replacement
     rofi-pass # script to make rofi work with password-store
-    # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
     scrot # command-line screen-capture utility
     stack # haskell tool stack
     stack2nix # nix utility that transforms stack specs into nix specs
@@ -143,6 +146,7 @@
     # tomb # file encryption
     translate-shell # command-line translator
     tree # commandline directory visualizer
+    utox # (mu-tox) lightweight tox client
     myVim # text editor
     virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
     vlc # cross-platform media player and streaming server
