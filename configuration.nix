@@ -91,6 +91,7 @@
         dhall # non-Turing-complete specification language
         direnv # environment switcher for the shell
         docker # containerizer; OS-level virtualization: application container
+        # ekiga # VOIP/video-conferencing app with full SIP and H.323 support
         elmPackages.elm # haskell-like frontend development platform
         feh # light-weight image viewer
         firefox-wrapper # browser
@@ -108,15 +109,18 @@
         # inkscape # vector-graphics editor
         iotop
         irssi # terminal-based IRC client
+        jitsi # open-source video calls and chat
         jq # command-line json processor
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
+        # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         lsof # utility to list open files
         lynx # terminal web-browser
         # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
         # mopidy # extensible music server that plays music from local, Spotify, etc.
         mupdf # parsing engine for PDF, XPS, and EPUB
+        myVim # text editor
         # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
         nix-bash-completions
         nixops # utility for provisioning NixOS machines
@@ -126,11 +130,12 @@
         pass # password-store manages passwords securely
         patchelf
         pavucontrol # PulseAudio volume control
-        pijul # distributed version control system inspired by categorical patches
+        # pijul # distributed version control system inspired by categorical patches
         powertop # utility to analyze power consumption on Intel-based laptops
         # privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
         python
+        qtox # Qt tox client
         ranger # file manager
         ripgrep # regex utility that's faster than the silver searcher ['rg']
         rofi # window switcher, run dialog and dmenu replacement
@@ -149,7 +154,7 @@
         # tomb # file encryption
         translate-shell # command-line translator
         tree # commandline directory visualizer
-        myVim # text editor
+        utox # (mu-tox) lightweight tox client
         virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
         vlc # cross-platform media player and streaming server
         xclip # clipboard utility
