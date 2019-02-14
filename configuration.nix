@@ -247,12 +247,6 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "ctrl:nocaps";
-  # services.xserver.synaptics.enable = true; # touchpad
-
   # Enable touchpad support.
   # services.xserver.libinput.enable = true;
 
@@ -263,6 +257,7 @@
   # services.xserver.windowManager.xmonad.enable = true;
   # services.xserver.windowManager.i3.enable = true;
 
+  # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
     desktopManager = {
@@ -292,6 +287,9 @@
     description = "polytope";
     extraGroups = [ "audio" "networkmanager" "video" "wheel" ];
   };
+
+  # Ctrl-Alt-F8 displays the manual in the terminal.
+  services.nixosManual.showManual = true;
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
