@@ -69,90 +69,96 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    # xorg.xmodmap # https://wiki.xfce.org/faq
-    # xorg.xev     # https://wiki.xfce.org/faq
-    ag # silver-searcher
-    # autossh # automatically restart SSH sessions and tunnels
-    bc # calculator
-    cabal-install # haskell packaging and build system
-    cabal2nix # nix utility that transforms cabal specs into nix specs
-    chromium # browser
-    # conky # configurable X system monitor
-    coq # interactive theorem prover
-    ctags # utility for fast source-code browsing (exuberant ctags)
-    dragon-drop # Simple drag-and-drop source/sink for X
-    dhall # non-Turing-complete specification language
-    direnv # environment switcher for the shell
-    docker # containerizer; OS-level virtualization: application container
-    elmPackages.elm # haskell-like frontend development platform
-    feh # light-weight image viewer
-    # fira-code-symbols # FiraCode unicode ligature glyphs in private use area
-    firefox-wrapper # browser
-    # fontforge # font editor
-    fzf # command-line fuzzy finder
-    gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
-    gdrive # command-line utility for interacting with google drive
-    haskellPackages.hakyll # static website compiler library
-    heroku
-    # hlint
-    htop # interactive process viewer
-    hound # fast code searching (react frontend; go backend; regex w/ trigram index)
-    idris # haskell-like compiler with dependent types
-    # inkscape # vector-graphics editor
-    iotop
-    irssi # terminal-based IRC client
-    jq # command-line json processor
-    libnotify # library that sends desktop notifications to a notification daemon
-    libreoffice # open-source office suite
-    lsof # utility to list open files
-    lynx # terminal web-browser
-    # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
-    mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
-    # mopidy # extensible music server that plays music from local, Spotify, etc.
-    mupdf # parsing engine for PDF, XPS, and EPUB
-    # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
-    nix-bash-completions
-    nixops # utility for provisioning NixOS machines
-    nix-prefetch-git # nix utility that aids in pinning github revisions
-    nodejs-10_x # javascript engine
-    pandoc # utility that translates between markup formats
-    pass # password-store manages passwords securely
-    patchelf
-    pavucontrol # PulseAudio volume control
-    pijul # distributed version control system inspired by categorical patches
-    powertop # utility to analyze power consumption on Intel-based laptops
-    # privoxy # non-caching web proxy with advanced filtering capabilities
-    psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-    python
-    ranger # file manager
-    ripgrep # regex utility that's faster than the silver searcher ['rg']
-    rofi # window switcher, run dialog and dmenu replacement
-    rofi-pass # script to make rofi work with password-store
-    # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
-    scrot # command-line screen-capture utility
-    stack # haskell tool stack
-    stack2nix # nix utility that transforms stack specs into nix specs
-    tcpdump # network sniffer
-    termite # keyboard-centric VTE-based terminal
-    # tig # text-mode interface for git
-    # tinc # VPN daemon with full mesh routing
-    tmux # terminal multiplexer
-    # tmuxp # manage tmux workspaces from JSON and YAML
-    tmuxinator # tmux-session manager (implemented in ruby)
-    # tomb # file encryption
-    translate-shell # command-line translator
-    tree # commandline directory visualizer
-    myVim # text editor
-    virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
-    vlc # cross-platform media player and streaming server
-    xclip # clipboard utility
-    yarn # variant to npm
-    # yi
-    youtube-dl # command-line tool to download videos from video platforms
-    zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
-    zim # desktop wiki
-  ];
+  environment.systemPackages =
+    let
+      # http://fontforge.github.io/en-US/documentation/utilities/
+      # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
+      fonttools = pkgs.fontforge-fonttools;
+    in
+      with pkgs; [
+        # xorg.xmodmap # https://wiki.xfce.org/faq
+        # xorg.xev     # https://wiki.xfce.org/faq
+        ag # silver-searcher
+        # autossh # automatically restart SSH sessions and tunnels
+        bc # calculator
+        cabal-install # haskell packaging and build system
+        cabal2nix # nix utility that transforms cabal specs into nix specs
+        chromium # browser
+        # conky # configurable X system monitor
+        coq # interactive theorem prover
+        ctags # utility for fast source-code browsing (exuberant ctags)
+        dragon-drop # Simple drag-and-drop source/sink for X
+        dhall # non-Turing-complete specification language
+        direnv # environment switcher for the shell
+        docker # containerizer; OS-level virtualization: application container
+        elmPackages.elm # haskell-like frontend development platform
+        feh # light-weight image viewer
+        firefox-wrapper # browser
+        fontforge-gtk # font editor with GTK UI
+        fonttools
+        fzf # command-line fuzzy finder
+        gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
+        gdrive # command-line utility for interacting with google drive
+        haskellPackages.hakyll # static website compiler library
+        heroku
+        # hlint
+        htop # interactive process viewer
+        hound # fast code searching (react frontend; go backend; regex w/ trigram index)
+        idris # haskell-like compiler with dependent types
+        # inkscape # vector-graphics editor
+        iotop
+        irssi # terminal-based IRC client
+        jq # command-line json processor
+        libnotify # library that sends desktop notifications to a notification daemon
+        libreoffice # open-source office suite
+        lsof # utility to list open files
+        lynx # terminal web-browser
+        # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
+        mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
+        # mopidy # extensible music server that plays music from local, Spotify, etc.
+        mupdf # parsing engine for PDF, XPS, and EPUB
+        # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
+        nix-bash-completions
+        nixops # utility for provisioning NixOS machines
+        nix-prefetch-git # nix utility that aids in pinning github revisions
+        nodejs-10_x # javascript engine
+        pandoc # utility that translates between markup formats
+        pass # password-store manages passwords securely
+        patchelf
+        pavucontrol # PulseAudio volume control
+        pijul # distributed version control system inspired by categorical patches
+        powertop # utility to analyze power consumption on Intel-based laptops
+        # privoxy # non-caching web proxy with advanced filtering capabilities
+        psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
+        python
+        ranger # file manager
+        ripgrep # regex utility that's faster than the silver searcher ['rg']
+        rofi # window switcher, run dialog and dmenu replacement
+        rofi-pass # script to make rofi work with password-store
+        # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
+        scrot # command-line screen-capture utility
+        stack # haskell tool stack
+        stack2nix # nix utility that transforms stack specs into nix specs
+        tcpdump # network sniffer
+        termite # keyboard-centric VTE-based terminal
+        # tig # text-mode interface for git
+        # tinc # VPN daemon with full mesh routing
+        tmux # terminal multiplexer
+        # tmuxp # manage tmux workspaces from JSON and YAML
+        tmuxinator # tmux-session manager (implemented in ruby)
+        # tomb # file encryption
+        translate-shell # command-line translator
+        tree # commandline directory visualizer
+        myVim # text editor
+        virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
+        vlc # cross-platform media player and streaming server
+        xclip # clipboard utility
+        yarn # variant to npm
+        # yi
+        youtube-dl # command-line tool to download videos from video platforms
+        zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
+        zim # desktop wiki
+      ];
 
   fonts = {
     enableFontDir = true;
