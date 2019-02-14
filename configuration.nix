@@ -290,7 +290,7 @@
     isNormalUser = true;
     home = "/home/polytope";
     description = "polytope";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "audio" "networkmanager" "video" "wheel" ];
   };
 
   # This value determines the NixOS release with which your system is to be
