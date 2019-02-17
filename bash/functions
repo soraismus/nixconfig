@@ -134,3 +134,14 @@ vff () {
   local file_name="*$1*"
   vim "$(find . -name "$file_name")"
 }
+
+youtube-dl-ids () {
+  local id_array=("$@")
+  local url_array=()
+  echo "Youtube videos from the following URLs will be downloaded:"
+  for i in "${id_array[@]}"; do
+    echo "  --" "https://www.youtube.com/watch?v=${i} "
+    url_array+="https://www.youtube.com/watch?v=${i} "
+  done
+  youtube-dl "${url_array[@]}"
+}
