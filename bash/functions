@@ -14,6 +14,38 @@ gdrive_list_folders () {
   gdrive list --query "mimeType = 'application/vnd.google-apps.folder'"
 }
 
+ghclone () {
+  local OWNER
+  local REPO
+  if [[ "$#" -eq 2 ]]; then
+    OWNER="$1"
+    REPO="$2"
+  elif [[ "$#" -eq 1 ]]; then
+    OWNER="$( basename "$PWD" )"
+    REPO="$1"
+  else
+    echo "Incorrect number of arguments"
+    return 1
+  fi
+  git clone "https://github.com/${OWNER}/${REPO}.git"
+}
+
+gitlabclone () {
+  local OWNER
+  local REPO
+  if [[ "$#" -eq 2 ]]; then
+    OWNER="$1"
+    REPO="$2"
+  elif [[ "$#" -eq 1 ]]; then
+    OWNER="$( basename "$PWD" )"
+    REPO="$1"
+  else
+    echo "Incorrect number of arguments"
+    return 1
+  fi
+  git clone "https://gitlab.com/${OWNER}/${REPO}.git"
+}
+
 # -------------------------------------------------------------
 # Generate a message that indicates the branch and status     |
 # of a git-controlled directory. The '.bashrc' file uses this |
