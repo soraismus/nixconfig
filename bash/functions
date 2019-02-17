@@ -136,11 +136,13 @@ vff () {
 }
 
 youtube-dl-ids () {
+  mkdir -p "${HOME}/Downloads/videos/catalog/"
+  local catalog="${HOME}/Downloads/videos/catalog/list"
   local id_array=("$@")
   local url_array=()
   echo "Youtube videos from the following URLs will be downloaded:"
   for i in "${id_array[@]}"; do
-    echo "  --" "https://www.youtube.com/watch?v=${i} "
+    echo "  --" "https://www.youtube.com/watch?v=${i} " | tee -a "${catalog}"
     url_array+="https://www.youtube.com/watch?v=${i} "
   done
   youtube-dl "${url_array[@]}"
