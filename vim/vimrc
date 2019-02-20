@@ -36,13 +36,13 @@ set nrformats=bin,hex
 set number
 set relativenumber
 set ruler
-set scrolloff=5
+set scrolloff=0
 set sessionoptions=blank,buffers,curdir,folds,help,options,tabpages,winsize,terminal
 set shiftround
 set shiftwidth=2
 set showbreak=↪
 set showmatch
-set sidescrolloff=5
+set sidescrolloff=0
 set smarttab
 set t_Co=16
 set tabpagemax=50

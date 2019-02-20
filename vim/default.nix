@@ -15,7 +15,7 @@ pkgs.vim_configurable.customize {
             "fugitive"
             "haskell-vim"
             "idris-vim"
-            "psc-ide-vim"
+            # "psc-ide-vim"
             "purescript-vim"
             "tabular"
             "tagbar"
