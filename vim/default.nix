@@ -6,11 +6,17 @@ pkgs.vim_configurable.customize {
   vimrcConfig.vam.pluginDictionaries =
     [ {
         names =
-          [ "ale"
+          [ "agda-vim"
+            "ale"
             "awesome-vim-colorschemes"
+            "elm-vim"
             "fzf-vim"
             "fzfWrapper"
             "fugitive"
+            "haskell-vim"
+            "idris-vim"
+            "psc-ide-vim"
+            "purescript-vim"
             "tabular"
             "tagbar"
             "vim-commentary"
