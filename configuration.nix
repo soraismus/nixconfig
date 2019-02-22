@@ -286,6 +286,7 @@
     home = "/home/polytope";
     description = "polytope";
     extraGroups = [ "audio" "networkmanager" "video" "wheel" ];
+    # openssh.authorizedKeys.keys = [ "ssh-dss AAAAB3Nza... alice@foobar" ];
   };
 
   # Ctrl-Alt-F8 displays the manual in the terminal.
