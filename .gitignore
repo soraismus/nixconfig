@@ -1,4 +1,8 @@
 result
+notes/
+secrets/
+**/*.note
+**/*.secret
 **/*.swo
 **/*.swp
 **/*.un~
