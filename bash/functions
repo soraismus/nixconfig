@@ -137,9 +137,14 @@ vff () {
 
 youtube-dl-ids () {
   mkdir -p "${HOME}/Downloads/videos/catalog/"
+  local catalog="${HOME}/Downloads/videos/catalog/catalog"
+  local id_array=("$@")
   for i in "${id_array[@]}"; do
-    echo "https://www.youtube.com/watch?v=${i} " "$( date )" \
-      | tee -a "${catalog}"
-    youtube-dl "https://www.youtube.com/watch?v=${i} "
+    if youtube-dl "https://www.youtube.com/watch?v=${i} "
+      then echo "https://www.youtube.com/watch?v=${i} " \
+        "$( date )" >> "${catalog}";
+      else echo "ERROR -- " "https://www.youtube.com/watch?v=${i} " \
+        "$( date )" >> "${catalog}";
+    fi
   done
 }
