@@ -6,6 +6,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      ./automatic-mac-spoofing
       ./hardware-configuration.nix
       ./git
       ./i3
@@ -47,6 +48,7 @@
 
   environment.theo.programs.git.enable = true;
   environment.theo.programs.rofi.enable = true;
+  environment.theo.services.automatic-mac-spoofing.enable = true;
   environment.theo.services.i3.enable = true;
 
   # bash and inputrc # see also line 166
