@@ -30,13 +30,20 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Select internationalisation properties.
-  # i18n = {
-  #   consoleFont = "Lat2-Terminus16";
-  #   consoleKeyMap = "us";
-  #   # consoleKeyMap = "dvorak";
-  #   defaultLocale = "en_US.UTF-8";
-  # };
+  i18n =
+    let
+      callPackage = pkgs.lib.callPackageWith pkgs;
+      workman = (callPackage ./workman {}).workman;
+    in {
+      consoleFont = "Lat2-Terminus16";
+      consoleKeyMap = "us";
+      defaultLocale = "en_US.UTF-8";
+      consolePackages =
+        [ pkgs.kbdKeymaps.dvp
+          pkgs.kbdKeymaps.neo
+          workman # workman-p keyboard layout; see `services.xserver`
+        ];
+    };
 
   time.timeZone = "America/New_York";
 
@@ -51,7 +58,7 @@
   environment.theo.services.automatic-mac-spoofing.enable = true;
   environment.theo.services.i3.enable = true;
 
-  # bash and inputrc # see also line 166
+  # bash and inputrc # see also `programs.bash`
   environment.interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
     (builtins.readFile ./bash/functions)
     (builtins.readFile ./bash/settings)
@@ -275,10 +282,11 @@
         ${pkgs.xlibs.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
       '';
     };
-    # layout = "dvorak";
-    layout = "us";
+    layout = "us,us"; # workman-p and standard keyboard layouts
     synaptics.enable = true; # touchpad
-    xkbOptions = "ctrl:nocaps";
+    xkbModel = "pc104";
+    xkbOptions = "ctrl:nocaps,grp:alts_toggle"; # both Alt keys together switch layouts
+    xkbVariant = "workman,"; # workman-p and standard keyboard layouts; see `i18n`
     windowManager.default = "i3";
   };
 
