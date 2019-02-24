@@ -280,11 +280,11 @@
         ${pkgs.xlibs.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
       '';
     };
-    layout = "us";
+    layout = "us,us"; # workman-p and standard keyboard layouts
     synaptics.enable = true; # touchpad
     xkbModel = "pc104";
-    xkbOptions = "ctrl:nocaps";
-    xkbVariant = "workman"; # workman-p keyboard layout; see `i18n`
+    xkbOptions = "ctrl:nocaps,grp:alts_toggle"; # both Alt keys together switch layouts
+    xkbVariant = "workman,"; # workman-p and standard keyboard layouts; see `i18n`
     windowManager.default = "i3";
   };
 
