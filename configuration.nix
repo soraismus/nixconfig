@@ -212,7 +212,7 @@
         b4 = "cd ../../../..";
         b5 = "cd ../../../../..";
         l = "ls -alh --color=tty";
-        ls = "ls -a --color=tty";
+        ls = "ls -a --color=tty --group-directories-first";
         quit = "exit";
         v = "vim";
       };
@@ -282,11 +282,13 @@
         ${pkgs.xlibs.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
       '';
     };
-    layout = "us,us"; # workman-p and standard keyboard layouts
+    # layout = "us,us"; # workman-p and standard keyboard layouts
+    layout = "us";
     synaptics.enable = true; # touchpad
     xkbModel = "pc104";
     xkbOptions = "ctrl:nocaps,grp:alts_toggle"; # both Alt keys together switch layouts
-    xkbVariant = "workman,"; # workman-p and standard keyboard layouts; see `i18n`
+    # xkbVariant = "workman,"; # workman-p and standard keyboard layouts; see `i18n`
+    xkbVariant = "";
     windowManager.default = "i3";
   };
 

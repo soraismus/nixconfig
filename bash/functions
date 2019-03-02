@@ -136,15 +136,21 @@ vff () {
 }
 
 youtube-dl-ids () {
-  mkdir -p "${HOME}/Downloads/videos/catalog/"
-  local catalog="${HOME}/Downloads/videos/catalog/catalog"
+  echo "Preparing to download youtube videos corresponding to the following IDs:"
   local id_array=("$@")
+  echo "  --  " "${id_array[@]}"
+  local catalogDir="${HOME}/Downloads/videos/catalog"
+  local catalog="${catalogDir}/catalog"
+  if [ ! -d "${catalogDir}" ]; then
+    echo "making directory " "${catalogDir}"
+    mkdir -p "${catalogDir}"
+  fi
   for i in "${id_array[@]}"; do
-    if youtube-dl "https://www.youtube.com/watch?v=${i} "
-      then echo "https://www.youtube.com/watch?v=${i} " \
-        "$( date )" >> "${catalog}";
-      else echo "ERROR -- " "https://www.youtube.com/watch?v=${i} " \
-        "$( date )" >> "${catalog}";
+    local url="https://www.youtube.com/watch?v=${i} "
+    echo "  ------------------------------------ "
+    if youtube-dl "${url}"
+      then echo "${url}" "$( date )" >> "${catalog}";
+      else echo "ERROR -- " "${url}" "$( date )" >> "${catalog}";
     fi
   done
 }
