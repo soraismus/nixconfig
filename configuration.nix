@@ -13,50 +13,9 @@
       ./rofi
     ];
 
-  # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  # boot.loader.grub.efiSupport = true;
-  # boot.loader.grub.efiInstallAsRemovable = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
-
-  networking.hostName = "theo"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  i18n =
-    let
-      callPackage = pkgs.lib.callPackageWith pkgs;
-      workman = (callPackage ./workman {}).workman;
-    in {
-      consoleFont = "Lat2-Terminus16";
-      consoleKeyMap = "us";
-      defaultLocale = "en_US.UTF-8";
-      consolePackages =
-        [ pkgs.kbdKeymaps.dvp
-          pkgs.kbdKeymaps.neo
-          workman # workman-p keyboard layout; see `services.xserver`
-        ];
-    };
-
-  time.timeZone = "America/New_York";
-
-  nixpkgs.config = {
-    packageOverrides = pkgs: {
-      myVim = import ./vim { pkgs = pkgs; };
-    };
-  };
-
-  environment.theo.programs.git.enable = true;
-  environment.theo.programs.rofi.enable = true;
-  environment.theo.services.automatic-mac-spoofing.enable = true;
-  environment.theo.services.i3.enable = true;
+  boot.loader.grub.device = "/dev/sda";
 
   # bash and inputrc # see also `programs.bash`
   environment.interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
@@ -76,8 +35,6 @@
     # PAGER = "less";
   # };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages =
     let
       # http://fontforge.github.io/en-US/documentation/utilities/
@@ -174,6 +131,40 @@
         zim # desktop wiki
       ];
 
+  environment.theo.programs.git.enable = true;
+  environment.theo.programs.rofi.enable = true;
+  environment.theo.services.automatic-mac-spoofing.enable = true;
+  environment.theo.services.i3.enable = true;
+
+  i18n =
+    let
+      callPackage = pkgs.lib.callPackageWith pkgs;
+      workman = (callPackage ./workman {}).workman;
+    in {
+      consoleFont = "Lat2-Terminus16";
+      consoleKeyMap = "us";
+      defaultLocale = "en_US.UTF-8";
+      consolePackages =
+        [ pkgs.kbdKeymaps.dvp
+          pkgs.kbdKeymaps.neo
+          workman # workman-p keyboard layout; see `services.xserver`
+        ];
+    };
+
+  networking.hostName = "theo"; # Define your hostname.
+  networking.networkmanager.enable = true;
+
+  nix.gc = {
+    automatic = true;
+    dates = "23:00";
+  };
+
+  nixpkgs.config = {
+    packageOverrides = pkgs: {
+      myVim = import ./vim { pkgs = pkgs; };
+    };
+  };
+
   fonts = {
     enableFontDir = true;
     enableGhostscriptFonts = true;
@@ -192,11 +183,6 @@
         pkgs.fira
       ];
   };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
 
   programs = {
     bash = {
@@ -238,35 +224,11 @@
     };
   };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  # Ctrl-Alt-F8 displays the manual in the terminal.
+  services.nixosManual.showManual = true;
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
-  # Enable touchpad support.
-  # services.xserver.libinput.enable = true;
-
-  # Enable the KDE Desktop Environment.
-  # services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
-  # services.xserver.desktopManager.xfce.enable = true;
-  # services.xserver.windowManager.xmonad.enable = true;
-  # services.xserver.windowManager.i3.enable = true;
-
-  # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
     desktopManager = {
@@ -282,15 +244,21 @@
         ${pkgs.xlibs.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
       '';
     };
-    # layout = "us,us"; # workman-p and standard keyboard layouts
     layout = "us";
     synaptics.enable = true; # touchpad
     xkbModel = "pc104";
-    xkbOptions = "ctrl:nocaps,grp:alts_toggle"; # both Alt keys together switch layouts
-    # xkbVariant = "workman,"; # workman-p and standard keyboard layouts; see `i18n`
+    xkbOptions = "";
     xkbVariant = "";
     windowManager.default = "i3";
   };
+
+  # Enable sound.
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
+
+  system.stateVersion = "18.09"; # Change only when NixOS release notes say so.
+
+  time.timeZone = "America/New_York";
 
   # New users, don't forget to set a password with ‘passwd’.
   users.users.polytope = {
@@ -300,14 +268,5 @@
     extraGroups = [ "audio" "networkmanager" "video" "wheel" ];
     # openssh.authorizedKeys.keys = [ "ssh-dss AAAAB3Nza... alice@foobar" ];
   };
-
-  # Ctrl-Alt-F8 displays the manual in the terminal.
-  services.nixosManual.showManual = true;
-
-  # This value determines the NixOS release with which your system is to be
-  # compatible, in order to avoid breaking some software such as database
-  # servers. You should change this only after NixOS release notes say you
-  # should.
-  system.stateVersion = "18.09"; # Did you read the comment?
 
 }
