@@ -247,7 +247,7 @@
     layout = "us";
     synaptics.enable = true; # touchpad
     xkbModel = "pc104";
-    xkbOptions = "";
+    xkbOptions = "ctrl:nocaps";
     xkbVariant = "";
     windowManager.default = "i3";
   };
