@@ -12,8 +12,7 @@ XTerm*Foreground: white
 URxvt.loginShell: false
 !URxvt.background: black
 !URxvt.foreground: white
-!URxvt.scrollBar: false
-URxvt.scrollBar: true
+URxvt.scrollBar: false
 URxvt.underlineURLs: true
 URxvt*transparent: false
 URxvt.keysym.Control-Tab: \033[27;5;9~
