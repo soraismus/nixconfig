@@ -133,7 +133,7 @@
 
   environment.theo.programs.git.enable = true;
   environment.theo.programs.rofi.enable = true;
-  environment.theo.services.automatic-mac-spoofing.enable = true;
+  environment.theo.services.automatic-mac-spoofing.enable = false;
   environment.theo.services.i3.enable = true;
 
   i18n =
