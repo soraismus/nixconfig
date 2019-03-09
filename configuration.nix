@@ -85,6 +85,7 @@
         # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
         # mopidy # extensible music server that plays music from local, Spotify, etc.
+        mongodb # nosql database
         mupdf # parsing engine for PDF, XPS, and EPUB
         myVim # text editor
         # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
@@ -224,6 +225,7 @@
     };
   };
 
+  services.mongodb.enable = true;
   services.openssh.enable = true;
 
   # Ctrl-Alt-F8 displays the manual in the terminal.
