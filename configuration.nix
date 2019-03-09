@@ -3,7 +3,8 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-{
+let callPackage = pkgs.lib.callPackageWith pkgs;
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./automatic-mac-spoofing
@@ -40,6 +41,7 @@
       # http://fontforge.github.io/en-US/documentation/utilities/
       # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
       fonttools = pkgs.fontforge-fonttools;
+      nixos-shell = (callPackage ./nixos-shell {});
     in
       with pkgs; [
         # xorg.xmodmap # https://wiki.xfce.org/faq
@@ -90,6 +92,7 @@
         # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
         nix-bash-completions
         nixops # utility for provisioning NixOS machines
+        nixos-shell # spawn dev env in container; btw `nix-shell` and `nixos-rebuild build-vm`
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nodejs-10_x # javascript engine
         pandoc # utility that translates between markup formats
@@ -138,7 +141,6 @@
 
   i18n =
     let
-      callPackage = pkgs.lib.callPackageWith pkgs;
       workman = (callPackage ./workman {}).workman;
     in {
       consoleFont = "Lat2-Terminus16";

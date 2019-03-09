@@ -65,7 +65,7 @@ noremap <C-L> <C-W>l
 cnoremap w!! %!sudo tee > /dev/null %
 inoremap <C-A> <Esc>I
 inoremap <C-E> <Esc>A
-'inoremap <silent> <C-L> :nohlsearch<CR><C-L>
+"inoremap <silent> <C-L> :nohlsearch<CR><C-L>
 inoremap jk <Esc>
 inoremap kj <Esc>
 nnoremap Q @q
