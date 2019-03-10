@@ -29,13 +29,13 @@
       (builtins.readFile ./bash/direnv-hook)
       ];
 
-    variables = {
+    variables = rec {
       VOLATILE_CONFIG = "/etc/nixos/volatile_config";
-      FILE_ANNOTATIONS = "$VOLATILE_CONFIG/$USER/.file_annotations";
-      MARKPATH = "$VOLATILE_CONFIG/$USER/.marks";
+      FILE_ANNOTATIONS = "${VOLATILE_CONFIG}/$USER/.file_annotations";
+      MARKPATH = "${VOLATILE_CONFIG}/$USER/.marks";
       NAMESPACES = "/etc/nixos/namespaces";
-      TAGPATH = "$VOLATILE_CONFIG/$USER/.tags";
-      VOLATILE_EXPORTS = "$VOLATILE_CONFIG/$USER/.volatile_exports";
+      TAGPATH = "${VOLATILE_CONFIG}/$USER/.tags";
+      VOLATILE_EXPORTS = "${VOLATILE_CONFIG}/$USER/.volatile_exports";
     };
   };
 
