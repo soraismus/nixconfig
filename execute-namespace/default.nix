@@ -10,9 +10,9 @@ let
         exit 1;
       fi
 
-      local fn=$1
+      fn=$1
       shift
-      local args="$@"
+      args="$@"
 
       # Start a subshell, in which all of the functions of ...
       # ... the namespace $NAMESPACE can be loaded.
