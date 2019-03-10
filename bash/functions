@@ -216,7 +216,7 @@ prompt_command () {
 # That is, display the direct path rather than the bookmark-linked path.
 revert () {
   # Determine whether the filepath contains '.marks'.
-  if [ "$PWD" =~ '.marks' ]]; then
+  if [[ "$PWD" =~ '.marks' ]]; then
 
     # The prefix of the current working directory path is of the
     # form "/etc/nixos/volatile_config/polytope/.marks/${directory}".
