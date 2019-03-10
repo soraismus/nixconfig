@@ -41,7 +41,7 @@ set () {
 # Echoing the output of `ls "$TAGPATH" lists the
 # names of all tags currently provided.
 all () {
-  echo "$(ls "$TAGPATH")"
+  echo "$( ls "$TAGPATH" )"
   exit 0;
 }
 
@@ -56,8 +56,8 @@ delete () {
     # The backslash escapes the semicolon to prevent shell expansion.
 
     # The next two lines still require explication.
-    local all_files="$(find "$TAGPATH/$1" -maxdepth 1 -exec echo \; | wc -l)"
-    local num_items="$(echo "$all_files" - 1 | bc -l)"
+    local all_files="$( find "$TAGPATH/$1" -maxdepth 1 -exec echo \; | wc -l )"
+    local num_items="$( echo "$all_files" - 1 | bc -l )"
 
     echo "
 This tag currently applies to $num_items items."

@@ -13,6 +13,13 @@ set () {
 
 # Usage: note read <filename>
 read () {
+  if [ -z "$FILE_ANNOTATIONS" ]; then
+    echo "The variable FILE_ANNOTATIONS is empty."
+    exit 1
+  elif [ ! -e "$FILE_ANNOTATIONS" ]; then
+    echo "Creating annotation cache at (" "$FILE_ANNOTATIONS" ")."
+    mkdir -p "$FILE_ANNOTATIONS"
+  fi
   local file_id="$( get-file-id "$1" )"
   cat "$FILE_ANNOTATIONS" | awk "/$file_id/" | cut -d" " -f2-
 }
@@ -26,15 +33,15 @@ get () {
 # The performance of this function is slow, so consider making the implementation
 # more efficient.
 check-directory () {
-  for FILE in *; do
-    NOTE="$(note read $FILE)"
+  for file in *; do
+    NOTE="$( note read $file )"
     if [ -n "$NOTE" ]; then
 
       # The '-e' option enables interpretation of backslash escapes, including '\n'.
-      echo -e "$NOTE\n  <-- $FILE"
+      echo -e "$NOTE\n  <-- $file"
     fi
   done
-  NOTE="$(read .)"
+  NOTE="$( read . )"
   if [ -n "$NOTE" ]; then
     echo -e "$NOTE\n <-- this directory"
   fi

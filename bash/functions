@@ -1,3 +1,73 @@
+back () {
+  revert
+  for i in `seq 1 $1`; do
+    cd ..
+  done
+}
+
+# Determine the path/filename corresponding to the ith ("$2") entry under the tag "$1".
+bmget () {
+  local SEARCHTERM=*"$1"*
+  local filename="$(
+    ls -l $TAGPATH/$SEARCHTERM   | \
+      awk '!/total/ {print $11}' | \
+      awk -v fileIndex="$2" 'BEGIN { count = 0 } {count++; if (count == fileIndex) print}' )"
+  echo "$filename"
+}
+
+# List all category tags that match an argument.
+bmgrep () {
+  local SEARCHTERM="*$1*"
+
+  # Process 1 is piped to process 2.
+  find "$TAGPATH" -type d -name "$SEARCHTERM"  | \
+    awk 'BEGIN {FS="/"} {print $NF}'
+
+  # Note about process 1:
+  # Find directories in "$TAGPATH' with names
+  # that partially match "$SEARCHTERM".
+
+  # Note about process 2:
+  # Print only the last '/'-delimited field of each match.
+  # That is, print only the name of the bottom-most directory.
+  # (The value of "$NF" in awk is the number of fields in a record;
+  # in this context, "$NF" refers to the last field.)
+}
+
+# List all entries under the tag "$1".
+bmlist () {
+  local SEARCHTERM=*"$1"*
+  ls -l $TAGPATH/$SEARCHTERM   | \
+    awk '!/total/ {print $11}' | \
+    awk -F'/' 'BEGIN { count = 0 } {count++; printf "%-4s %s\n", count, $NF}'
+}
+
+# List all entries under the tag "$1".
+bmlistTitles () {
+  local SEARCHTERM=*"$1"*
+  ls -l $TAGPATH/$SEARCHTERM   | \
+    awk '!/total/ {print $11}' | \
+    sed 's/^.*~\(.*\)\.md/\1/' | \
+    awk -F'/' 'BEGIN { count = 0 } {count++; printf "%-4s %s\n", count, $NF}'
+}
+
+# Open in vim the ith ("$2") entry under the tag "$1".
+bmvim () {
+  local filename="$( bmget "$1" "$2" )"
+  vim "$filename"
+}
+
+derefMark () {
+  # Because '$MARKPATH/$1' is a softlink, the 11th field of
+  # `ls -l "$MARKPATH/$1"` is the actual direct path.
+  echo "$( ls -l "$MARKPATH/$1" 2>/dev/null | awk '{print $11}' )"
+}
+
+fatal () {
+  echoErr "$2" # See 'echoErr' in the 'aliases' config file.
+  exit "$1"
+}
+
 # Request ids of gdrive records for folders with the specified name.
 gdrive_find_folder_ids_for_name () {
   local query="name = '$1' and mimeType = 'application/vnd.google-apps.folder'"
@@ -80,10 +150,28 @@ git_prompt () {
   echo "$RESULT"
 }
 
+grepNormalize () {
+  echo "\(^\|\s\+\)$1\(\s\+\|$\)"
+}
+
 # Return the index number (inode) of the provided file.
 inode () {
   [ -z "$1" ] && fatal 1 'This function requires an argument'
   echo "$( ls -iL "$1" | sed 's/ .*//' )"
+}
+
+isMark () {
+  echo "$( listMarks | grep "$( grepNormalize "$1" )" -c )"
+}
+
+listMarks () {
+  if [ ! -e "$MARKPATH" ]; then
+    echo "Creating directory at (" "$MARKPATH" ")."
+    mkdir -p "$MARKPATH"
+  fi
+  for name in "$( ls "$MARKPATH" )"; do
+    echo "$name"
+  done
 }
 
 listRecentFiles () {
@@ -124,8 +212,69 @@ prompt_command () {
   export LASTDIR="$PWD"
 }
 
+# Change the representation of the current path.
+# That is, display the direct path rather than the bookmark-linked path.
+revert () {
+  # Determine whether the filepath contains '.marks'.
+  if [ "$PWD" =~ '.marks' ]]; then
+
+    # The prefix of the current working directory path is of the
+    # form "/etc/nixos/volatile_config/polytope/.marks/${directory}".
+    # The 7th field is equivalent to the name of a specific mark,
+    # and the following command extracts that mark.
+    local MARK="$( pwd | cut -d'/' -f7 )"
+
+    # Set 'LEAF' to the remaining fragment of the current
+    # working directory path.
+    local LEAF="$( pwd | cut -d'/' -f8- )"
+
+    local RESTORED_PATH="$( derefMark "$MARK" )"
+
+    local FULL_PATH="${RESTORED_PATH}/${LEAF}"
+    cd "$FULL_PATH"
+  fi
+}
+
 tag () {
   NAMESPACE=tag execute-namespace "$@"
+}
+
+# Go to the directory to which the provided bookmark links.
+to () {
+  local BASE_TGT="$( echo "$1" | cut -d'/' -f1 )"
+  local LEAF="$( echo "$1" | cut -d'/' -f2- -s )"
+
+  # Determine whether the destination is based on a mark.
+  if [ "$( isMark "$BASE_TGT" )" -eq 1 ]; then
+
+    # Dereference '$MARKPATH/$1' and set to 'TGT'.
+    local TGT="$( derefMark "$BASE_TGT" )"
+
+    [ -z "$TGT" ] && fatal 3 "No such mark: $BASE_TGT"
+
+    # Check whether the string '$TGT' has a dollar sign.
+    if echo $TGT | grep \\$ >/dev/null; then
+
+      # Strip the dollar sign off.
+      local TGT2="$( echo $TGT | sed 's/\$//' )"
+
+      # Double indirection by way of the Bash construct `${!...}`.
+      # Double indirection is necessary since the variable 'TGT2'
+      # is used rather than '$TGT2' (i.e., the reference of 'TGT2').
+      cd -L ${!TGT2} 2>/dev/null || fatal 4 "Error occurred."
+
+    else
+      # The following preserves '$MARKPATH' at the prompt,
+      # and this favors succinctness.
+      cd -L "$MARKPATH/$BASE_TGT"
+    fi
+
+    revert
+
+    if [ -n "$LEAF" ]; then cd "$LEAF"; fi
+  else
+    cd "$1"
+  fi
 }
 
 # Toggle between a prompt that displays the full current-working-directory

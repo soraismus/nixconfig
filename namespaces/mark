@@ -24,17 +24,40 @@ set () {
 
 unset () {
   local mark="$1"
-  echo "Unsetting mark at (" "$MARKPATH/$mark" ")."
-  rm -i "$MARKPATH/$mark"
+  if [ -z "$MARKPATH" ]; then
+    echo "The variable MARKPATH is empty."
+    exit 1
+  elif [ ! -e "$MARKPATH" ]; then
+    echo "No directory exists at (" "$MARKPATH" ")."
+  else
+    echo "Unsetting mark at (" "$MARKPATH/$mark" ")."
+    rm -i "$MARKPATH/$mark"
+  fi
 }
 
 all () {
+  if [ -z "$MARKPATH" ]; then
+    echo "The variable MARKPATH is empty."
+    exit 1
+  elif [ ! -e "$MARKPATH" ]; then
+    echo "Creating directory at (" "$MARKPATH" ")."
+    mkdir -p "$MARKPATH"
+  fi
   ls -l "$MARKPATH" | awk '!/total/ {printf("%-10s%-5s%s\n", $9, $10, $11)}'
 }
 
 # Unsetting a mark that had been set by `link --var BASH_VARIABLE MARK`
 # does not delete the BASH_VARIABLE that was created by `link`.
 link () {
+  if [ -z "$MARKPATH" ]; then
+    echo "The variable MARKPATH is empty."
+    exit 1
+  fi
+
+  if [ -z "$VOLATILE_EXPORTS" ]; then
+    echo "The variable VOLATILE_EXPORTS is empty."
+    exit 1
+  fi
 
   if [[ $# = 2 || $# = 3 ]]; then
     if [[ "$1" = --var ]]; then
