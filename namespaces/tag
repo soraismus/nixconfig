@@ -1,5 +1,5 @@
 help () {
-  listfns "$NAMESPACES/tag"
+  awk '/\(\) {/ {print $1}' "$NAMESPACES/$NAMESPACE"
 }
 
 # This command requires two arguments: 1) a filename; 2) a tagname.

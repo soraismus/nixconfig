@@ -56,5 +56,5 @@ link () {
 }
 
 help () {
-  listfns "$NAMESPACES/mark"
+  awk '/\(\) {/ {print $1}' "$NAMESPACES/$NAMESPACE"
 }

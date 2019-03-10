@@ -55,5 +55,5 @@ get-file-id () {
 }
 
 help () {
-  listfns "$NAMESPACES/note"
+  awk '/\(\) {/ {print $1}' "$NAMESPACES/$NAMESPACE"
 }

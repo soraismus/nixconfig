@@ -86,10 +86,6 @@ inode () {
   echo "$( ls -iL "$1" | sed 's/ .*//' )"
 }
 
-listfns () {
-  awk '/\(\) {/ {print $1}' "$1"
-}
-
 listRecentFiles () {
   # List first four files
   # -F --> with indicator suffixes (*/=>@|)
