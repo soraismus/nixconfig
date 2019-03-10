@@ -7,6 +7,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./automatic-mac-spoofing
+      ./bookmark
       ./execute-namespace
       ./hardware-configuration.nix
       ./git
@@ -25,16 +26,20 @@
     interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
       (builtins.readFile ./bash/functions)
       (builtins.readFile ./bash/settings)
-      (builtins.readFile ./bash/variables)
       (builtins.readFile ./bash/direnv-hook)
+      (builtins.readFile ./bash/completion)
       ];
 
     variables = rec {
-      VOLATILE_CONFIG = "/etc/nixos/volatile_config";
+      BOOKMARKPATH = "${VOLATILE_CONFIG}/$USER/bookmarks";
+      EDITOR = "vim";
       FILE_ANNOTATIONS = "${VOLATILE_CONFIG}/$USER/.file_annotations";
       MARKPATH = "${VOLATILE_CONFIG}/$USER/.marks";
       NAMESPACES = "/etc/nixos/namespaces";
+      PRIV_BKM_PATH = "${VOLATILE_CONFIG}/$USER/private-bookmarks";
+      PROMPT_COMMAND = "prompt_command";
       TAGPATH = "${VOLATILE_CONFIG}/$USER/.tags";
+      VOLATILE_CONFIG = "/etc/nixos/volatile_config";
       VOLATILE_EXPORTS = "${VOLATILE_CONFIG}/$USER/.volatile_exports";
     };
   };
@@ -136,6 +141,7 @@
         zim # desktop wiki
       ];
 
+  environment.theo.programs.bookmark.enable = true;
   environment.theo.programs.execute-namespace.enable = true;
   environment.theo.programs.git.enable = true;
   environment.theo.programs.rofi.enable = true;
@@ -203,6 +209,12 @@
         b3 = "cd ../../..";
         b4 = "cd ../../../..";
         b5 = "cd ../../../../..";
+        gco = "git co";
+        gcob = "git cob";
+        gd = "git diff";
+        gdiff = "git diff";
+        gitst = "git status";
+        gst = "git status";
         l = "ls -alh --color=tty";
         ls = "ls -a --color=tty --group-directories-first";
         quit = "exit";

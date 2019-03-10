@@ -1,0 +1,55 @@
+# NB: The syntax `( $str )` transforms a space-delimited string into an array.
+
+_completeFF () {
+  local currentword=${COMP_WORDS[COMP_CWORD]}
+
+  # Set 'wordlist' to the set of filenames found in any subdirectory
+  # of the current directory.
+  local wordlist=$( find . -type f -printf "%f " | uniq | sort )
+
+  COMPREPLY=( $( compgen -W "$wordlist" -- "$currentword" ) )
+  return 0
+}
+
+_completeMarks () {
+  local currentword=${COMP_WORDS[COMP_CWORD]}
+  # Set 'wordlist' to the set of symbolic links in '$MARKPATH'.
+  local wordlist=$( find $MARKPATH -type l -printf "%f " )
+  COMPREPLY=( $( compgen -W "$wordlist" -- "$currentword" ) )
+  return 0
+}
+
+_completeNamespaceScript () {
+  local command=${COMP_WORDS[0]}
+  local currentword=${COMP_WORDS[COMP_CWORD]}
+
+  # `$command help` returns a newline-delimited string, so
+  # transform the newlines into spaces.
+  local wordlist=$( "$command" help | tr '\\n' ' ' )
+
+  COMPREPLY=( $( compgen -W "$wordlist" -- "$currentword" ) )
+  return 0
+}
+
+_completeTags () {
+  local currentword=${COMP_WORDS[COMP_CWORD]}
+  # Set 'wordlist' to the set of directories in '$TAGPATH'.
+  local wordlist=$( find $TAGPATH -type d -printf "%f " )
+  COMPREPLY=( $( compgen -W "$wordlist" -- "$currentword" ) )
+  return 0
+}
+
+# ----------------
+# File extensions
+# ----------------
+complete -f -X '!*.java' javac
+complete -f -X '!*.tar' tar
+complete -f -X '!*.@(?([xX]|[sS])[hH][tT][mM]?([lL]))' links
+
+# ----------
+# Functions
+# ----------
+complete -F _completeFF vff
+complete -F _completeMarks to
+complete -F _completeNamespaceScript mark note tag
+complete -F _completeTags bm bmgrep bookmark
