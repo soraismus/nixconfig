@@ -1,6 +1,7 @@
 result
 notes/
 secrets/
+volatile_config/
 **/*.note
 **/*.secret
 **/*.swo

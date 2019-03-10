@@ -1,0 +1,60 @@
+set () {
+  local setpath="$(pwd)"
+
+  if [ -z "$MARKPATH" ]; then
+    echo "The variable MARKPATH is empty."
+    exit 1
+  elif [ ! -e "$MARKPATH" ]; then
+    echo "Creating directory at (" "$MARKPATH" ")."
+    mkdir -p "$MARKPATH"
+  fi
+
+  # The current directory shouldn't traverse $HOME/.marks
+  # Refactor with bash string-processing utilities!
+  echo "$(pwd)" | if grep "\.marks" >/dev/null; then
+    local cut="$( echo "$(pwd)" | awk -F'.marks' '{print $2}' )"
+    local mark="$( echo "$cut" | awk -F'/' '{print $2}' )"
+    local leaf="$(echo "$cut" | cut -d'/' -f3- )"
+    local expanded="$( ls -l "/home/theo/.marks/$mark" | awk '{print $11}' )"
+    ln -s "$expanded/$leaf" "$MARKPATH/$1"
+  else
+    ln -s "$setpath" "$MARKPATH/$1"
+  fi
+}
+
+unset () {
+  local mark="$1"
+  echo "Unsetting mark at (" "$MARKPATH/$mark" ")."
+  rm -i "$MARKPATH/$mark"
+}
+
+all () {
+  ls -l "$MARKPATH" | awk '!/total/ {printf("%-10s%-5s%s\n", $9, $10, $11)}'
+}
+
+# Unsetting a mark that had been set by `link --var BASH_VARIABLE MARK`
+# does not delete the BASH_VARIABLE that was created by `link`.
+link () {
+
+  if [[ $# = 2 || $# = 3 ]]; then
+    if [[ "$1" = --var ]]; then
+      echo "export $2=$(pwd)" >> "$VOLATILE_EXPORTS"
+
+      # Only the runtime env of the subshell is modified:
+      source "$VOLATILE_EXPORTS"
+
+      ln -s \$$2 "$MARKPATH/$3"
+
+    elif [ -e "$MARKPATH/$1" ]; then
+      ln -s "$MARKPATH/$1" "$MARKPATH/$2"
+    else
+      echo "No such mark: $1"
+    fi
+  else
+    return "Wrong number of arguments"
+  fi
+}
+
+help () {
+  listfns "$NAMESPACES/mark"
+}

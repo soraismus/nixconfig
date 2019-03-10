@@ -7,6 +7,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./automatic-mac-spoofing
+      ./execute-namespace
       ./hardware-configuration.nix
       ./git
       ./i3
@@ -18,22 +19,25 @@
   boot.loader.grub.device = "/dev/sda";
 
   # bash and inputrc # see also `programs.bash`
-  environment.interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
-    (builtins.readFile ./bash/functions)
-    (builtins.readFile ./bash/settings)
-    (builtins.readFile ./bash/variables)
-    (builtins.readFile ./bash/direnv-hook)
-  ];
-  environment.etc."inputrc".source = ./bash/inputrc;
+  environment = {
+    etc."inputrc".source = ./bash/inputrc;
 
-  # environment.sessionVariables = {
-    # BROWSER = "qtb";
-    # TERM = "xterm";
-    # TERM = "xterm-256color";
-    # TERM = "rxvt-unicode";
-    # EMAIL = "anonymous@example.com";
-    # PAGER = "less";
-  # };
+    interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
+      (builtins.readFile ./bash/functions)
+      (builtins.readFile ./bash/settings)
+      (builtins.readFile ./bash/variables)
+      (builtins.readFile ./bash/direnv-hook)
+      ];
+
+    variables = {
+      VOLATILE_CONFIG = "/etc/nixos/volatile_config";
+      FILE_ANNOTATIONS = "$VOLATILE_CONFIG/$USER/.file_annotations";
+      MARKPATH = "$VOLATILE_CONFIG/$USER/.marks";
+      NAMESPACES = "/etc/nixos/namespaces";
+      TAGPATH = "$VOLATILE_CONFIG/$USER/.tags";
+      VOLATILE_EXPORTS = "$VOLATILE_CONFIG/$USER/.volatile_exports";
+    };
+  };
 
   environment.systemPackages =
     let
@@ -132,6 +136,7 @@
         zim # desktop wiki
       ];
 
+  environment.theo.programs.execute-namespace.enable = true;
   environment.theo.programs.git.enable = true;
   environment.theo.programs.rofi.enable = true;
   environment.theo.services.automatic-mac-spoofing.enable = false;

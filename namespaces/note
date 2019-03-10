@@ -1,0 +1,59 @@
+# $FILE_ANNOTATIONS maps file IDs to annotations.
+# Usage: note set <filename> <note1> [<note2>, ...]
+set () {
+  # The file ID of a file is its inode index.
+  local file_id="$( get-file-id "$1" )"
+
+  # After 'shift', $@ will comprise only the notes
+  # provided at the command line.
+  shift
+
+  echo "$file_id" "$@" >> "$FILE_ANNOTATIONS"
+}
+
+# Usage: note read <filename>
+read () {
+  local file_id="$( get-file-id "$1" )"
+  cat "$FILE_ANNOTATIONS" | awk "/$file_id/" | cut -d" " -f2-
+}
+
+# alias for note-read
+get () {
+  read "$1"
+}
+
+# Writes to the console the annotations of the files in the current directory.
+# The performance of this function is slow, so consider making the implementation
+# more efficient.
+check-directory () {
+  for FILE in *; do
+    NOTE="$(note read $FILE)"
+    if [ -n "$NOTE" ]; then
+
+      # The '-e' option enables interpretation of backslash escapes, including '\n'.
+      echo -e "$NOTE\n  <-- $FILE"
+    fi
+  done
+  NOTE="$(read .)"
+  if [ -n "$NOTE" ]; then
+    echo -e "$NOTE\n <-- this directory"
+  fi
+}
+
+get-file-id () {
+  local file_id
+  # The '-d' flag of '[' determines whether the file is a directory.
+  # The '-d' flag of 'ls' lists directory entries rather than directory contents.
+  # The '-i' flag prints the inode number for each file.
+  # The '-L' flag dereferences symbolic links.
+  if [ -d "$1" ]; then
+    file_id="$( ls -diL "$1" | awk '{print $1}' )"
+  else
+    file_id="$( ls -iL "$1" | awk '{print $1}' )"
+  fi
+  echo "$file_id"
+}
+
+help () {
+  listfns "$NAMESPACES/note"
+}
