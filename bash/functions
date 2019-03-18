@@ -1,5 +1,5 @@
 back () {
-  revert
+  #revert
   for i in `seq 1 $1`; do
     cd ..
   done
@@ -140,9 +140,11 @@ git_prompt () {
   if [ -n "$BRANCH" ]; then
     # `git status -z` returns a 1-line response.
     if [ -n "$(git status -z 2> /dev/null)" ]; then
-      STATUS="✘"
+      #STATUS="✘" # x-mark at \x2718 (\u2718)
+      STATUS="X"
     else
-      STATUS="✔"
+      #STATUS="✔" # checkmark at \x2714 (\u2714)
+      STATUS="OK"
     fi
     RESULT="($BRANCH $STATUS) "
   fi
@@ -161,7 +163,11 @@ inode () {
 }
 
 isMark () {
-  echo "$( listMarks | grep "$( grepNormalize "$1" )" -c )"
+  if [ "$( listMarks | grep "$( grepNormalize "$1" )" -c )" -gt 0 ]; then
+    return 0
+  else
+    return 1
+  fi
 }
 
 listMarks () {
@@ -241,11 +247,28 @@ tag () {
 
 # Go to the directory to which the provided bookmark links.
 to () {
+  # TODO: Consider using bash parameter substitution
+  # instead of separate `cut` processes.
+  # Consider whether bash param substitution would be sufficiently portable.
+
+  # `#` indicates that matching starts from the beginning.
+  # `%` indicates that matching starts from the end.
+  # `#` and `%` indicate that matching is minimal.
+  # `##` and `%%` indicate that matching is maximal.
+  # example 0: "${foo#/*}"
+  #    -- All of $foo except the smallest section following any '/'.
+  # example 1: "${foo%%*.}"
+  #    -- All of $foo except the largest section preceding any '.'.
+
+  # local BASE_TGT="${1%%/*}"
+  # local LEAF="${1#*/}"
+  # local TGT2="${TGT#*$}"
+
   local BASE_TGT="$( echo "$1" | cut -d'/' -f1 )"
   local LEAF="$( echo "$1" | cut -d'/' -f2- -s )"
 
   # Determine whether the destination is based on a mark.
-  if [ "$( isMark "$BASE_TGT" )" -eq 1 ]; then
+  if isMark "$BASE_TGT"; then
 
     # Dereference '$MARKPATH/$1' and set to 'TGT'.
     local TGT="$( derefMark "$BASE_TGT" )"
@@ -261,15 +284,17 @@ to () {
       # Double indirection by way of the Bash construct `${!...}`.
       # Double indirection is necessary since the variable 'TGT2'
       # is used rather than '$TGT2' (i.e., the reference of 'TGT2').
-      cd -L ${!TGT2} 2>/dev/null || fatal 4 "Error occurred."
+      # `-P` uses the physical directory structure.
+      cd -P ${!TGT2} 2>/dev/null || fatal 4 "Error occurred."
 
     else
-      # The following preserves '$MARKPATH' at the prompt,
-      # and this favors succinctness.
-      cd -L "$MARKPATH/$BASE_TGT"
+      # `-P` uses the physical directory structure.
+      #cd -P "$MARKPATH/$BASE_TGT"
+
+      cd "$TGT"
     fi
 
-    revert
+    #revert
 
     if [ -n "$LEAF" ]; then cd "$LEAF"; fi
   else
