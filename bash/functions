@@ -64,6 +64,39 @@ derefMark () {
   echo "$( ls -l "$MARKPATH/$1" 2>/dev/null | awk '{print $11}' )"
 }
 
+# https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
+# (Dependency of 'tmux/tmux.conf')
+_disposeHistoryOrphans () {
+  # The following cmd lists all shell PIDs.
+  #   `--pid $$` -- Only list processes matching the PID of the current shell.
+  #   `--format comm=` instructs 'ps' to return the process's name only.
+  #   'pgrep' lists all PIDs corresponding the given executable name.
+  local active_shells="$( pgrep "$( ps --pid $$ --format comm=)" )"
+
+  local grep_pattern="$(              \
+      for pid in ${active_shells}; do \
+        echo -n "-e \.${pid}\$ ";     \
+      done
+    )"
+
+  # `grep -v` inverts matching.
+  local orphaned_files="$(             \
+      ls ${HISTFILE}.[0-9]* 2> /dev/null \
+        | grep -v ${grep_pattern}        \
+    )"
+
+  if [ -n "$orphaned_files" ]; then
+    echo "Merging orphaned history files:"
+    for f in ${orphaned_files}; do
+      printf "  " "$( basename ${f} )"
+      cat ${f} >> $HISTFILE
+      # The backslash escapes any 'rm' alias that may be set.
+      \rm ${f}
+    done
+    echo "done."
+  fi
+}
+
 fatal () {
   echoErr "$2" # See 'echoErr' in the 'aliases' config file.
   exit "$1"
@@ -203,6 +236,12 @@ mcd () {
   cd "$1"
 }
 
+_mergeSessionHistory () {
+  cat ${HISTFILE}.$$ >> $HISTFILE
+  # The backslash escapes any 'rm' alias that may be set.
+  \rm ${HISTFILE}.$$
+}
+
 note () {
   NAMESPACE=note execute-namespace "$@"
 }
@@ -214,10 +253,8 @@ peek () {
 # The variable 'PROMPT_COMMAND' is set to
 # the following function in the '.exports' file.
 prompt_command () {
-  # Record the current working directory.
-  pwd > "$HOME/.lastdir"
-  [ "$LASTDIR" != "$PWD" ] && listRecentFiles
-  export LASTDIR="$PWD"
+  _updateHistory
+  _trackPath
 }
 
 tag () {
@@ -258,6 +295,35 @@ togglePrompt () {
   else
     PS1="$(echo "$PS1" | sed 's/W/w/g')"
   fi
+}
+
+_trackPath () {
+  # Record the current working directory.
+  pwd > "$HOME/.lastdir"
+  [ "$LASTDIR" != "$PWD" ] && listRecentFiles
+  export LASTDIR="$PWD"
+}
+
+# https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
+_updateHistory
+  # Create a new history file for the current shell,
+  # and append hist lines to it.
+  # (`$$` represents the PID of the current shell.)
+  history -a ${HISTFILE}.$$ # A
+
+  history -c # Clear the history list.
+  history -r # Load common $HISTFILE and append contents to the history list.
+
+  # Load other sessions' history files.
+  # (`grep -v` inverts the match.)
+  for f in "$(                           \
+      ls ${HISTFILE}.[0-9]* 2> /dev/null \
+        | grep -v "${HISTFILE}.$$\$"     \
+    )"
+  do history -r "$f"
+  done
+
+  history -r "${HISTFILE}.$$" # Load the current shell's history file.
 }
 
 # Search for the path of a file matching the name provided; open it with vim.

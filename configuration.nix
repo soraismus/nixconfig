@@ -28,20 +28,27 @@
       (builtins.readFile ./bash/settings)
       (builtins.readFile ./bash/direnv-hook)
       (builtins.readFile ./bash/completion)
+      (builtins.readFile ./bash/traps)
       ];
 
-    variables = rec {
-      BOOKMARKPATH = "${VOLATILE_CONFIG}/$USER/bookmarks";
-      EDITOR = "vim";
-      FILE_ANNOTATIONS = "${VOLATILE_CONFIG}/$USER/.file_annotations";
-      MARKPATH = "${VOLATILE_CONFIG}/$USER/.marks";
-      NAMESPACES = "/etc/nixos/namespaces";
-      PRIV_BKM_PATH = "${VOLATILE_CONFIG}/$USER/private-bookmarks";
-      PROMPT_COMMAND = "prompt_command";
-      TAGPATH = "${VOLATILE_CONFIG}/$USER/.tags";
-      VOLATILE_CONFIG = "/etc/nixos/volatile_config";
-      VOLATILE_EXPORTS = "${VOLATILE_CONFIG}/$USER/.volatile_exports";
-    };
+    variables =
+      let infinite = "-1";
+      in rec {
+        BOOKMARKPATH = "${VOLATILE_CONFIG}/$USER/bookmarks";
+        EDITOR = "vim";
+        FILE_ANNOTATIONS = "${VOLATILE_CONFIG}/$USER/.file_annotations";
+        HISTCONTROL = "ignoredups:erasedups";
+        HISTFILE = "${VOLATILE_CONFIG}/$USER/.bash_history";
+        HISTFILESIZE = infinite;
+        HISTSIZE = infinite;
+        MARKPATH = "${VOLATILE_CONFIG}/$USER/.marks";
+        NAMESPACES = "/etc/nixos/namespaces";
+        PRIV_BKM_PATH = "${VOLATILE_CONFIG}/$USER/private-bookmarks";
+        PROMPT_COMMAND = "prompt_command";
+        TAGPATH = "${VOLATILE_CONFIG}/$USER/.tags";
+        VOLATILE_CONFIG = "/etc/nixos/volatile_config";
+        VOLATILE_EXPORTS = "${VOLATILE_CONFIG}/$USER/.volatile_exports";
+      };
   };
 
   environment.systemPackages =
