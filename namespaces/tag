@@ -59,8 +59,7 @@ delete () {
     local all_files="$( find "$TAGPATH/$1" -maxdepth 1 -exec echo \; | wc -l )"
     local num_items="$( echo "$all_files" - 1 | bc -l )"
 
-    echo "
-This tag currently applies to $num_items items."
+    printf "\nThis tag currently applies to $num_items items."
     echo "Do you wish to continue? (y/n)"
 
     read response

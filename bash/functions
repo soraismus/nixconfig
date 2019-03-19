@@ -1,5 +1,4 @@
 back () {
-  #revert
   for i in `seq 1 $1`; do
     cd ..
   done
@@ -7,25 +6,27 @@ back () {
 
 # Determine the path/filename corresponding to the ith ("$2") entry under the tag "$1".
 bmget () {
-  local SEARCHTERM=*"$1"*
+  local searchterm=*"$1"*
   local filename="$(
-    ls -l $TAGPATH/$SEARCHTERM   | \
-      awk '!/total/ {print $11}' | \
-      awk -v fileIndex="$2" 'BEGIN { count = 0 } {count++; if (count == fileIndex) print}' )"
+      ls -l $TAGPATH/$searchterm                                           \
+        | awk '!/total/ {print $11}'                                       \
+        | awk -v fileIndex="$2"                                            \
+            'BEGIN { count = 0 } {count++; if (count == fileIndex) print}' \
+    )"
   echo "$filename"
 }
 
 # List all category tags that match an argument.
 bmgrep () {
-  local SEARCHTERM="*$1*"
+  local searchterm="*$1*"
 
   # Process 1 is piped to process 2.
-  find "$TAGPATH" -type d -name "$SEARCHTERM"  | \
-    awk 'BEGIN {FS="/"} {print $NF}'
+  find "$TAGPATH" -type d -name "$searchterm" \
+    | awk 'BEGIN {FS="/"} {print $NF}'
 
   # Note about process 1:
   # Find directories in "$TAGPATH' with names
-  # that partially match "$SEARCHTERM".
+  # that partially match "$searchterm".
 
   # Note about process 2:
   # Print only the last '/'-delimited field of each match.
@@ -36,19 +37,19 @@ bmgrep () {
 
 # List all entries under the tag "$1".
 bmlist () {
-  local SEARCHTERM=*"$1"*
-  ls -l $TAGPATH/$SEARCHTERM   | \
-    awk '!/total/ {print $11}' | \
-    awk -F'/' 'BEGIN { count = 0 } {count++; printf "%-4s %s\n", count, $NF}'
+  local searchterm=*"$1"*
+  ls -l $TAGPATH/$searchterm     \
+    | awk '!/total/ {print $11}' \
+    | awk -F'/' 'BEGIN { count = 0 } {count++; printf "%-4s %s\n", count, $NF}'
 }
 
 # List all entries under the tag "$1".
 bmlistTitles () {
-  local SEARCHTERM=*"$1"*
-  ls -l $TAGPATH/$SEARCHTERM   | \
-    awk '!/total/ {print $11}' | \
-    sed 's/^.*~\(.*\)\.md/\1/' | \
-    awk -F'/' 'BEGIN { count = 0 } {count++; printf "%-4s %s\n", count, $NF}'
+  local searchterm=*"$1"*
+  ls -l $TAGPATH/$searchterm     \
+    | awk '!/total/ {print $11}' \
+    | sed 's/^.*~\(.*\)\.md/\1/' \
+    | awk -F'/' 'BEGIN { count = 0 } {count++; printf "%-4s %s\n", count, $NF}'
 }
 
 # Open in vim the ith ("$2") entry under the tag "$1".
@@ -58,7 +59,7 @@ bmvim () {
 }
 
 derefMark () {
-  # Because '$MARKPATH/$1' is a softlink, the 11th field of
+  # Because '$MARKPATH/$1' is a symlink, the 11th field of
   # `ls -l "$MARKPATH/$1"` is the actual direct path.
   echo "$( ls -l "$MARKPATH/$1" 2>/dev/null | awk '{print $11}' )"
 }
@@ -85,35 +86,35 @@ gdrive_list_folders () {
 }
 
 ghclone () {
-  local OWNER
-  local REPO
+  local owner
+  local repo
   if [[ "$#" -eq 2 ]]; then
-    OWNER="$1"
-    REPO="$2"
+    owner="$1"
+    repo="$2"
   elif [[ "$#" -eq 1 ]]; then
-    OWNER="$( basename "$PWD" )"
-    REPO="$1"
+    owner="$( basename "$PWD" )"
+    repo="$1"
   else
     echo "Incorrect number of arguments"
     return 1
   fi
-  git clone "https://github.com/${OWNER}/${REPO}.git"
+  git clone "https://github.com/${owner}/${repo}.git"
 }
 
 gitlabclone () {
-  local OWNER
-  local REPO
+  local owner
+  local repo
   if [[ "$#" -eq 2 ]]; then
-    OWNER="$1"
-    REPO="$2"
+    owner="$1"
+    repo="$2"
   elif [[ "$#" -eq 1 ]]; then
-    OWNER="$( basename "$PWD" )"
-    REPO="$1"
+    owner="$( basename "$PWD" )"
+    repo="$1"
   else
     echo "Incorrect number of arguments"
     return 1
   fi
-  git clone "https://gitlab.com/${OWNER}/${REPO}.git"
+  git clone "https://gitlab.com/${owner}/${repo}.git"
 }
 
 # -------------------------------------------------------------
@@ -157,9 +158,10 @@ grepNormalize () {
 }
 
 # Return the index number (inode) of the provided file.
+# (Dependency of 'namespaces/tag')
 inode () {
   [ -z "$1" ] && fatal 1 'This function requires an argument'
-  echo "$( ls -iL "$1" | sed 's/ .*//' )"
+  echo "$( ls -iL "$1" | awk '{print $1}' )"
 }
 
 isMark () {
@@ -218,87 +220,30 @@ prompt_command () {
   export LASTDIR="$PWD"
 }
 
-# Change the representation of the current path.
-# That is, display the direct path rather than the bookmark-linked path.
-revert () {
-  # Determine whether the filepath contains '.marks'.
-  if [[ "$PWD" =~ '.marks' ]]; then
-
-    # The prefix of the current working directory path is of the
-    # form "/etc/nixos/volatile_config/polytope/.marks/${directory}".
-    # The 7th field is equivalent to the name of a specific mark,
-    # and the following command extracts that mark.
-    local MARK="$( pwd | cut -d'/' -f7 )"
-
-    # Set 'LEAF' to the remaining fragment of the current
-    # working directory path.
-    local LEAF="$( pwd | cut -d'/' -f8- )"
-
-    local RESTORED_PATH="$( derefMark "$MARK" )"
-
-    local FULL_PATH="${RESTORED_PATH}/${LEAF}"
-    cd "$FULL_PATH"
-  fi
-}
-
 tag () {
   NAMESPACE=tag execute-namespace "$@"
 }
 
 # Go to the directory to which the provided bookmark links.
 to () {
-  # TODO: Consider using bash parameter substitution
-  # instead of separate `cut` processes.
   # Consider whether bash param substitution would be sufficiently portable.
 
   # `#` indicates that matching starts from the beginning.
   # `%` indicates that matching starts from the end.
   # `#` and `%` indicate that matching is minimal.
   # `##` and `%%` indicate that matching is maximal.
-  # example 0: "${foo#/*}"
-  #    -- All of $foo except the smallest section following any '/'.
-  # example 1: "${foo%%*.}"
-  #    -- All of $foo except the largest section preceding any '.'.
+  # example 0: "${foo#*/}"
+  #   -- Retains all of $foo except the smallest section preceding any '/'.
+  # example 1: "${foo%%.*}"
+  #   -- Retains all of $foo except the longest section following any '.'.
 
-  # local BASE_TGT="${1%%/*}"
-  # local LEAF="${1#*/}"
-  # local TGT2="${TGT#*$}"
+  local path="${1}"
+  local initial_segment="${1%%/*}"
 
-  local BASE_TGT="$( echo "$1" | cut -d'/' -f1 )"
-  local LEAF="$( echo "$1" | cut -d'/' -f2- -s )"
-
-  # Determine whether the destination is based on a mark.
-  if isMark "$BASE_TGT"; then
-
-    # Dereference '$MARKPATH/$1' and set to 'TGT'.
-    local TGT="$( derefMark "$BASE_TGT" )"
-
-    [ -z "$TGT" ] && fatal 3 "No such mark: $BASE_TGT"
-
-    # Check whether the string '$TGT' has a dollar sign.
-    if echo $TGT | grep \\$ >/dev/null; then
-
-      # Strip the dollar sign off.
-      local TGT2="$( echo $TGT | sed 's/\$//' )"
-
-      # Double indirection by way of the Bash construct `${!...}`.
-      # Double indirection is necessary since the variable 'TGT2'
-      # is used rather than '$TGT2' (i.e., the reference of 'TGT2').
-      # `-P` uses the physical directory structure.
-      cd -P ${!TGT2} 2>/dev/null || fatal 4 "Error occurred."
-
-    else
-      # `-P` uses the physical directory structure.
-      #cd -P "$MARKPATH/$BASE_TGT"
-
-      cd "$TGT"
-    fi
-
-    #revert
-
-    if [ -n "$LEAF" ]; then cd "$LEAF"; fi
+  if isMark "$initial_segment"; then
+    CDPATH="$MARKPATH" cd -P "$path"
   else
-    cd "$1"
+    cd "$path"
   fi
 }
 
