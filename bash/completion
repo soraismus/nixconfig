@@ -23,11 +23,12 @@ _completeTo () {
 
   local IFS=$' \t\n' # normalize IFS
   local currentword
-  local _skipdot
+  local is_dot
   local _cdpath
-  local i
-  local j
-  local k
+
+  local path
+  local completion
+  local completion_index
 
   # Tilde expansion, which also expands tilde to full pathname
   case "$2" in
@@ -36,7 +37,6 @@ _completeTo () {
   esac
 
   IFS=$'\n'
-  _skipdot=false
 
   # Include all symlinked directories under $MARKPATH in $CDPATH.
   _cdpath=${CDPATH}:${MARKPATH}
@@ -46,22 +46,29 @@ _completeTo () {
   _cdpath=${_cdpath//::/:.:}   # `//...` -- Replace all matches.
   _cdpath=${_cdpath/%:/:.}     # `/%...` -- Match from the end.
 
-  for i in ${_cdpath//:/$'\n'} # Change delimiter from ':' to '\n'.
+  COMPREPLY+=( $(compgen -d -- "$currentword") )
+
+  for path in ${_cdpath//:/$'\n'} # Change delimiter from ':' to '\n'.
   do
+    is_dot=false
+
     # `test f0 -ef f1` is true if 'f0' is a hard link to 'f1'.
-    if [[ $i -ef . ]]; then
-      _skipdot=true
+    if [[ $path -ef . ]]; then
+      is_dot=true
     fi
 
-    k="${#COMPREPLY[@]}"
+    completion_index="${#COMPREPLY[@]}"
 
-    # Generate directories under "$i/$currentword".
-    for j in $( compgen -d -- "$i/$currentword" ); do
-      COMPREPLY[k++]=${j#$i/}/ # Remove "$i" from the full pathname of "$j".
+    # Generate directories under "$path/$currentword".
+    for completion in $( compgen -d -- "$path/$currentword" ); do
+      if ! $is_dot; then
+        # Remove "${path}/" from the beginning of the full pathname of
+        # "$completion", and append a '/'.
+        COMPREPLY[completion_index++]="${completion#$path/}/"
+      fi
     done
   done
 
-  $_skipdot || COMPREPLY+=( $(compgen -d -- "$currentword") )
   IFS=$' \t\n'
 
   # Variable names if appropriate shell option set and no completions
