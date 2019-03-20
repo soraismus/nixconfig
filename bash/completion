@@ -57,7 +57,7 @@ _completeTo () {
 
     # Generate directories under "$i/$currentword".
     for j in $( compgen -d -- "$i/$currentword" ); do
-      COMPREPLY[k++]=${j#$i/} # Remove "$i" from the full pathname of "$j".
+      COMPREPLY[k++]=${j#$i/}/ # Remove "$i" from the full pathname of "$j".
     done
   done
 
@@ -93,4 +93,4 @@ complete -f -X '!*.tar' tar
 complete -F _completeVff vff
 complete -F _completeNamespaceScript mark note tag
 complete -F _completeTags bm bmgrep bookmark
-complete -o filenames -o nosort -o nospace -o bashdefault -F _completeTo to
+complete -o filenames -o nospace -o bashdefault -F _completeTo to

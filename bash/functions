@@ -80,7 +80,7 @@ _disposeHistoryOrphans () {
     )"
 
   # `grep -v` inverts matching.
-  local orphaned_files="$(             \
+  local orphaned_files="$(               \
       ls ${HISTFILE}.[0-9]* 2> /dev/null \
         | grep -v ${grep_pattern}        \
     )"
@@ -237,9 +237,19 @@ mcd () {
 }
 
 _mergeSessionHistory () {
-  cat ${HISTFILE}.$$ >> $HISTFILE
+  local session_histfile="${HISTFILE}.$$"
+  cat "${session_histfile}" >> "$HISTFILE"
   # The backslash escapes any 'rm' alias that may be set.
-  \rm ${HISTFILE}.$$
+  \rm "${session_histfile}"
+  local session_undofile
+  session_undofile="$(                            \
+      vim                                         \
+        -es                                       \ # Ex mode & silent mode
+        -c 'redir >> /dev/stdout'                 \ # Redirect to stdout.
+        -c 'echo undofile("${session_histfile}")' \ # Echo the undofile name.
+        -c 'q'                                    \ # Quit ex mode.
+    )"
+  \rm "${session_undofile}"
 }
 
 note () {
