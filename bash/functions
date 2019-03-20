@@ -150,42 +150,6 @@ gitlabclone () {
   git clone "https://gitlab.com/${owner}/${repo}.git"
 }
 
-# -------------------------------------------------------------
-# Generate a message that indicates the branch and status     |
-# of a git-controlled directory. The '.bashrc' file uses this |
-# function to determine the value of 'PS1'.                   |
-# -------------------------------------------------------------
-git_prompt () {
-  # ------------------------------------------------------------------
-  # `git rev-parse` interprets a <rev> (i.e., a revision parameter). |
-  # 'HEAD' refers to the content of '.git/HEAD', which is a pointer  |
-  # to the current <ref> (i.e., the file contains a specific path    |
-  # within the '.git/refs/heads' directory). The '--abbrev-ref'      |
-  # option provides the name of the branch.                          |
-  # ------------------------------------------------------------------
-  # If there is an error (e.g., no git repository exists),           |
-  # 'branch' is set to an empty string.                              |
-  # ------------------------------------------------------------------
-  local BRANCH="$( git rev-parse --abbrev-ref HEAD 2> /dev/null )"
-
-  local RESULT=""
-  local STATUS=""
-
-  if [ -n "$BRANCH" ]; then
-    # `git status -z` returns a 1-line response.
-    if [ -n "$(git status -z 2> /dev/null)" ]; then
-      #STATUS="✘" # x-mark at \x2718 (\u2718)
-      STATUS="X"
-    else
-      #STATUS="✔" # checkmark at \x2714 (\u2714)
-      STATUS="OK"
-    fi
-    RESULT="($BRANCH $STATUS) "
-  fi
-
-  echo "$RESULT"
-}
-
 grepNormalize () {
   echo "\(^\|\s\+\)$1\(\s\+\|$\)"
 }
@@ -216,15 +180,15 @@ listMarks () {
 }
 
 listRecentFiles () {
-  # List first four files
+  # List first four files.
   # -F --> with indicator suffixes (*/=>@|)
   # -t --> sorted by modification time
   # -1 --> one per line
   # Then transform each newline to a space.
-  ls -Ft1 | head -4 | tr "\\n" " "
-
-  # Append a newline.
-  echo # Append a newline.
+  ls -Ft1          2> /dev/null \
+    | head -4      2> /dev/null \
+    | tr "\\n" " " 2> /dev/null
+  printf "\n"
 }
 
 mark () {
@@ -306,21 +270,21 @@ to () {
 }
 
 # Toggle between a prompt that displays the full current-working-directory
-# path and a prompt that displays only the bottom-most directory.
+# path and a prompt that displays only the end-most directory.
 togglePrompt () {
-  # A lowercase 'w' indicates a full path, whereas
-  # an uppercase 'W' indicates an abbreviated path.
+  # A lowercase 'w' indicates a full path,
+  # whereas an uppercase 'W' indicates an abbreviated path.
   # Toggle the value of the prompt variable 'PS1'.
   if [[ "$PS1" =~ w ]]; then
-    PS1="$(echo "$PS1" | sed 's/w/W/g')"
+    PS1="$( echo "$PS1" 2> /dev/null | sed 's/w/W/g' 2> /dev/null )"
   else
-    PS1="$(echo "$PS1" | sed 's/W/w/g')"
+    PS1="$( echo "$PS1" 2> /dev/null | sed 's/W/w/g' 2> /dev/null )"
   fi
 }
 
 _trackPath () {
   # Record the current working directory.
-  pwd > "$HOME/.lastdir"
+  pwd > "${CONFIG_ROOT}/.lastdir"
   [ "$LASTDIR" != "$PWD" ] && listRecentFiles
   export LASTDIR="$PWD"
 }
@@ -340,9 +304,9 @@ _updateHistory () {
 
   # Load other shells' history files.
   # (`grep -v` inverts the match.)
-  for f in "$(                            \
-      ls ${HISTFILE}.[0-9]* 2> /dev/null  \
-        | grep -v "${shell_histfile}\$" \
+  for f in "$(                                       \
+      ls ${HISTFILE}.[0-9]* 2> /dev/null             \
+        | grep -v "${shell_histfile}\$" 2> /dev/null \
     )"
   do history -r "$f"
   done

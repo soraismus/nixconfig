@@ -1,10 +1,92 @@
-PS1='\[\033[01;31m\]\!:\#:\[\033[01;34m\]\W\[\033[01;31m\]\$\[\033[00m\] '
+# Notes about bash prompts
+# ------------------------
+# '\e' is equivalent to ASCII escape character '\033'.
+# '[' and ']' surround a control sequence of non-printing characters.
+# '$PS2' is the continuation interactive prompt.
+# '$PS3' is the prompt used by the bash built-in 'select'.
+# '$PS4' is the prompt used by `set -x` to prefix tracing output.
+# For example:
+#   `export PS4="$0.$LINENO+ "`
+#   `set -x`
 
-case "$TERM" in
-xterm*|rxvt*|screen)
-    # See `git_prompt` in the 'bash/functions' file.
-    PS1="\[\e]0;\W \$(git_prompt)\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+_basic_prompt () {
+  local colon=":"
+  local space=" "
+
+  local green="\[\033[0;32m\]"
+  local dark_blue="\[\033[1;34m\]"
+  local dark_red="\[\033[1;31m\]"
+  local no_color="\[\033[0m\]"
+
+  local job_count="\j"
+  local history_number="\!"
+  local command_number="\#"
+  local full_cwd="\w"
+  local abbrev_cwd="\W"
+  local user_type="\$" # If effective UID is 0 then '#' else '$'.
+
+  local index="${history_number}${colon}${command_number}${colon}"
+
+  local prefix="${green}${job_count}${colon}${dark_red}${index}"
+  local suffix="${dark_blue}${abbrev_cwd}${dark_red}${user_type} ${no_color}"
+
+  PS1="${prefix}${suffix}"
+}
+
+# -------------------------------------------------------------
+# Generate a message that indicates the branch and status     |
+# of a git-controlled directory. The '.bashrc' file uses this |
+# function to determine the value of 'PS1'.                   |
+# -------------------------------------------------------------
+git_prompt () {
+  # ------------------------------------------------------------------
+  # `git rev-parse` interprets a <rev> (i.e., a revision parameter). |
+  # 'HEAD' refers to the content of '.git/HEAD', which is a pointer  |
+  # to the current <ref> (i.e., the file contains a specific path    |
+  # within the '.git/refs/heads' directory). The '--abbrev-ref'      |
+  # option provides the name of the branch.                          |
+  # ------------------------------------------------------------------
+  # If there is an error (e.g., no git repository exists),           |
+  # 'branch' is set to an empty string.                              |
+  # ------------------------------------------------------------------
+  local BRANCH="$( git rev-parse --abbrev-ref HEAD 2> /dev/null )"
+
+  local RESULT=""
+  local STATUS=""
+
+  if [ -n "$BRANCH" ]; then
+    # `git status -z` returns a 1-line response.
+    if [ -n "$( git status -z 2> /dev/null )" ]; then
+      #STATUS="✘" # x-mark at \x2718 (\u2718)
+      STATUS="X"
+    else
+      #STATUS="✔" # checkmark at \x2714 (\u2714)
+      STATUS="OK"
+    fi
+    RESULT="($BRANCH $STATUS) "
+  fi
+
+  printf "$RESULT"
+}
+
+_titlebar_prompt () {
+  local titlebar_start="\[\033]0;"
+  local titlebar_end="\007\]"
+  local abbrev_cwd="\W"
+
+  case "$TERM" in
+  # In the previous iteration of this code,
+  # "$TERM" was matched against "screen" exactly (i.e., not "screen*").
+  # "screen*" is being tried here b/c with tmux, "$TERM" is "screen-256color".
+  xterm*|rxvt*|screen*)
+      PS1="${titlebar_start}${abbrev_cwd} \$(git_prompt)${titlebar_end}$PS1"
+      ;;
+  *)
+      # Preserve $PS1.
+      ;;
+  esac
+}
+
+_basic_prompt && _titlebar_prompt
+unset _basic_prompt
+unset _titlebar_prompt
