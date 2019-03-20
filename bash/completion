@@ -1,13 +1,5 @@
 # NB: The syntax `( $str )` transforms a space-delimited string into an array.
 
-_completeMarks () {
-  local currentword=${COMP_WORDS[COMP_CWORD]}
-  # Set 'wordlist' to the set of symbolic links in '$MARKPATH'.
-  local wordlist=$( find $MARKPATH -type l -printf "%f " )
-  COMPREPLY=( $( compgen -W "$wordlist" -- "$currentword" ) )
-  return 0
-}
-
 _completeNamespaceScript () {
   local command=${COMP_WORDS[0]}
   local currentword=${COMP_WORDS[COMP_CWORD]}
@@ -23,6 +15,60 @@ _completeTags () {
   # Set 'wordlist' to the set of directories in '$TAGPATH'.
   local wordlist=$( find $TAGPATH -type d -printf "%f " )
   COMPREPLY=( $( compgen -W "$wordlist" -- "$currentword" ) )
+  return 0
+}
+
+_completeTo () {
+  shopt -s nullglob
+
+  local IFS=$' \t\n' # normalize IFS
+  local currentword
+  local _skipdot
+  local _cdpath
+  local i
+  local j
+  local k
+
+  # Tilde expansion, which also expands tilde to full pathname
+  case "$2" in
+  \~*)    eval currentword="$2" ;;
+  *)      currentword=$2 ;;
+  esac
+
+  IFS=$'\n'
+  _skipdot=false
+
+  # Include all symlinked directories under $MARKPATH in $CDPATH.
+  _cdpath=${CDPATH}:${MARKPATH}
+
+  # Preprocess CDPATH to convert null directory names to ".".
+  _cdpath=${_cdpath/#:/.:}      # `/#...` -- Match from the begining.
+  _cdpath=${_cdpath//::/:.:}   # `//...` -- Replace all matches.
+  _cdpath=${_cdpath/%:/:.}     # `/%...` -- Match from the end.
+
+  for i in ${_cdpath//:/$'\n'} # Change delimiter from ':' to '\n'.
+  do
+    # `test f0 -ef f1` is true if 'f0' is a hard link to 'f1'.
+    if [[ $i -ef . ]]; then
+      _skipdot=true
+    fi
+
+    k="${#COMPREPLY[@]}"
+
+    # Generate directories under "$i/$currentword".
+    for j in $( compgen -d -- "$i/$currentword" ); do
+      COMPREPLY[k++]=${j#$i/} # Remove "$i" from the full pathname of "$j".
+    done
+  done
+
+  $_skipdot || COMPREPLY+=( $(compgen -d -- "$currentword") )
+  IFS=$' \t\n'
+
+  # Variable names if appropriate shell option set and no completions
+  if shopt -q cdable_vars && [[ ${#COMPREPLY[@]} -eq 0 ]]; then
+    COMPREPLY=( $(compgen -v -- "$currentword") )
+  fi
+
   return 0
 }
 
@@ -45,6 +91,6 @@ complete -f -X '!*.tar' tar
 # Functions
 # ----------
 complete -F _completeVff vff
-complete -F _completeMarks to
 complete -F _completeNamespaceScript mark note tag
 complete -F _completeTags bm bmgrep bookmark
+complete -o filenames -o nosort -o nospace -o bashdefault -F _completeTo to

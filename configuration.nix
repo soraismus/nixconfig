@@ -63,6 +63,7 @@
         ag # silver-searcher
         # autossh # automatically restart SSH sessions and tunnels
         bc # calculator
+        browsh # text-based browser that can render css and js (cf. links2, lynx, w3m)
         cabal-install # haskell packaging and build system
         cabal2nix # nix utility that transforms cabal specs into nix specs
         chromium # browser
@@ -96,8 +97,9 @@
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
+        links2 # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
         lsof # utility to list open files
-        lynx # terminal web-browser
+        lynx # terminal web-browser (cf. browsh, links2, w3m)
         # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
         # mopidy # extensible music server that plays music from local, Spotify, etc.
@@ -119,6 +121,7 @@
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
         python
         qtox # Qt tox client
+        qutebrowser # keyboard-focused browser with minimal GUI
         ranger # file manager
         ripgrep # regex utility that's faster than the silver searcher ['rg']
         rofi # window switcher, run dialog and dmenu replacement
@@ -140,6 +143,7 @@
         utox # (mu-tox) lightweight tox client
         virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
         vlc # cross-platform media player and streaming server
+        w3m # text-based web browser (cf. browsh, links2, lynx)
         xclip # clipboard utility
         yarn # variant to npm
         # yi

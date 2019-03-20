@@ -263,24 +263,12 @@ tag () {
 
 # Go to the directory to which the provided bookmark links.
 to () {
-  # Consider whether bash param substitution would be sufficiently portable.
-
-  # `#` indicates that matching starts from the beginning.
-  # `%` indicates that matching starts from the end.
-  # `#` and `%` indicate that matching is minimal.
-  # `##` and `%%` indicate that matching is maximal.
-  # example 0: "${foo#*/}"
-  #   -- Retains all of $foo except the smallest section preceding any '/'.
-  # example 1: "${foo%%.*}"
-  #   -- Retains all of $foo except the longest section following any '.'.
-
   local path="${1}"
   local initial_segment="${1%%/*}"
-
-  if isMark "$initial_segment"; then
-    CDPATH="$MARKPATH" cd -P "$path"
+  if isMark "${initial_segment}"; then
+    CDPATH="$MARKPATH" cd -P "${path}" &> /dev/null
   else
-    cd "$path"
+    cd "${path}"
   fi
 }
 
@@ -305,7 +293,7 @@ _trackPath () {
 }
 
 # https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
-_updateHistory
+_updateHistory () {
   # Create a new history file for the current shell,
   # and append hist lines to it.
   # (`$$` represents the PID of the current shell.)

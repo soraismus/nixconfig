@@ -49,9 +49,11 @@ set tabpagemax=50
 set tabstop=2
 set ttimeout
 set ttimeoutlen=100
-set undodir=.
-set undofile
+" See the system call below, which ensures that vim/undoDir exists.
+"set undodir=$VOLATILE_CONFIG/$USER/vim/undoDir
+"set undofile
 set viminfo=!,'100,<50,s10,h
+set viminfofile=$VOLATILE_CONFIG/$USER/.viminfo
 set virtualedit=block
 set wildmenu
 set wrap
@@ -73,3 +75,11 @@ nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 vnoremap Q :norm @q<CR>
+
+if has('persistent_undo')
+  let myConfigDir = '$VOLATILE_CONFIG/$USER'
+  let myUndoDir = expand(myConfigDir . '/vim/undoDir')
+  call system('mkdir -p ' . myUndoDir)
+  let &undodir = myUndoDir
+  set undofile
+endif
