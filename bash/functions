@@ -236,20 +236,43 @@ mcd () {
   cd "$1"
 }
 
-_mergeSessionHistory () {
-  local session_histfile="${HISTFILE}.$$"
-  cat "${session_histfile}" >> "$HISTFILE"
-  # The backslash escapes any 'rm' alias that may be set.
-  \rm "${session_histfile}"
-  local session_undofile
-  session_undofile="$(                            \
-      vim                                         \
-        -es                                       \ # Ex mode & silent mode
-        -c 'redir >> /dev/stdout'                 \ # Redirect to stdout.
-        -c 'echo undofile("${session_histfile}")' \ # Echo the undofile name.
-        -c 'q'                                    \ # Quit ex mode.
+# https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
+_mergeShellHistory () {
+  # `$$` represents the PID of the current shell.
+  # By convention, "${HISTFILE}.$$" is the current shell's hist file.
+  local shell_histfile="${HISTFILE}.$$"
+
+  # `-es` puts vim in ex mode and silent mode.
+  # Without `redir >> /dev/stdout`, ex-vim doesn't redirect to stdout.
+  # 'ex' has a special command ('undofile') that displays
+  # what the undofile corresponding to the input would be.
+  # Finally, `-c 'q'` instructs ex-mode vim to quit.
+  # (It might be possible to use the flag '-q' instead of this last command.)
+  # (Note that, for bash variable expansion of `${shell_histfile}` to occur
+  # inside a vim-recognized string, a pair of of single-quotes must be
+  # interior to a pair of double-quotes.)
+  # (Also note that backslashes inside a string might cause difficulties.)
+  local shell_undofile="$(                      \
+      vim                                       \
+        -es                                     \
+        -c "redir >> /dev/stdout"               \
+        -c "echo undofile('${shell_histfile}')" \
+        -c "q"                                  \
     )"
-  \rm "${session_undofile}"
+
+
+  if [ -e "${shell_histfile}" ]; then
+    if [ -e "${HISTFILE}" ]; then
+      cat "${shell_histfile}" >> "${HISTFILE}"
+    fi
+
+    # The backslash escapes any 'rm' alias that may be set.
+    \rm "${shell_histfile}"
+  fi
+
+  if [ -e "${shell_undofile}" ]; then
+    \rm "${shell_undofile}"
+  fi
 }
 
 note () {
@@ -304,24 +327,27 @@ _trackPath () {
 
 # https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
 _updateHistory () {
+  # `$$` represents the PID of the current shell.
+  # By convention, "${HISTFILE}.$$" is the current shell's hist file.
+  local shell_histfile="${HISTFILE}.$$"
+
   # Create a new history file for the current shell,
   # and append hist lines to it.
-  # (`$$` represents the PID of the current shell.)
-  history -a ${HISTFILE}.$$ # A
+  history -a "${shell_histfile}"
 
   history -c # Clear the history list.
   history -r # Load common $HISTFILE and append contents to the history list.
 
-  # Load other sessions' history files.
+  # Load other shells' history files.
   # (`grep -v` inverts the match.)
-  for f in "$(                           \
-      ls ${HISTFILE}.[0-9]* 2> /dev/null \
-        | grep -v "${HISTFILE}.$$\$"     \
+  for f in "$(                            \
+      ls ${HISTFILE}.[0-9]* 2> /dev/null  \
+        | grep -v "${shell_histfile}\$" \
     )"
   do history -r "$f"
   done
 
-  history -r "${HISTFILE}.$$" # Load the current shell's history file.
+  history -r "${shell_histfile}" # Load the current shell's history file.
 }
 
 # Search for the path of a file matching the name provided; open it with vim.
