@@ -34,20 +34,21 @@
     variables =
       let infinite = "-1";
       in rec {
-        BOOKMARKPATH = "${VOLATILE_CONFIG}/$USER/bookmarks";
+        BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
+        CONFIG_ROOT = "${VOLATILE_CONFIG}/$USER";
         EDITOR = "vim";
-        FILE_ANNOTATIONS = "${VOLATILE_CONFIG}/$USER/.file_annotations";
+        FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
         HISTCONTROL = "ignoredups:erasedups";
-        HISTFILE = "${VOLATILE_CONFIG}/$USER/.bash_history";
+        HISTFILE = "${CONFIG_ROOT}/.bash_history";
         HISTFILESIZE = infinite;
         HISTSIZE = infinite;
-        MARKPATH = "${VOLATILE_CONFIG}/$USER/.marks";
+        MARKPATH = "${CONFIG_ROOT}/.marks";
         NAMESPACES = "/etc/nixos/namespaces";
-        PRIV_BKM_PATH = "${VOLATILE_CONFIG}/$USER/private-bookmarks";
+        PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
         PROMPT_COMMAND = "prompt_command";
-        TAGPATH = "${VOLATILE_CONFIG}/$USER/.tags";
+        TAGPATH = "${CONFIG_ROOT}/.tags";
         VOLATILE_CONFIG = "/etc/nixos/volatile_config";
-        VOLATILE_EXPORTS = "${VOLATILE_CONFIG}/$USER/.volatile_exports";
+        VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";
       };
   };
 
