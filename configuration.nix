@@ -39,7 +39,7 @@
         EDITOR = "vim";
         FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
         HISTCONTROL = "ignoredups:erasedups";
-        HISTFILE = "${CONFIG_ROOT}/.bash_history";
+        HISTFILE = "${CONFIG_ROOT}/bash/history/history";
         HISTFILESIZE = infinite;
         HISTSIZE = infinite;
         MARKPATH = "${CONFIG_ROOT}/.marks";
@@ -211,7 +211,11 @@
   programs = {
     bash = {
       enableCompletion = true;
-      interactiveShellInit = "";
+      interactiveShellInit = ''
+          if [ ! -e "$CONFIG_ROOT/bash/history/" ]; then
+            mkdir -p "$CONFIG_ROOT/bash/history/"
+          fi
+        '';
       loginShellInit = "";
       promptInit = builtins.readFile ./bash/prompt;
       shellAliases = {
