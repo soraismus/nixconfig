@@ -43,7 +43,7 @@ all () {
     echo "Creating directory at (" "$MARKPATH" ")."
     mkdir -p "$MARKPATH"
   fi
-  ls -l "$MARKPATH" | awk '!/total/ {printf("%-10s%-5s%s\n", $9, $10, $11)}'
+  ls -l "$MARKPATH" | awk '!/total/ {printf("%-20s%-3s%s\n", $9, $10, $11)}'
 }
 
 # Unsetting a mark that had been set by `link --var BASH_VARIABLE MARK`
