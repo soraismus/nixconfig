@@ -175,8 +175,80 @@
         ];
     };
 
-  networking.hostName = "theo"; # Define your hostname.
-  networking.networkmanager.enable = true;
+  # nixos/modules/tasks/network-interfaces.nix
+  # nixos/modules/config/networking.nix
+  # More configuration options are yet available.
+  networking =
+    let
+      default-config = {};
+      dhcp-detected = null;
+      dhcp-detected-nameservers = [];
+    in {
+      bridges = default-config;
+      defaultGateway = dhcp-detected;
+      defaultGateway6 = dhcp-detected;
+      defaultGatewayWindowSize = null;
+      domain = dhcp-detected;
+      dnsSingleRequest = false;
+      enableIPv6 = true;
+      extraHosts = "";
+      extraResolvconfConf = "";
+      hostConf = "multi on";
+      hostId = null; # machine's 32-bit host id
+      hostName = "theo";
+      # hosts
+      interfaces = default-config;
+      nameservers = dhcp-detected-nameservers;
+      networkmanager.enable = true;
+      resolvconfOptions = [];
+      search = [];
+      # timeServers
+      useDHCP = true;
+      useHostResolvConf = false;
+      useNetworkd = false;
+      vswitches = default-config;
+
+      # proxy { default, httpProxy, httpsProxy, ... allProxy, noProxy, envVars }
+    };
+    # opt-networking.nameservers = [ "8.8.8.8" ];
+    # network-setup.service
+  # nixos/modules/tasks/network-interfaces-scripted.nix
+    # normalConfig = {
+    #   systemd.services = {
+    #     ...
+    #     "network-setup" = { # Refers to the 'network-setup' systemd service.
+    #       ...
+    #       script = ''
+    #         ...
+    #         nameserver {ns0}
+    #         nameserver {ns1}
+    #         ...
+    #       ''
+
+  # nixos/modules/programs/shell.nix
+  #   config.environment.shellInit = '' if [ -w "$HOME" ]; ... ''
+  # nixos/modules/config/shells-environment.nix
+  #   environment.shellInit = mkOption { default = ""; }
+  # nixos/modules/programs/bash/bash.nix
+  #   # Puts ${cfg.shellInit} into /etc/static/profile
+  #   cfge = config.environment
+  #   cfg = config.programs.bash
+  #   programs.bash.shellInit = '' if ... fi; ${cfge.shellInit} '';
+  #   programs.bash.shellInit = mkOption { default = "" };
+  # nixos/modules/config/shells-environment.nix
+  #   # Determines text of /etc/static/set-environment,
+  #   # a file which contains many references to '$HOME'.
+  # nixos/modules/programs/environment.nix
+  #   environment.profiles =
+  #     [ "$HOME/.nix-profile"
+  #       "/nix/var/profiles/default"
+  #       "/run/current-system/sw"
+  #     ];
+  # # lists many env variables that refer to '$HOME', but NOT all (e.g., TERMINFO_DIRS)
+  # nixos/modules/config/terminfo.nix
+  #   environment.pathsToLink !!
+  # pkgs/build-support/buildenv/default.nix
+  # pkgs/modules/programs/bash/bash.nix
 
   nix.gc = {
     automatic = true;
