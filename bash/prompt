@@ -55,13 +55,29 @@ git_prompt () {
   local STATUS=""
 
   if [ -n "$BRANCH" ]; then
-    # `git status -z` returns a 1-line response.
-    if [ -n "$( git status -z 2> /dev/null )" ]; then
-      #STATUS="✘" # x-mark at \x2718 (\u2718)
-      STATUS="X"
-    else
+    # The format of the output of `git status -z`:
+    #   Each modified file has an output entry comprising three components:
+    #     0. a sigil representing the kind of modification,
+    #     1. the file's path,
+    #     2. and, most importantly, a NUL (ASCII 0) character.
+    #
+    # Thus, if the working tree is clean, `git status -z` seems not to emit
+    # any NUL characters at all. However, when files have been introduced or
+    # modified, `git status -z` will emit NUL characters, which, because of
+    # command substitution, will cause bash to display the message
+    # "bash: warning: command substitution: ignored null byte in input".
+    #
+    # To suppress this warning, the following strips all NUL characters from
+    # the output of `git status -z` and appends an 'x' to every git status
+    # update. If the working tree is clean, only the single character 'x'
+    # remains, and 'x' will equal 'x'; otherwise, the status update will
+    # contain characters other than just 'x'.
+    if [ 'x' = "$( git status -z | tr -d '\0' )x" ]; then
       #STATUS="✔" # checkmark at \x2714 (\u2714)
       STATUS="OK"
+    else
+      #STATUS="✘" # x-mark at \x2718 (\u2718)
+      STATUS="X"
     fi
     RESULT="($BRANCH $STATUS) "
   fi
