@@ -1,0 +1,32 @@
+- Determine the cause of the 'ignored-null-byte' warning.
+  (Does an invocation of any command satisfying the conditions for the warning
+  cause all subsequent commands in the terminal also to display the message?)
+- Have rxvt_unicode titlebar's caption match $PWD
+  for all states of rxvt_unicode, i3, and tmux.
+  (I.e., currently, when in tmux, the terminal's title is not updated. Instead,
+  it persists as the last title before starting tmux.)
+- Consider changing "${pkgs.bash}/bin/bash" in 'execute-namespace/default.nix'
+  to "${pkgs.stdenv.shell}" or just "${stdenv.shell}".
+  Or consider using 'writeShellScriptBin' instead of 'writeScriptBin'.
+  ('writeShellScriptBin' has two advantages:
+      0. Including a hashbang is unnecessary.
+      1. It calls `${shell} -n ${script}` to perform a simple syntax check.)
+- Checkmark and 'invalid' X don't render -- perhaps b/c of font incompatibility
+- Refactor/restructure 'configuration.nix' into multiple more-specific
+  configurationally-contained components.
+- Transition from $HOME to $CONFIG_ROOT.
+- Boyscout i3/default.nix, graphical/Xresources.
+- Create a directory dedicated to swapfiles like $CONFIG_ROOT/vim/undoDir.
+- Move "$CONFIG_ROOT/.viminfo" to "$CONFIG_ROOT/vim/.info".
+  (the dot to indicate non-directory)
+- Move "$CONFIG_ROOT/.tmux_history" to "$CONFIG_ROOT/tmux/.history".
+  (the dot to indicate non-directory)
+- Change the schema of bash history files to include a prefixing dot.
+  (the dot to indicate non-directory)
+- Rewrite bookmark/definition to indicate its dependency on 'pandoc'.
+- 'bookmark/default.nix' indicates that 'pandoc' is a dependency;
+  however, should 'bookmark/definition' be written to indicate this dependency too?
+- Boyscout swap and un~ files as well as directories not needed in the master branch.
+- Consider renaming $NAMESPACE as $REGION, $BASH_SPACE, or $CLOSURE.
+- Namespaces are currently volatile; consider incorporating them into
+  static nixos management.
