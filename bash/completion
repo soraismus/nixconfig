@@ -21,7 +21,7 @@ _completeTags () {
 _completeTo () {
   shopt -s nullglob
 
-  local IFS=$' \t\n' # normalize IFS
+  local IFS=$' \t\n' # Normalize IFS.
   local currentword
   local is_dot
   local _cdpath
@@ -30,7 +30,7 @@ _completeTo () {
   local completion
   local completion_index
 
-  # Tilde expansion, which also expands tilde to full pathname
+  # Tilde expansion, which also expands tilde to full pathname.
   case "$2" in
   \~*)    eval currentword="$2" ;;
   *)      currentword=$2 ;;
@@ -42,7 +42,7 @@ _completeTo () {
   _cdpath=${CDPATH}:${MARKPATH}
 
   # Preprocess CDPATH to convert null directory names to ".".
-  _cdpath=${_cdpath/#:/.:}      # `/#...` -- Match from the begining.
+  _cdpath=${_cdpath/#:/.:}     # `/#...` -- Match from the begining.
   _cdpath=${_cdpath//::/:.:}   # `//...` -- Replace all matches.
   _cdpath=${_cdpath/%:/:.}     # `/%...` -- Match from the end.
 
