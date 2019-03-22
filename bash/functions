@@ -304,9 +304,9 @@ _updateHistory () {
 
   # Load other shells' history files.
   # (`grep -v` inverts the match.)
-  for f in "$(                                       \
-      ls ${HISTFILE}.[0-9]* 2> /dev/null             \
-        | grep -v "${shell_histfile}\$" 2> /dev/null \
+  for f in "$(
+      ls ${HISTFILE}.[0-9]* 2> /dev/null
+        | grep -v "${shell_histfile}\$" 2> /dev/null
     )"
   do history -r "$f"
   done
