@@ -1,6 +1,3 @@
-- Determine the cause of the 'ignored-null-byte' warning.
-  (Does an invocation of any command satisfying the conditions for the warning
-  cause all subsequent commands in the terminal also to display the message?)
 - Have rxvt_unicode titlebar's caption match $PWD
   for all states of rxvt_unicode, i3, and tmux.
   (I.e., currently, when in tmux, the terminal's title is not updated. Instead,

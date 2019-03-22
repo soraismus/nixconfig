@@ -252,7 +252,7 @@ peek () {
 }
 
 # The variable 'PROMPT_COMMAND' is set to
-# the following function in the '.exports' file.
+# the following function in 'configuration.nix'.
 prompt_command () {
   _updateHistory
   _trackPath

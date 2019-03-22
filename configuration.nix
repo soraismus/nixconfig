@@ -45,7 +45,7 @@
         MARKPATH = "${CONFIG_ROOT}/.marks";
         NAMESPACES = "/etc/nixos/namespaces";
         PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
-        # PROMPT_COMMAND = "prompt_command";
+        PROMPT_COMMAND = "prompt_command";
         TAGPATH = "${CONFIG_ROOT}/.tags";
         VOLATILE_CONFIG = "/etc/nixos/volatile_config";
         VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";
