@@ -82,6 +82,7 @@
         fontforge-gtk # font editor with GTK UI
         fonttools
         fzf # command-line fuzzy finder
+        gitless # version control system built on top of git
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
         gdrive # command-line utility for interacting with google drive
         haskellPackages.hakyll # static website compiler library
@@ -109,6 +110,7 @@
         myVim # text editor
         # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
         nix-bash-completions
+        nix-diff # utility that compares nix derivations
         nixops # utility for provisioning NixOS machines
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nodejs-10_x # javascript engine
