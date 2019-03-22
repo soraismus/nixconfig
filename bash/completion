@@ -42,7 +42,7 @@ _completeTo () {
   _cdpath=${CDPATH}:${MARKPATH}
 
   # Preprocess CDPATH to convert null directory names to ".".
-  _cdpath=${_cdpath/#:/.:}     # `/#...` -- Match from the begining.
+  _cdpath=${_cdpath/#:/.:}     # `/#...` -- Match from the beginning.
   _cdpath=${_cdpath//::/:.:}   # `//...` -- Replace all matches.
   _cdpath=${_cdpath/%:/:.}     # `/%...` -- Match from the end.
 
