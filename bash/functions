@@ -289,7 +289,10 @@ togglePrompt () {
 _trackPath () {
   # Record the current working directory.
   pwd > "${CONFIG_ROOT}/.lastdir"
-  [ "$LASTDIR" != "$PWD" ] && listRecentFiles
+  [ "$LASTDIR" != "$PWD" ]                                \
+    && [ "$LASTDIR" != "/nix/store" ]                     \
+    && [ "$LASTDIR" != "$HOME/src/git/gh/NixOS/nixpkgs" ] \
+    && listRecentFiles
   export LASTDIR="$PWD"
 }
 
