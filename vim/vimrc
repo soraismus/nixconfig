@@ -1,9 +1,7 @@
-filetype plugin indent on
-syntax enable
+" vim-utils.nix sets 'filetype indent plugin on | syn on'.
+syntax enable " Equivalent to ':source $VIMRUNTIME/syntax/syntax.vim'
 
 let mapleader = ","
-
-let myConfigDir = '$VOLATILE_CONFIG/$USER/vim'
 
 set autoindent
 set autoread
@@ -47,6 +45,10 @@ set showmatch
 set sidescrolloff=0
 set smarttab
 set swapfile
+" `&directory` is the list of dir names for swap files.
+" The default value of `&directory` is '.,~/tmp,/var/tmp,/tmp'.
+" A double slash ensures swapfile-name uniqueness.
+set directory=/var/tmp//,/tmp//
 set t_Co=16
 set tabpagemax=50
 set tabstop=2
@@ -60,30 +62,28 @@ set wrap
 
 setglobal tags=./tags
 
-noremap <C-H> <C-W>h
-noremap <C-J> <C-W>j
-noremap <C-K> <C-W>k
-noremap <C-L> <C-W>l
+nmap = <Plug>VinegarSplitUp
+" The pipe character must be escaped.
+nmap \| <Plug>VinegarVerticalSplitUp
+
+ noremap <C-H> <C-W>h
+ noremap <C-J> <C-W>j
+ noremap <C-K> <C-W>k
+ noremap <C-L> <C-W>l
 cnoremap w!! %!sudo tee > /dev/null %
 inoremap <C-A> <Esc>I
 inoremap <C-E> <Esc>A
 "inoremap <silent> <C-L> :nohlsearch<CR><C-L>
 inoremap jk <Esc>
 inoremap kj <Esc>
-nnoremap Q @q
-nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
+nnoremap Q @q
+nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 vnoremap Q :norm @q<CR>
 
-if &swapfile
-  " The final // causes swap files to be given names based on full file path.
-  let mySwapDir = myConfigDir . '/swapDir//'
-  call system('mkdir -p ' . mySwapDir)
-  let &directory = mySwapDir
-endif
-
 if has('persistent_undo')
+  let myConfigDir = expand('$VOLATILE_CONFIG/$USER/vim')
   let myUndoDir = myConfigDir . '/undoDir'
   call system('mkdir -p ' . myUndoDir)
   let &undodir = myUndoDir
