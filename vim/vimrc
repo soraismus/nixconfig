@@ -3,6 +3,8 @@ syntax enable " Equivalent to ':source $VIMRUNTIME/syntax/syntax.vim'
 
 let mapleader = ","
 
+let myConfigDir = expand('$VOLATILE_CONFIG/$USER/vim')
+
 set autoindent
 set autoread
 set background=dark
@@ -83,7 +85,6 @@ nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 vnoremap Q :norm @q<CR>
 
 if has('persistent_undo')
-  let myConfigDir = expand('$VOLATILE_CONFIG/$USER/vim')
   let myUndoDir = myConfigDir . '/undoDir'
   call system('mkdir -p ' . myUndoDir)
   let &undodir = myUndoDir
