@@ -10,8 +10,8 @@ bmget () {
   # The backslash escapes aliases.
   local filename="$(
       \ls -l $TAGPATH/$searchterm
-        | awk '!/total/ {print $11}'
-        | awk -v fileIndex="$2"
+        | awk '!/total/ {print $11}' \
+        | awk -v fileIndex="$2"      \
             'BEGIN { count = 0 } {count++; if (count == fileIndex) print}'
     )"
   echo "$filename"
@@ -86,7 +86,7 @@ _disposeHistoryOrphans () {
   # `grep -v` inverts matching.
   # The backslash escapes aliases.
   local orphaned_files="$(
-      \ls ${HISTFILE}.[0-9]* 2> /dev/null
+      \ls ${HISTFILE}.[0-9]* 2> /dev/null \
         | grep -v ${grep_pattern}
     )"
 
@@ -222,10 +222,10 @@ _mergeShellHistory () {
   # inside a vim-recognized string, a pair of of single-quotes must be
   # interior to a pair of double-quotes.)
   local shell_undofile="$(
-      vim
-        -es
-        -c "redir >> /dev/stdout"
-        -c "echo undofile('${shell_histfile}')"
+      vim                                       \
+        -es                                     \
+        -c "redir >> /dev/stdout"               \
+        -c "echo undofile('${shell_histfile}')" \
         -c "q"
     )"
 
@@ -310,7 +310,7 @@ _updateHistory () {
   # (`grep -v` inverts the match.)
   # (The backslash escapes aliases.)
   for f in "$(
-      \ls ${HISTFILE}.[0-9]* 2> /dev/null
+      \ls ${HISTFILE}.[0-9]* 2> /dev/null \
         | grep -v "${shell_histfile}\$" 2> /dev/null
     )"
   do history -r "$f"
