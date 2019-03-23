@@ -39,7 +39,7 @@
         EDITOR = "vim";
         FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
         HISTCONTROL = "ignoredups:erasedups";
-        HISTFILE = "${CONFIG_ROOT}/bash/history/history";
+        HISTFILE = "${CONFIG_ROOT}/bash/history/.history";
         HISTFILESIZE = infinite;
         HISTSIZE = infinite;
         MARKPATH = "${CONFIG_ROOT}/.marks";

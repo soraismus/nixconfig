@@ -3,6 +3,8 @@ syntax enable
 
 let mapleader = ","
 
+let myConfigDir = '$VOLATILE_CONFIG/$USER/vim'
+
 set autoindent
 set autoread
 set background=dark
@@ -44,16 +46,14 @@ set showbreak=↪
 set showmatch
 set sidescrolloff=0
 set smarttab
+set swapfile
 set t_Co=16
 set tabpagemax=50
 set tabstop=2
 set ttimeout
 set ttimeoutlen=100
-" See the system call below, which ensures that vim/undoDir exists.
-"set undodir=$VOLATILE_CONFIG/$USER/vim/undoDir
-"set undofile
 set viminfo=!,'100,<50,s10,h
-set viminfofile=$VOLATILE_CONFIG/$USER/.viminfo
+let &viminfofile = myConfigDir . '.info'
 set virtualedit=block
 set wildmenu
 set wrap
@@ -76,9 +76,14 @@ inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 vnoremap Q :norm @q<CR>
 
+if &swapfile
+  let mySwapDir = myConfigDir . '/swapDir'
+  call system('mkdir -p ' . mySwapDir)
+  let &directory = mySwapDir
+endif
+
 if has('persistent_undo')
-  let myConfigDir = '$VOLATILE_CONFIG/$USER'
-  let myUndoDir = expand(myConfigDir . '/vim/undoDir')
+  let myUndoDir = myConfigDir . '/undoDir'
   call system('mkdir -p ' . myUndoDir)
   let &undodir = myUndoDir
   set undofile

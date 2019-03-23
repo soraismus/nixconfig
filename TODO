@@ -13,13 +13,6 @@
   configurationally-contained components.
 - Transition from $HOME to $CONFIG_ROOT.
 - Boyscout i3/default.nix, graphical/Xresources.
-- Create a directory dedicated to swapfiles like $CONFIG_ROOT/vim/undoDir.
-- Move "$CONFIG_ROOT/.viminfo" to "$CONFIG_ROOT/vim/.info".
-  (the dot to indicate non-directory)
-- Move "$CONFIG_ROOT/.tmux_history" to "$CONFIG_ROOT/tmux/.history".
-  (the dot to indicate non-directory)
-- Change the schema of bash history files to include a prefixing dot.
-  (the dot to indicate non-directory)
 - Rewrite bookmark/definition to indicate its dependency on 'pandoc'.
 - 'bookmark/default.nix' indicates that 'pandoc' is a dependency;
   however, should 'bookmark/definition' be written to indicate this dependency too?
