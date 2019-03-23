@@ -33,28 +33,24 @@ _basic_prompt () {
   PS1="${prefix}${suffix}"
 }
 
-# -------------------------------------------------------------
-# Generate a message that indicates the branch and status     |
-# of a git-controlled directory. The '.bashrc' file uses this |
-# function to determine the value of 'PS1'.                   |
-# -------------------------------------------------------------
+# Generate a message that indicates the branch and status
+# of a git-controlled directory. The '.bashrc' file uses this
+# function to determine the value of 'PS1'.
 git_prompt () {
-  # ------------------------------------------------------------------
-  # `git rev-parse` interprets a <rev> (i.e., a revision parameter). |
-  # 'HEAD' refers to the content of '.git/HEAD', which is a pointer  |
-  # to the current <ref> (i.e., the file contains a specific path    |
-  # within the '.git/refs/heads' directory). The '--abbrev-ref'      |
-  # option provides the name of the branch.                          |
-  # ------------------------------------------------------------------
-  # If there is an error (e.g., no git repository exists),           |
-  # 'branch' is set to an empty string.                              |
-  # ------------------------------------------------------------------
-  local BRANCH="$( git rev-parse --abbrev-ref HEAD 2> /dev/null )"
+  # `git rev-parse` interprets a <rev> (i.e., a revision parameter).
+  # 'HEAD' refers to the content of '.git/HEAD', which is a pointer
+  # to the current <ref> (i.e., the file contains a specific path
+  # within the '.git/refs/heads' directory). The '--abbrev-ref'
+  # option provides the name of the branch.
+  #
+  # If there is an error (e.g., no git repository exists),
+  # 'branch' is set to an empty string.
+  local branch="$( git rev-parse --abbrev-ref HEAD 2> /dev/null )"
 
-  local RESULT=""
-  local STATUS=""
+  local result=""
+  local status=""
 
-  if [ -n "$BRANCH" ]; then
+  if [ -n "$branch" ]; then
     # The format of the output of `git status -z`:
     #   Each modified file has an output entry comprising three components:
     #     0. a sigil representing the kind of modification,
@@ -73,29 +69,31 @@ git_prompt () {
     # remains, and 'x' will equal 'x'; otherwise, the status update will
     # contain characters other than just 'x'.
     if [ 'x' = "$( git status -z | tr -d '\0' )x" ]; then
-      #STATUS="✔" # checkmark at \x2714 (\u2714)
-      STATUS="OK"
+      #status="✔" # checkmark at \x2714 (\u2714)
+      status="OK"
     else
-      #STATUS="✘" # x-mark at \x2718 (\u2718)
-      STATUS="X"
+      #status="✘" # x-mark at \x2718 (\u2718)
+      status="X"
     fi
-    RESULT="($BRANCH $STATUS) "
+    result="($branch $status) "
   fi
 
-  printf "$RESULT"
+  printf "$result"
 }
 
 _titlebar_prompt () {
   local titlebar_start="\[\033]0;"
   local titlebar_end="\007\]"
   local abbrev_cwd="\W"
+  local titlebar="${titlebar_start}${abbrev_cwd} \$(git_prompt)${titlebar_end}"
 
   case "$TERM" in
   # In the previous iteration of this code,
   # "$TERM" was matched against "screen" exactly (i.e., not "screen*").
   # "screen*" is being tried here b/c with tmux, "$TERM" is "screen-256color".
+  # (Tmux, however, does allow its setting of $TERM to be modified.)
   xterm*|rxvt*|screen*)
-      PS1="${titlebar_start}${abbrev_cwd} \$(git_prompt)${titlebar_end}$PS1"
+      PS1="${titlebar}${PS1}"
       ;;
   *)
       # Preserve $PS1.
