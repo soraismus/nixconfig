@@ -256,7 +256,7 @@
       resizeAmount = 10;
       secureSocket = true;
       shortcut = "f";
-      terminal = "screen-256color";
+      terminal = "screen-256color"; # Default value is "screen".
     };
   };
 
