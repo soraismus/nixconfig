@@ -77,7 +77,8 @@ inoremap <C-W> <C-G>u<C-W>
 vnoremap Q :norm @q<CR>
 
 if &swapfile
-  let mySwapDir = myConfigDir . '/swapDir'
+  " The final // causes swap files to be given names based on full file path.
+  let mySwapDir = myConfigDir . '/swapDir//'
   call system('mkdir -p ' . mySwapDir)
   let &directory = mySwapDir
 endif
