@@ -61,6 +61,23 @@ bmvim () {
   vim "$filename"
 }
 
+countDirItems () {
+  local directory
+  if [[ "$#" -gt 0 ]]; then
+    directory="$1"
+  else
+    directory="$PWD"
+  fi
+  local directory="$1"
+  # `ls -1` # Lists one file per line.
+  # `ls -U` # Lists files in directory order (i.e., without sorting).
+  # `wc -l` # Counts the number of newline characters.
+  # `wc -m` # Counts the number of characters.
+  # `wc -w` # Counts the number of words.
+  # (The backslash escapes aliases.)
+  echo "$( \ls -1U "$directory" | wc -l )"
+}
+
 derefMark () {
   # Because '$MARKPATH/$1' is a symlink, the 11th field of
   # `ls -l "$MARKPATH/$1"` is the actual direct path.
@@ -289,9 +306,9 @@ togglePrompt () {
 _trackPath () {
   # Record the current working directory.
   pwd > "${CONFIG_ROOT}/.lastdir"
-  [ "$LASTDIR" != "$PWD" ]                                \
-    && [ "$LASTDIR" != "/nix/store" ]                     \
-    && [ "$LASTDIR" != "$HOME/src/git/gh/NixOS/nixpkgs" ] \
+  local countLimit = 30
+  [ "$LASTDIR" != "$PWD" ]                               \
+    && [ "$( countDirItems "$PWD" )" -lt "$countLimit" ] \
     && listRecentFiles
   export LASTDIR="$PWD"
 }

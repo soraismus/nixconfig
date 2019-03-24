@@ -233,8 +233,9 @@
         gdiff = "git diff";
         gitst = "git status";
         gst = "git status";
-        l = "ls -alh --color=tty";
-        ls = "ls -a --color=tty --group-directories-first";
+        l = "ls -Alh --color=tty";
+        l1 = "ls -1A --color=tty --group-directories-first";
+        ls = "ls -A --color=tty --group-directories-first";
         quit = "exit";
         v = "vim";
       };
