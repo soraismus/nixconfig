@@ -8,42 +8,40 @@ set () {
   # provided at the command line.
   shift
 
-  echo "$file_id" "$@" >> "$FILE_ANNOTATIONS"
+  for note in "$@"; do
+    echo "${file_id}" "${note}" >> "${FILE_ANNOTATIONS}"
+  done
 }
 
-# Usage: note read <filename>
-read () {
-  if [ -z "$FILE_ANNOTATIONS" ]; then
+# Usage: note get <filename>
+get () {
+  if [ -z "${FILE_ANNOTATIONS}" ]; then
     echo "The variable FILE_ANNOTATIONS is empty."
     exit 1
-  elif [ ! -e "$FILE_ANNOTATIONS" ]; then
-    echo "Creating annotation cache at (" "$FILE_ANNOTATIONS" ")."
-    mkdir -p "$FILE_ANNOTATIONS"
+  elif [ ! -e "${FILE_ANNOTATIONS}" ]; then
+    echo "Creating annotation cache at (" "${FILE_ANNOTATIONS}" ")."
+    touch "${FILE_ANNOTATIONS}"
   fi
   local file_id="$( get-file-id "$1" )"
-  cat "$FILE_ANNOTATIONS" | awk "/$file_id/" | cut -d" " -f2-
-}
-
-# alias for note-read
-get () {
-  read "$1"
+  cat "${FILE_ANNOTATIONS}" | awk "/${file_id}/" | cut -d" " -f2-
 }
 
 # Writes to the console the annotations of the files in the current directory.
 # The performance of this function is slow, so consider making the implementation
 # more efficient.
 check-directory () {
+  local note
   for file in *; do
-    NOTE="$( note read $file )"
-    if [ -n "$NOTE" ]; then
+    note="$( get "${file}" )"
+    if [ -n "${note}" ]; then
 
       # The '-e' option enables interpretation of backslash escapes, including '\n'.
-      echo -e "$NOTE\n  <-- $file"
+      echo -e "${note}\n  <-- ${file}"
     fi
   done
-  NOTE="$( read . )"
-  if [ -n "$NOTE" ]; then
-    echo -e "$NOTE\n <-- this directory"
+  note="$( get "$PWD" )"
+  if [ -n "${note}" ]; then
+    echo -e "${note}\n <-- this directory"
   fi
 }
 
