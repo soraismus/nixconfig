@@ -108,13 +108,13 @@ _disposeHistoryOrphans () {
     )"
 
   if [ -n "$orphaned_files" ]; then
-    echo "Merging orphaned history files:"
+    printf "Merging orphaned history files:\n"
     for f in ${orphaned_files}; do
-      printf "  " "$( basename ${f} )"
+      printf "  $( basename ${f} )"
       cat ${f} >> $HISTFILE
       \rm ${f} # The backslash escapes aliases.
     done
-    echo "done."
+    printf "\ndone\n"
   fi
 }
 
