@@ -91,6 +91,7 @@
         htop # interactive process viewer
         hound # fast code searching (react frontend; go backend; regex w/ trigram index)
         idris # haskell-like compiler with dependent types
+        incron # cron-like daemon that handles filesystem events
         # inkscape # vector-graphics editor
         iotop
         irssi # terminal-based IRC client
@@ -106,7 +107,9 @@
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
         # mopidy # extensible music server that plays music from local, Spotify, etc.
         mongodb # nosql database
+        mu # utilities for indexing and searching Maildirs
         mupdf # parsing engine for PDF, XPS, and EPUB
+        mutt # small text-based mail client
         myVim # text editor
         # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
         nix-bash-completions
@@ -114,13 +117,16 @@
         nixops # utility for provisioning NixOS machines
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nodejs-10_x # javascript engine
+        notmuch # mail indexer
         pandoc # utility that translates between markup formats
         pass # password-store manages passwords securely
         patchelf
         pavucontrol # PulseAudio volume control
         # pijul # distributed version control system inspired by categorical patches
+        postfix # fast, easy, secure mail server
         powertop # utility to analyze power consumption on Intel-based laptops
         # privoxy # non-caching web proxy with advanced filtering capabilities
+        procmail # mail-processing and -filtering utility
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
         python
         qtox # Qt tox client
@@ -131,6 +137,7 @@
         rofi-pass # script to make rofi work with password-store
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
         scrot # command-line screen-capture utility
+        spamassassin # open-source spam filter
         stack # haskell tool stack
         stack2nix # nix utility that transforms stack specs into nix specs
         tcpdump # network sniffer

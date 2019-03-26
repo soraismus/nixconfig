@@ -20,3 +20,7 @@
 - Consider renaming $NAMESPACE as $REGION, $BASH_SPACE, or $CLOSURE.
 - Namespaces are currently volatile; consider incorporating them into
   static nixos management.
+- configure; run an email server and client
+  https://nullprogram.com/blog/2013/09/03/
+  https://dbp.io/essays/2013-06-29-hackers-replacement-for-gmail.html
+  https://nullprogram.com/blog/2017/06/15/
