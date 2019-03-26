@@ -1,3 +1,4 @@
+- Add bash linter.
 - Have rxvt_unicode titlebar's caption match $PWD
   for all states of rxvt_unicode, i3, and tmux.
   (I.e., currently, when in tmux, the terminal's title is not updated. Instead,
