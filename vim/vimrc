@@ -56,7 +56,7 @@ set statusline=%{fugitive#statusline()}
   set statusline+=%{SyntasticStatuslineFlag()}
   set statusline+=%*            " Restore highlight group User{N}.
   set statusline+=%=            " separation point btw left- and right-aligned
-  set statusline+=[%n]\ [%f]\ [%l\/%L, %c%V]
+  set statusline+=[%n]\ [%f]\ [%l\/%L,\ %c%V]
 set swapfile
 set t_Co=16
 set tabpagemax=50

@@ -22,6 +22,12 @@ get () {
     echo "Creating annotation cache at (" "${FILE_ANNOTATIONS}" ")."
     touch "${FILE_ANNOTATIONS}"
   fi
+  local file
+  if [[ $# == 0 ]]; then
+    file="${PWD}"
+  else
+    file="$1"
+  fi
   local file_id="$( get-file-id "$1" )"
   cat "${FILE_ANNOTATIONS}" | awk "/${file_id}/" | cut -d" " -f2-
 }

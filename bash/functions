@@ -306,7 +306,7 @@ togglePrompt () {
 _trackPath () {
   # Record the current working directory.
   pwd > "${CONFIG_ROOT}/.lastdir"
-  local countLimit = 30
+  local countLimit="30"
   [ "$LASTDIR" != "$PWD" ]                               \
     && [ "$( countDirItems "$PWD" )" -lt "$countLimit" ] \
     && listRecentFiles
