@@ -9,6 +9,7 @@ example                     effect
 {insert mode} <C-R>=        paste the evaluation of an expression in register "=
 :lvimgrep /myFn/ **/*.c     search for pattern "myFn" in **/*.c files
 :lopen                      open location list (containing files found by lgrep)
+`adiw`bviwp`aP              swaps words at marks `a and `b
 
 register            purpose
 --------            -------
