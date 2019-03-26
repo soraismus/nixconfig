@@ -138,8 +138,7 @@
         # tig # text-mode interface for git
         # tinc # VPN daemon with full mesh routing
         tmux # terminal multiplexer
-        # tmuxp # manage tmux workspaces from JSON and YAML
-        tmuxinator # tmux-session manager (implemented in ruby)
+        tmuxp # manage tmux workspaces from JSON and YAML
         # tomb # file encryption
         translate-shell # command-line translator
         tree # commandline directory visualizer
