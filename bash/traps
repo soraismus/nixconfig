@@ -1,1 +1,1 @@
-trap _mergeShellHistory EXIT
+trap "{ _mergeShellHistory; _disposeHistoryOrphans; }" EXIT
