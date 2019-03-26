@@ -17,6 +17,7 @@ pkgs.vim_configurable.customize {
             "idris-vim"
             # "psc-ide-vim"
             "purescript-vim"
+            "syntastic"
             "tabular"
             "tagbar"
             "vim-commentary"

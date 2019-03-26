@@ -1,0 +1,64 @@
+example                     effect
+-------                     ------
+"+yy                        copy the current line into the windowing system's clipboard
+"*p                         paste the contents of the clipboard
+@:                          repeat the most recent cmdmode command.
+0w                          go to the first word
+:let @/ = "hello, world"    set a register (specifically, here register "/)
+{insert mode} <C-R>2        paste contents of register 2
+{insert mode} <C-R>=        paste the evaluation of an expression in register "=
+:lvimgrep /myFn/ **/*.c     search for pattern "myFn" in **/*.c files
+:lopen                      open location list (containing files found by lgrep)
+
+register            purpose
+--------            -------
+"" (unnamed)        the default when otherwise unspecified; often also a copy
+"*                  primary X11 selection
+"+                  clipboard X11 selection
+".                  most recent insert
+"%                  name of current file
+":                  most recent cmdmode line
+"#                  name of the current window's alternate file
+"= (expression)     
+"~ (drop)           dropped text from most recent drag'n'drop
+"_ (black hole)     to prevent changes to the other registers' state
+"/                  most recent search-pattern
+"{\d}               history of yank/delete commands
+"- (small delete)   most recent delete of length less than one line
+"{[a-z]}            lowercase if to replace
+"{[A-Z]}            uppercase if to append
+
+:h quoteplus
+------------
+There are three X selections:
+  primary   - represents the current visual selection
+  secondary - ill-defined
+  clipboard - cut/copy/paste
+
+longer examples
+---------------
+  [1]
+:let i = 1
+qa
+/^Paragraph #\d<CR>
+0w
+i
+<c-r>=i<CR>
+.<esc>
+:let i = i + 1<CR>
+q
+
+plugin examples
+---------------
+
+[tpope's commentary]
+
+example                           purpose
+-------                           -------
+{normal mode} [count] gcc         comment/uncomment line
+{normal mode} gc {motion}         comment/uncomment {motion}
+{visual mode} gc                  comment/uncomment section
+gc                                text object for a comment (operator-pending mode)
+gcgc                              gc (comment/uncomment) + gc (text object)
+ugc                               u (undo) + gc (text object)
+{command mode} :[range]Commentary comment/uncomment range
