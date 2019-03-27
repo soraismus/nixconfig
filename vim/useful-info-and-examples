@@ -20,7 +20,7 @@ register            purpose
 "%                  name of current file
 ":                  most recent cmdmode line
 "#                  name of the current window's alternate file
-"= (expression)     
+"= (expression)
 "~ (drop)           dropped text from most recent drag'n'drop
 "_ (black hole)     to prevent changes to the other registers' state
 "/                  most recent search-pattern
@@ -48,6 +48,24 @@ i
 .<esc>
 :let i = i + 1<CR>
 q
+
+  [2]
+:function! LineNumber()
+:  return substitute(v:thowpoint, '.*\D\(\d\+\).*', '\1', "")
+:endfuntion
+:command! LineNumber try | throw "" | catch | echo LineNumber() | endtry
+
+  [3]
+:function! Foo()
+:  throw "foo"
+:endfunction
+:try
+:  call Foo()
+:catch /foo/
+:  echo "foo"
+:finally
+:  echo "finally"
+:endtry
 
 plugin examples
 ---------------
