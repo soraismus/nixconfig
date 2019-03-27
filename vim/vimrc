@@ -50,13 +50,14 @@ set showbreak=↪
 set showmatch
 set sidescrolloff=0
 set smarttab
-set statusline=%{fugitive#statusline()}
+set statusline=[%n]\ [%f]
   set statusline+=%h%m%r%y
+  set statusline+=%=            " separation point btw left- and right-aligned
+  set statusline+=%{fugitive#statusline()}
   set statusline+=%#warningmsg# " Set highlight group 'warningmsg'.
   set statusline+=%{SyntasticStatuslineFlag()}
   set statusline+=%*            " Restore highlight group User{N}.
-  set statusline+=%=            " separation point btw left- and right-aligned
-  set statusline+=[%n]\ [%f]\ [%l\/%L,\ %c%V]
+  set statusline+=[%l\/%L,\ %cV]
 set swapfile
 set t_Co=16
 set tabpagemax=50
@@ -65,7 +66,7 @@ set ttimeout
 set ttimeoutlen=100
 set viminfo=!,'100,<50,s10,h
 let &viminfofile = myConfigDir . '.info'
-set virtualedit=block
+set virtualedit=all
 set wildmenu
 set wrap
 
@@ -97,13 +98,23 @@ if has('persistent_undo')
   set undofile
 endif
 
-if exists('g:syntastic_always_populate_loc_list')
-  " Recommended Syntastic settings
-  let g:syntastic_always_populate_loc_list = 1
-  let g:syntastic_auto_loc_list = 1
-  let g:syntastic_check_on_open = 0
-  let g:syntastic_check_on_close = 0
-endif
+" Recommended Syntastic settings
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_close = 0
+
+" Toggle between full path and relative path of current file.
+function! ToggleStatusLine()
+  let myStatusLine = &statusline
+  if myStatusLine =~ "%f"
+    let myStatusLine = substitute(myStatusLine, "%f", "%F", "g")
+  elseif myStatusLine =~ "%F"
+    let myStatusLine = substitute(myStatusLine, "%F", "%f", "g")
+  endif
+  let &statusline = myStatusLine
+endfunction
+command! ToggleStatusLine call ToggleStatusLine()
 
 " Trim whitespace on save.
 fun! <SID>StripTrailingWhitespaces()
