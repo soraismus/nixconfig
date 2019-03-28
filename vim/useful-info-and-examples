@@ -9,7 +9,11 @@ example                     effect
 {insert mode} <C-R>=        paste the evaluation of an expression in register "=
 :lvimgrep /myFn/ **/*.c     search for pattern "myFn" in **/*.c files
 :lopen                      open location list (containing files found by lgrep)
-`adiw`bviwp`aP              swaps words at marks `a and `b
+`adiw`bviwp`aP              swap words at marks `a and `b
+"Ayw                        yank a word & append it into register "A
+/<C-R>A                     put the contents of register "A into the search string
+{normal mode} "+y{motion}   yank motion into the "+ register
+{cmd mode}    :y%+          yank full file into the "+ register
 
 register            purpose
 --------            -------
