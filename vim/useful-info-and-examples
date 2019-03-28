@@ -14,6 +14,8 @@ example                     effect
 /<C-R>A                     put the contents of register "A into the search string
 {normal mode} "+y{motion}   yank motion into the "+ register
 {cmd mode}    :y%+          yank full file into the "+ register
+:[line]put {register}       paste from register onto specified line
+:[line]put! {register}      paste from register onto line before specified line
 
 register            purpose
 --------            -------

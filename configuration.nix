@@ -235,7 +235,9 @@
         l = "ls -Alh --color=tty";
         l1 = "ls -1A --color=tty --group-directories-first";
         ls = "ls -A --color=tty --group-directories-first";
+        promptToggle = "togglePrompt";
         quit = "exit";
+        touchpadToggle = "toggleTouchpad";
         v = "vim";
       };
       shellInit = "";

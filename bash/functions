@@ -119,7 +119,8 @@ _disposeHistoryOrphans () {
 }
 
 fatal () {
-  echoErr "$2" # See 'echoErr' in the 'aliases' config file.
+  # Make file descriptor 1 also point to file descriptor 2.
+  >&2 echo "$2"
   exit "$1"
 }
 
@@ -301,6 +302,44 @@ togglePrompt () {
   else
     PS1="$( echo "$PS1" 2> /dev/null | sed 's/W/w/g' 2> /dev/null )"
   fi
+}
+
+# Activate/deactivate the touchpad.
+toggleTouchpad () {
+  # See `xinput list` to check device IDs.
+  local prop="Device Enabled"
+
+  local touchpad_device="$(
+      xinput list          \
+        | grep -i touchpad \
+        | sed 's/.*id\([0-9]*\).*/\1/'
+    )"
+
+  if [ -z "$touchpad_device" ]; then
+    fatal 2 "The touchpad device ID could not be determined."
+  fi
+
+  local re="^[0-9]+$"
+  if ! [[ ${touchpad_device}" =~ "${re}" ]]; then
+    fatal 3 "The touchpad device ID is not a number."
+  fi
+
+  # Default delimiter for `touch` is \t.
+  # The third field should be either 0 or 1.
+  local setting="$(
+      xinput list-props "${touchpad_device}" \
+        | grep "${prop}"                     \
+        | cut -f3
+    )"
+
+  local newSetting
+  if [ "${setting}" -eq 0 ]; then
+    newSetting=1
+  elif [ "${setting}" -eq 1 ]; then
+    newSetting=0
+  fi
+
+  xinput set-prop "${touchpad_device}" "${prop}" "${newSetting}"
 }
 
 _trackPath () {
