@@ -312,7 +312,7 @@ toggleTouchpad () {
   local touchpad_device="$(
       xinput list          \
         | grep -i touchpad \
-        | sed 's/.*id\([0-9]*\).*/\1/'
+        | sed 's/.*id=\([0-9]*\).*/\1/'
     )"
 
   if [ -z "$touchpad_device" ]; then
