@@ -57,7 +57,7 @@ set statusline=[%n]\ [%f]
   set statusline+=%#warningmsg# " Set highlight group 'warningmsg'.
   set statusline+=%{SyntasticStatuslineFlag()}
   set statusline+=%*            " Restore highlight group User{N}.
-  set statusline+=[%l\/%L,\ %cV]
+  set statusline+=[%l\/%L,\ %c%V]
 set swapfile
 set t_Co=16
 set tabpagemax=50

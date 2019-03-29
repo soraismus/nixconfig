@@ -271,7 +271,7 @@ peek () {
 
 # The variable 'PROMPT_COMMAND' is set to
 # the following function in 'configuration.nix'.
-prompt_command () {
+_promptCommand () {
   _updateHistory
   _trackPath
 }
@@ -320,7 +320,7 @@ toggleTouchpad () {
   fi
 
   local re="^[0-9]+$"
-  if ! [[ ${touchpad_device}" =~ "${re}" ]]; then
+  if ! [[ "${touchpad_device}" =~ "${re}" ]]; then
     fatal 3 "The touchpad device ID is not a number."
   fi
 
