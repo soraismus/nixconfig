@@ -116,6 +116,33 @@ function! ToggleStatusLine()
 endfunction
 command! ToggleStatusLine call ToggleStatusLine()
 
+" Toggle between concise and data-rich statusline modes.
+function! ToggleStatusLineMode()
+  let myStatusLine = &statusline
+  if myStatusLine =~ "%f"
+    let myPathFormat = "%f"
+  else
+    let myPathFormat = "%F"
+  endif
+  if myStatusLine =~ "fugitive"
+    let myStatusLine =
+      \ "[%n] [" . myPathFormat . "]"
+      \   . "%="
+      \   . "[%l\/%L,\ %c%V]"
+  else
+    let myStatusLine =
+      \ "[%n] [" . myPathFormat . "]"
+      \   . "%h%m%r%y"
+      \   . "%="
+      \   . "%{fugitive#statusline()}"
+      \   . "%#warningmsg#%{SyntasticStatuslineFlag()}"
+      \   . "%*"
+      \   . "[%l\/%L,\ %c%V]"
+  endif
+  let &statusline = myStatusLine
+endfunction
+command! ToggleStatusLineMode call ToggleStatusLineMode()
+
 " Trim whitespace on save.
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
