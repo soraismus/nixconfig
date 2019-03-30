@@ -143,6 +143,10 @@
         translate-shell # command-line translator
         tree # commandline directory visualizer
         utox # (mu-tox) lightweight tox client
+
+        # Currently, see ~/.vintrc.yaml for theo-wide vint configuration.
+        vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
+
         virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
         vlc # cross-platform media player and streaming server
         w3m # text-based web browser (cf. browsh, links2, lynx)

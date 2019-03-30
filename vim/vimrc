@@ -104,6 +104,9 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_close = 0
 
+" Per !gh/kuniwak/vint
+let g:syntastic_vim_checkers = ['vint']
+
 " Toggle between full path and relative path of current file.
 function! ToggleStatusLine()
   let myStatusLine = &statusline
