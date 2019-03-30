@@ -8,6 +8,7 @@
     [ # Include the results of the hardware scan.
       ./automatic-mac-spoofing
       ./bookmark
+      # ./easy-purescript-nix
       ./execute-namespace
       ./hardware-configuration.nix
       ./git
@@ -57,6 +58,10 @@
       # http://fontforge.github.io/en-US/documentation/utilities/
       # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
       fonttools = pkgs.fontforge-fonttools;
+
+      purescript-utilities = (./easy-purescript-nix).inputs;
+      purescript = purescript-utilities.purscript;
+      spago = purescript-utilities.spago;
     in
       with pkgs; [
         # xorg.xmodmap # https://wiki.xfce.org/faq
@@ -122,6 +127,7 @@
         powertop # utility to analyze power consumption on Intel-based laptops
         # privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
+        purescript
         python
         qtox # Qt tox client
         qutebrowser # keyboard-focused browser with minimal GUI
@@ -131,6 +137,7 @@
         rofi-pass # script to make rofi work with password-store
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
         scrot # command-line screen-capture utility
+        spago # purs pkg/proj mgr w/ dhall & package-sets
         stack # haskell tool stack
         stack2nix # nix utility that transforms stack specs into nix specs
         tcpdump # network sniffer
