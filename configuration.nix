@@ -57,8 +57,8 @@
       # http://fontforge.github.io/en-US/documentation/utilities/
       # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
       fonttools = pkgs.fontforge-fonttools;
-      # easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
-      # purs-utils = easy-purescript-nix.inputs;
+      easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
+      purs-utils = easy-purescript-nix.inputs;
     in
       with pkgs; [
         # xorg.xmodmap # https://wiki.xfce.org/faq
@@ -74,7 +74,6 @@
         coq # interactive theorem prover
         ctags # utility for fast source-code browsing (exuberant ctags)
         dragon-drop # Simple drag-and-drop source/sink for X
-        # dhall # non-Turing-complete specification language
         direnv # environment switcher for the shell
         docker # containerizer; OS-level virtualization: application container
         # ekiga # VOIP/video-conferencing app with full SIP and H.323 support
@@ -124,16 +123,14 @@
         powertop # utility to analyze power consumption on Intel-based laptops
         # privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-
-        # purs-utils.dhall-simple
-        # purs-utils.dhall-json-simple
-        # purs-utils.psc-package
-        # purs-utils.psc-package2nix
-        # purs-utils.purp
-        # purs-utils.purs
-        # purs-utils.spago
-        # purs-utils.zephyr # purescript tree-shaker
-
+        purs-utils.dhall-simple
+        purs-utils.dhall-json-simple
+        purs-utils.psc-package
+        purs-utils.psc-package2nix
+        purs-utils.purp
+        purs-utils.purs
+        purs-utils.spago
+        purs-utils.zephyr # purescript tree-shaker
         python
         qtox # Qt tox client
         qutebrowser # keyboard-focused browser with minimal GUI
