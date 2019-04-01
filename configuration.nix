@@ -8,7 +8,6 @@
     [ # Include the results of the hardware scan.
       ./automatic-mac-spoofing
       ./bookmark
-      # ./easy-purescript-nix
       ./execute-namespace
       ./hardware-configuration.nix
       ./git
@@ -58,10 +57,8 @@
       # http://fontforge.github.io/en-US/documentation/utilities/
       # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
       fonttools = pkgs.fontforge-fonttools;
-
-      purescript-utilities = (./easy-purescript-nix).inputs;
-      purescript = purescript-utilities.purscript;
-      spago = purescript-utilities.spago;
+      easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
+      purs-utils = easy-purescript-nix.inputs;
     in
       with pkgs; [
         # xorg.xmodmap # https://wiki.xfce.org/faq
@@ -77,7 +74,7 @@
         coq # interactive theorem prover
         ctags # utility for fast source-code browsing (exuberant ctags)
         dragon-drop # Simple drag-and-drop source/sink for X
-        dhall # non-Turing-complete specification language
+        # dhall # non-Turing-complete specification language
         direnv # environment switcher for the shell
         docker # containerizer; OS-level virtualization: application container
         # ekiga # VOIP/video-conferencing app with full SIP and H.323 support
@@ -127,7 +124,16 @@
         powertop # utility to analyze power consumption on Intel-based laptops
         # privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-        purescript
+
+        purs-utils.dhall-simple
+        purs-utils.dhall-json-simple
+        purs-utils.psc-package
+        purs-utils.psc-package2nix
+        purs-utils.purp
+        purs-utils.purs
+        purs-utils.spago
+        purs-utils.zephyr # purescript tree-shaker
+
         python
         qtox # Qt tox client
         qutebrowser # keyboard-focused browser with minimal GUI
@@ -137,7 +143,6 @@
         rofi-pass # script to make rofi work with password-store
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
         scrot # command-line screen-capture utility
-        spago # purs pkg/proj mgr w/ dhall & package-sets
         stack # haskell tool stack
         stack2nix # nix utility that transforms stack specs into nix specs
         tcpdump # network sniffer

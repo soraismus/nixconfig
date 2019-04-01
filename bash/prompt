@@ -68,6 +68,10 @@ git_prompt () {
     # update. If the working tree is clean, only the single character 'x'
     # remains, and 'x' will equal 'x'; otherwise, the status update will
     # contain characters other than just 'x'.
+    #
+    # NOTE: `git status -z | tr -d '\0'` often seems to hang up
+    # `cd`ing to a directory under git source control.
+    # Would checking the '.git/index' file be a feasible alternative?
     if [ 'x' = "$( git status -z | tr -d '\0' )x" ]; then
       #status="✔" # checkmark at \x2714 (\u2714)
       status="OK"

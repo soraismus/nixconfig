@@ -1,5 +1,5 @@
+{ pkgs ? import <nixpkgs> {} }:
 let
-  pkgs = import <nixpkgs> {};
   easy-dhall = import ./easy-dhall.nix { inherit pkgs; };
 
   inputs = rec {
