@@ -57,8 +57,8 @@
       # http://fontforge.github.io/en-US/documentation/utilities/
       # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
       fonttools = pkgs.fontforge-fonttools;
-      easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
-      purs-utils = easy-purescript-nix.inputs;
+      # easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
+      # purs-utils = easy-purescript-nix.inputs;
     in
       with pkgs; [
         # xorg.xmodmap # https://wiki.xfce.org/faq
@@ -125,14 +125,14 @@
         # privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
 
-        purs-utils.dhall-simple
-        purs-utils.dhall-json-simple
-        purs-utils.psc-package
-        purs-utils.psc-package2nix
-        purs-utils.purp
-        purs-utils.purs
-        purs-utils.spago
-        purs-utils.zephyr # purescript tree-shaker
+        # purs-utils.dhall-simple
+        # purs-utils.dhall-json-simple
+        # purs-utils.psc-package
+        # purs-utils.psc-package2nix
+        # purs-utils.purp
+        # purs-utils.purs
+        # purs-utils.spago
+        # purs-utils.zephyr # purescript tree-shaker
 
         python
         qtox # Qt tox client
