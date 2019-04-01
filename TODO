@@ -1,4 +1,6 @@
-- Add bash linter.
+- Add bash and vim linters.
+- For more-assured stability, clone the git repositories that my config depends
+  on, and update this config to point to the clones.
 - Have rxvt_unicode titlebar's caption match $PWD
   for all states of rxvt_unicode, i3, and tmux.
   (I.e., currently, when in tmux, the terminal's title is not updated. Instead,
