@@ -23,3 +23,5 @@
 - Consider renaming $NAMESPACE as $REGION, $BASH_SPACE, or $CLOSURE.
 - Namespaces are currently volatile; consider incorporating them into
   static nixos management.
+- Better integrate MARKPATH links with basic linux utilities (like 'ls');
+  include completion.

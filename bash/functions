@@ -215,6 +215,17 @@ listRecentFiles () {
   printf "\n"
 }
 
+lsmark () {
+  [ -z "$1" ] && fatal 1 'This function requires an argument'
+  local path="${1}"
+  local initial_segment="${1%%/*}"
+  if isMark "${initial_segment}"; then
+    ls "${MARKPATH}/${path}"
+  else
+    ls "${path}"
+  fi
+}
+
 mark () {
   NAMESPACE=mark execute-namespace "$@"
 }
@@ -282,6 +293,7 @@ tag () {
 
 # Go to the directory to which the provided bookmark links.
 to () {
+  [ -z "$1" ] && fatal 1 'This function requires an argument'
   local path="${1}"
   local initial_segment="${1%%/*}"
   if isMark "${initial_segment}"; then
