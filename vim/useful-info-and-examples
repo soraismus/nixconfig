@@ -17,6 +17,18 @@ example                     effect
 :[line]put {register}       paste from register onto specified line
 :[line]put! {register}      paste from register onto line before specified line
 
+:command -nargs=1 -bang -complete=file Ren f <args>|w<bang>
+                            rename the current buffer
+
+:command -range -nargs=1 -complete=file Replace <line1>-pu_|<line1>,<line2>d|r <args>|<line1>d
+                            replace a range with the contents of a file
+
+:command! -range -nargs=0 Lines  echo <line2> - <line1> + 1 "lines"
+                            count the number of lines in the range
+
+:command -nargs=* Mycmd call Myfunc(<f-args>)
+                            call a user function
+
 register            purpose
 --------            -------
 "" (unnamed)        the default when otherwise unspecified; often also a copy
@@ -72,6 +84,23 @@ q
 :finally
 :  echo "finally"
 :endtry
+
+  [4]
+:function Allargs(command)
+:   let i = 0
+:   while i < argc()
+:	  if filereadable(argv(i))
+:	     execute "e " . argv(i)
+:	     execute a:command
+:      endif
+:      let i = i + 1
+:   endwhile
+:endfunction
+:command -nargs=+ -complete=command Allargs call Allargs(<q-args>)
+
+  [5]
+inoremap <expr> <C-L> nr2char(getchar())
+inoremap <expr> <C-L>x "foo"
 
 plugin examples
 ---------------

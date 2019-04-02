@@ -5,6 +5,9 @@ let mapleader = ","
 
 let myConfigDir = expand('$VOLATILE_CONFIG/$USER/vim')
 
+" The prefix 'w:' indicates a window-specific variable.
+let w:counter = 0
+
 set autoindent
 set autoread
 set background=dark
@@ -85,6 +88,10 @@ inoremap <C-A> <Esc>I
 inoremap <C-E> <Esc>A
 inoremap jk <Esc>
 inoremap kj <Esc>
+inoremap <expr> <C-C> UtilityListCurrentCounter()
+inoremap <expr> <C-N> UtilityListNextCounter()
+inoremap <expr> <C-P> UtilityListPreviousCounter()
+inoremap <expr> <C-R> UtilityListResetCounter()
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 nnoremap Q @q
@@ -147,11 +154,30 @@ function! ToggleStatusLineMode()
 endfunction
 command! ToggleStatusLineMode call ToggleStatusLineMode()
 
+function! UtilityListCurrentCounter()
+  return w:counter
+endfunction
+
+function! UtilityListNextCounter()
+  let w:counter += 1
+  return w:counter
+endfunction
+
+function! UtilityListPreviousCounter()
+  let w:counter -= 1
+  return w:counter
+endfunction
+
+function! UtilityListResetCounter()
+  let w:counter = 0
+  return ''
+endfunction
+
 " Trim whitespace on save.
-fun! <SID>StripTrailingWhitespaces()
+function! <SID>StripTrailingWhitespaces()
   let l = line(".")
   let c = col(".")
   %s/\s\+$//e       " [e] flag suppresses error messages.
   call cursor(l, c) " Restore former cursor position.
-endfun
+endfunction
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
