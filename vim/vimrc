@@ -89,6 +89,7 @@ inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 nnoremap Q @q
 nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+nnoremap ## :set relativenumber!<CR>
 vnoremap Q :norm @q<CR>
 
 if has('persistent_undo')
@@ -148,9 +149,9 @@ command! ToggleStatusLineMode call ToggleStatusLineMode()
 
 " Trim whitespace on save.
 fun! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e       " [e] flag suppresses error messages.
-    call cursor(l, c) " Restore former cursor position.
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e       " [e] flag suppresses error messages.
+  call cursor(l, c) " Restore former cursor position.
 endfun
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
