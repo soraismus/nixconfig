@@ -26,4 +26,4 @@
 - Better integrate MARKPATH links with basic linux utilities (like 'ls');
   include completion.
 - Consider incorporating suggestions found at https://alex.dzyoba.com/blog/vim-revamp/.
-- Consider untentacling i3 and rofi.
+- Consider untentacling i3, rofi, and bash.

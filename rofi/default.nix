@@ -172,30 +172,70 @@ let
   rofi-touchpad = pkgs.writeScriptBin "rofi-touchpad" ''
     #!${pkgs.stdenv.shell}
 
-    declare -r touchpadStatus="$( getTouchpadStatus )"
-    if [ "$touchpadStatus" -eq 0 ]; then
+    declare -r prop="Device Enabled"
+
+    declare -r touchpadDevice="$(
+        xinput list          \
+          | grep -i touchpad \
+          | sed 's/.*id=\([0-9]*\).*/\1/'
+      )"
+
+    if [ -z "$touchpadDevice" ]; then
+      fatal 2 "The touchpad device ID could not be determined."
+    fi
+
+    # https://unix.stackexchange.com/questions/151654/
+    # Bash treats a regexp in quotes as a literal string.
+    if ! [[ "$touchpadDevice" =~ ^[0-9]+$ ]]; then
+      fatal 3 "The touchpad device ID is not a number."
+    fi
+
+    echo "touchpadDevice is $touchpadDevice"
+    echo "prop is $prop"
+
+    declare -r setting="$(
+        xinput list-props "$touchpadDevice" \
+          | grep "$prop"                    \
+          | cut -f3
+      )"
+
+    echo "setting is $setting"
+
+
+    if [ "$setting" -eq 0 ]; then
       declare -r label="Enable touchpad"
-    elif [ "$touchpadStatus" -eq 1 ]; then
+    elif [ "$setting" -eq 1 ]; then
       declare -r label="Disable touchpad"
     else
-      declare -r label="Error: Invalid touchpadStatus."
+      declare -r label="Error: Invalid touchpad status."
     fi
     declare -r options="$label"
     declare -r width="-width 30"
     declare -r theme="-theme ${./flat-orange.rasi}"
     declare -r launch="rofi $width $theme -dmenu -i -p rofi-touchpad:"
 
+    # Note the absence of quotes around `$launch`.
+    # Bash would interpret `"$launch"` as a single token (and thus an error),
+    # rather than a command comprising multiple tokens.
     declare -r option="$(
         echo -e $options     \
-          | "$launch"        \
+          | $launch          \
           | awk '{print $1}' \
           | tr -d '\r\n'
       )"
 
+    setTouchpad () {
+      local newSetting="$1"
+      xinput set-prop "$touchpadDevice" "$prop" "$newSetting"
+    }
+
     if [ -n "$option" ]; then
         case "$option" in
-          Toggle)
-            toggleTouchpad
+          Disable)
+            setTouchpad 0
+            ;;
+          Enable)
+            setTouchpad 1
             ;;
           *)
             ;;

@@ -316,7 +316,8 @@ togglePrompt () {
   fi
 }
 
-getTouchpadStatus () {
+# Activate/deactivate the touchpad.
+toggleTouchpad () {
   # See `xinput list` to check device IDs.
   local prop="Device Enabled"
 
@@ -344,12 +345,6 @@ getTouchpadStatus () {
         | cut -f3
     )"
 
-  echo "${setting}"
-}
-
-# Activate/deactivate the touchpad.
-toggleTouchpad () {
-  local setting="$( getTouchpadStatus )"
   local newSetting
   if [ "${setting}" -eq 0 ]; then
     newSetting=1
