@@ -170,17 +170,30 @@ let
 
 
   rofi-touchpad = pkgs.writeScriptBin "rofi-touchpad" ''
-    #!${pkgs.bash}/bin/bash
+    #!${pkgs.stdenv.shell}
 
-    OPTIONS="Toggle touchpad""
-    LAUNCHER="rofi -width 30 -theme ${./flat-orange.rasi} -dmenu -i -p rofi-touchpad:"
-    USE_LOCKER="false"
-    LOCKER="i3lock"
+    declare -r touchpadStatus="$( getTouchpadStatus )"
+    if [ "$touchpadStatus" -eq 0 ]; then
+      declare -r label="Enable touchpad"
+    elif [ "$touchpadStatus" -eq 1 ]; then
+      declare -r label="Disable touchpad"
+    else
+      declare -r label="Error: Invalid touchpadStatus."
+    fi
+    declare -r options="$label"
+    declare -r width="-width 30"
+    declare -r theme="-theme ${./flat-orange.rasi}"
+    declare -r launch="rofi $width $theme -dmenu -i -p rofi-touchpad:"
 
-    option=`echo -e $OPTIONS | $LAUNCHER | awk '{print $1}' | tr -d '\r\n'`
-    if [ ''${#option} -gt 0 ]
-    then
-        case $option in
+    declare -r option="$(
+        echo -e $options     \
+          | "$launch"        \
+          | awk '{print $1}' \
+          | tr -d '\r\n'
+      )"
+
+    if [ -n "$option" ]; then
+        case "$option" in
           Toggle)
             toggleTouchpad
             ;;
