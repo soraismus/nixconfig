@@ -331,8 +331,9 @@ toggleTouchpad () {
     fatal 2 "The touchpad device ID could not be determined."
   fi
 
-  local re="^[0-9]+$"
-  if ! [[ "${touchpad_device}" =~ "${re}" ]]; then
+  # https://unix.stackexchange.com/questions/151654/
+  # Bash treats a regexp in quotes as a literal string.
+  if ! [[ "${touchpad_device}" =~ ^[0-9]+$ ]]; then
     fatal 3 "The touchpad device ID is not a number."
   fi
 
