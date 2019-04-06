@@ -4,47 +4,47 @@ let
     _rofi () {
         rofi -i -width 700 -no-levenshtein-sort -theme ${./flat-orange.rasi} "$@"
     }
-    
+
     # fields to be used
     URL_field='url'
     USERNAME_field='user'
     AUTOTYPE_field='autotype'
-    
+
     # delay to be used for :delay keyword
     delay=2
-    
+
     ## Programs to be used
     # Editor
     # EDITOR='gvim -f'
     EDITOR='vim'
-    
+
     # Browser
     # BROWSER='qtb'
     BROWSER='firefox'
-    
+
     ## Misc settings
-    
+
     default_do='typePass'
     auto_enter='false'
     notify='false'
     passlength='20'
-    
+
     # seconds to wait before re-opening showEntry-menu
     # after autotyping an entry. Set to "off" to disable
     count=2
-    
+
     # color of the help messages
     # leave empty for autodetection
     help_color=""
-    
+
     # Clipboard settings
     # Possible options: primary, clipboard, both
     clip=clipboard
-    
+
     # Options for generating new password entries
     default_user=polytope
     password_length=12
-    
+
     # Custom Keybindings
     autotype="Control+1"
     type_user="Control+2"
@@ -146,12 +146,12 @@ let
       if [[ -n "$query" ]]; then
         url=''${URLS[$platform]}$query
         firefox --new-window "$url"
-      else 
+      else
         rofi -show -e "No query provided." -theme ${./flat-orange.rasi}
       fi
     }
 
-    main 
+    main
 
     exit 0
   '';
@@ -168,19 +168,41 @@ let
       -e '{ssh-client} {host}'"
     '';
 
+
+  rofi-touchpad = pkgs.writeScriptBin "rofi-touchpad" ''
+    #!${pkgs.bash}/bin/bash
+
+    OPTIONS="Toggle touchpad""
+    LAUNCHER="rofi -width 30 -theme ${./flat-orange.rasi} -dmenu -i -p rofi-touchpad:"
+    USE_LOCKER="false"
+    LOCKER="i3lock"
+
+    option=`echo -e $OPTIONS | $LAUNCHER | awk '{print $1}' | tr -d '\r\n'`
+    if [ ''${#option} -gt 0 ]
+    then
+        case $option in
+          Toggle)
+            toggleTouchpad
+            ;;
+          *)
+            ;;
+        esac
+    fi
+  '';
+
   rofi-system-power = pkgs.writeScriptBin "rofi-pow" ''
     #!${pkgs.bash}/bin/bash
-    
+
     OPTIONS="Reboot system\nPower-off system\nSuspend system\nHibernate system"
     LAUNCHER="rofi -width 30 -theme ${./flat-orange.rasi} -dmenu -i -p rofi-power:"
     USE_LOCKER="false"
     LOCKER="i3lock"
-    
+
     # Show exit wm option if exit command is provided as an argument
     if [ ''${#1} -gt 0 ]; then
       OPTIONS="Exit window manager\n$OPTIONS"
     fi
-    
+
     option=`echo -e $OPTIONS | $LAUNCHER | awk '{print $1}' | tr -d '\r\n'`
     if [ ''${#option} -gt 0 ]
     then
@@ -219,12 +241,13 @@ in
     config = lib.mkIf config.environment.theo.programs.rofi.enable {
       environment.systemPackages =
         [ pkgs.rofi-pass
-          pkgs.rofi 
+          pkgs.rofi
           rofi-dme
           rofi-search
           rofi-show-window
           rofi-ssh
           rofi-system-power
+          rofi-touchpad
           rofi-theme
       ];
 

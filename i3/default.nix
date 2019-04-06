@@ -47,6 +47,7 @@ let
     # so you need that installed.
     # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
     bindsym $mod+d exec rofi-dme
+    bindsym $mod+t exec rofi-touchpad
     bindsym $mod+BackSpace exec rofi-pow
     bindsym $mod+c exec ${pkgs.bash}/bin/bash -c rofi-pass
     bindsym $mod+Shift+w exec rofi-win
