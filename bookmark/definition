@@ -78,8 +78,13 @@ TS="I12"
 TITLE=""
 
 # The first colon silences error messaging.
-# Colons following the "-@", "-t", and "-n" flags indicate that parameters are required.
-while getopts ":@:t:s?n:" opt; do case $opt in
+# Colons following the "-@", "-t", and "-n" flags indicate that arguments are required.
+while getopts ":@:t:s?n:x" opt; do case $opt in
+
+    # Set xtrace.
+    # (NOTE: A trap may be necessary to unset this in case of an error.)
+    x) set -x
+       ;;
 
     # The default URL is gotten from the buffer,
     # but it can be overridden with the "-@" flag.
@@ -98,12 +103,14 @@ while getopts ":@:t:s?n:" opt; do case $opt in
     n) TITLE="$( echo "$OPTARG" | sed 's/\(.*\)/\L\1/' | tr [:space:] '_' )"
        ;;
    \?) displayHelpMessage
+       set +x
        exit 0
        ;;
 
     # An unescaped '?' represents the default setting.
     ?) echo "Invalid Option Specified."
        echo "$USAGE" 1>&2
+       set +x
        exit 1
        ;;
   esac
@@ -114,7 +121,17 @@ done
 shift $(($OPTIND - 1))
 
 if [[ -z "$SRC" ]]; then
-  SRC="$(xclip -o)"
+  SRC="$(
+      xclip -o -selection clipboard 2> /dev/null      \
+        || xclip -o -selection primary 2> /dev/null   \
+        || xclip -o -selection secondary 2> /dev/null
+    )"
+fi
+
+if [ -z "$SRC" -o "$SRC"x = "x" ]; then
+  echo "A src wasn't provided either via xclip or following the -@ flag."
+  set +x
+  exit 2
 fi
 
 DATE="$( date +%Y%m%d-%H%M%s )"
@@ -131,6 +148,7 @@ else
   for arg in "$@"; do
     if [ "$arg" = 'help' ]; then
       displayHelpMessage
+      set +x
       exit 0
     else
       NAME="$NAME"."$arg"
@@ -156,14 +174,21 @@ function minuscule {
 PRIVATE="$(minuscule "$TS")"
 
 if [ "$PRIVATE" -eq 1 ]; then
+  if [ ! -e "$PRIV_BKM_PATH" ]; then
+    mkdir -p "$PRIV_BKM_PATH"
+  fi
   TGT="$PRIV_BKM_PATH/$NAME"
 else
+  if [ ! -e "$BOOKMARKPATH" ]; then
+    mkdir -p "$BOOKMARKPATH"
+  fi
   TGT="$BOOKMARKPATH/$NAME"
 fi
 # --------------------------------------------------------------
 
 if [ -e "$TGT" ]; then
   echo "File ($TGT) already exists."
+  set +x
   exit 1;
 elif $JUST_SAVE_LINK; then
   echo "Find pertinent document or resource at the following URL:" >> "$TGT"
@@ -182,4 +207,5 @@ for arg in "$@"; do
   tag set "$TGT" "$arg"
 done
 
+set +x
 exit 0;
