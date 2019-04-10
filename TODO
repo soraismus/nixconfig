@@ -27,3 +27,5 @@
   include completion.
 - Consider incorporating suggestions found at https://alex.dzyoba.com/blog/vim-revamp/.
 - Consider untentacling i3, rofi, and bash.
+- Change `ls -l` in bash functions like 'derefMark' to `readlink`.
+- Check whether namespaces/tag has access to bash fn 'inode'.

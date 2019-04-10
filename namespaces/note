@@ -1,6 +1,7 @@
 # $FILE_ANNOTATIONS maps file IDs to annotations.
 # Usage: note set <filename> <note1> [<note2>, ...]
 set () {
+  local file="$( realpath "$1" | sed 's/\/home\/\w*/~/' )"
   # The file ID of a file is its inode index.
   local file_id="$( get-file-id "$1" )"
 
@@ -9,7 +10,7 @@ set () {
   shift
 
   for note in "$@"; do
-    echo "${file_id}" "${note}" >> "${FILE_ANNOTATIONS}"
+    printf "%s (%s) %s" "${file_id}" "${file}" "${note}" >> "${FILE_ANNOTATIONS}"
   done
 }
 
@@ -51,6 +52,7 @@ check-directory () {
   fi
 }
 
+# (Cf. bash/functions inode)
 get-file-id () {
   local file_id
   # The '-d' flag of '[' determines whether the file is a directory.
