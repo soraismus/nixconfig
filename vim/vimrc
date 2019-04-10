@@ -68,7 +68,7 @@ set tabstop=2
 set ttimeout
 set ttimeoutlen=100
 set viminfo=!,'100,<50,s10,h
-let &viminfofile = myConfigDir . '.info'
+let &viminfofile = myConfigDir . '/info'
 set virtualedit=all
 set wildmenu
 set wrap
@@ -113,7 +113,8 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_close = 0
 
 " Per !gh/kuniwak/vint
-let g:syntastic_vim_checkers = ['vint']
+" Vint seems to require configuration to work without throwing errors.
+" let g:syntastic_vim_checkers = ['vint']
 
 " Toggle between full path and relative path of current file.
 function! ToggleStatusLine()
