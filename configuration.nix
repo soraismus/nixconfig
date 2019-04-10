@@ -24,32 +24,30 @@
     etc."inputrc".source = ./bash/inputrc;
 
     interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
-      (builtins.readFile ./bash/functions)
-      (builtins.readFile ./bash/settings)
-      (builtins.readFile ./bash/direnv-hook)
-      (builtins.readFile ./bash/completion)
-      (builtins.readFile ./bash/traps)
+        (builtins.readFile ./bash/functions)
+        (builtins.readFile ./bash/settings)
+        (builtins.readFile ./bash/direnv-hook)
+        (builtins.readFile ./bash/completion)
+        (builtins.readFile ./bash/traps)
       ];
 
-    variables =
-      let infinite = "-1";
-      in rec {
-        BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
-        CONFIG_ROOT = "${VOLATILE_CONFIG}/$USER";
-        EDITOR = "vim";
-        FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
-        HISTCONTROL = "ignoredups:erasedups";
-        HISTFILE = "${CONFIG_ROOT}/bash/history/.history";
-        HISTFILESIZE = infinite;
-        HISTSIZE = infinite;
-        MARKPATH = "${CONFIG_ROOT}/.marks";
-        NAMESPACES = "/etc/nixos/namespaces";
-        PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
-        PROMPT_COMMAND = "_promptCommand";
-        TAGPATH = "${CONFIG_ROOT}/.tags";
-        VOLATILE_CONFIG = "/etc/nixos/volatile_config";
-        VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";
-      };
+    variables = rec {
+      BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
+      CONFIG_ROOT = "${VOLATILE_CONFIG}/$USER";
+      EDITOR = "vim";
+      FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
+      HISTCONTROL = "ignoredups:erasedups";
+      HISTFILE = "${CONFIG_ROOT}/bash/history/.history";
+      HISTFILESIZE = "1000";
+      HISTSIZE = "1000";
+      MARKPATH = "${CONFIG_ROOT}/.marks";
+      NAMESPACES = "/etc/nixos/namespaces";
+      PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
+      PROMPT_COMMAND = "_promptCommand";
+      TAGPATH = "${CONFIG_ROOT}/.tags";
+      VOLATILE_CONFIG = "/etc/nixos/volatile_config";
+      VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";
+    };
   };
 
   environment.systemPackages =
