@@ -38,8 +38,8 @@
       FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
       HISTCONTROL = "ignoredups:erasedups";
       HISTFILE = "${CONFIG_ROOT}/bash/history/.history";
-      HISTFILESIZE = 1000;
-      HISTSIZE = 1000;
+      HISTFILESIZE = "1000";
+      HISTSIZE = "1000";
       MARKPATH = "${CONFIG_ROOT}/.marks";
       NAMESPACES = "/etc/nixos/namespaces";
       PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
