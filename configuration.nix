@@ -94,6 +94,7 @@
         irssi # terminal-based IRC client
         jitsi # open-source video calls and chat
         jq # command-line json processor
+        kakoune # vim-inspired text editor
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
