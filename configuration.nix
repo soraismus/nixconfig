@@ -38,12 +38,12 @@
       FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
       HISTCONTROL = "ignoredups:erasedups";
       HISTFILE = "${CONFIG_ROOT}/bash/history/.history";
-      HISTFILESIZE = "1000";
-      HISTSIZE = "1000";
+      HISTFILESIZE = 1000;
+      HISTSIZE = 1000;
       MARKPATH = "${CONFIG_ROOT}/.marks";
       NAMESPACES = "/etc/nixos/namespaces";
       PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
-      PROMPT_COMMAND = "_promptCommand";
+      # PROMPT_COMMAND = "_promptCommand";
       TAGPATH = "${CONFIG_ROOT}/.tags";
       VOLATILE_CONFIG = "/etc/nixos/volatile_config";
       VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";

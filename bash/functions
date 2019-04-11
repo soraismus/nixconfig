@@ -86,7 +86,6 @@ derefMark () {
 }
 
 # https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
-# (Dependency of 'tmux/tmux.conf')
 _disposeHistoryOrphans () {
   # The following cmd lists all shell PIDs.
   #   `--pid $$` -- Only list processes matching the PID of the current shell.
