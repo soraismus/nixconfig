@@ -28,7 +28,6 @@
         (builtins.readFile ./bash/settings)
         (builtins.readFile ./bash/direnv-hook)
         (builtins.readFile ./bash/completion)
-        (builtins.readFile ./bash/traps)
       ];
 
     variables = rec {
