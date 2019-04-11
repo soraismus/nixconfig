@@ -1,7 +1,7 @@
 # This script requires at least one argument (cmd).
 # If 'cmd' doesn't exist, exit.
 if [[ $# == 0 ]]; then
-  echo "  This script requires at least one argument (cmd, ...optional-args)"
+  >&2 echo "  This script requires at least one argument (cmd, ...optional-args)"
   exit 1;
 fi
 
@@ -10,10 +10,12 @@ fi
 #     echo "|ELEMENT|$element|"
 # done
 
-fn=$1
+declare -r fn=$1
 shift
-args="$@"
+declare args="$@"
 # The schema `${var//pattern/replacement}` performs global substitution.
+args=( "${args[@]//'/\\'}" )   # Escape all single-quotes in "$args[@]".
+args=( "${args[@]//\"/\\\"}" ) # Escape all double-quotes in "$args[@]".
 args=( "${args[@]//;/\\;}" )   # Escape all semicolons in "$args[@]".
 args=( "${args[@]//&/\\&}" )   # Escape all ampersands in "$args[@]".
 args=( "${args[@]//|/\\|}" )   # Escape all pipes in "$args[@]".
