@@ -1,6 +1,14 @@
 # $FILE_ANNOTATIONS maps file IDs to annotations.
 # Usage: note set <filename> <note1> [<note2>, ...]
 set () {
+  if [ "$#" -eq 0 ]; then
+    >&2 echo "'set' requires a file/directory and at least one note."
+    exit 1
+  fi
+  if [ ! -e "$1" ]; then
+    >&2 echo "The first argument of 'set' must be a file/directory."
+    exit 2
+  fi
   local file="$( realpath "$1" | sed 's/\/home\/\w*/~/' )"
   # The file ID of a file is its inode index.
   local file_id="$( get-file-id "$1" )"
@@ -9,15 +17,20 @@ set () {
   # provided at the command line.
   shift
 
-  for note in "$@"; do
+  # If the expansion of `$*` is bracketed by double quotes, the expansion is
+  # usully treated as a single token. If IFS is set, an expansion within double
+  # quotes will comprise multiple tokens should $IFS appear in the string.
+  # This behavior contrasts with `$@`, for which expansions, even brackted by
+  # double quotes, are treated as a sequence of space-delimited tokens.
+  for note in "$*"; do
     printf "%s (%s) %s" "${file_id}" "${file}" "${note}" >> "${FILE_ANNOTATIONS}"
   done
 }
 
-# Usage: note get <filename>
+# Usage: `note get <filename>` or `note get`, which assumes the current dir.
 get () {
   if [ -z "${FILE_ANNOTATIONS}" ]; then
-    echo "The variable FILE_ANNOTATIONS is empty."
+    >&2 echo "The variable FILE_ANNOTATIONS is empty."
     exit 1
   elif [ ! -e "${FILE_ANNOTATIONS}" ]; then
     echo "Creating annotation cache at (" "${FILE_ANNOTATIONS}" ")."
@@ -29,8 +42,8 @@ get () {
   else
     file="$1"
   fi
-  local file_id="$( get-file-id "$1" )"
-  cat "${FILE_ANNOTATIONS}" | awk "/${file_id}/" | cut -d" " -f2-
+  local file_id="$( get-file-id "$file" )"
+  cat "${FILE_ANNOTATIONS}" | awk "/${file_id}/" | cut -d" " -f3-
 }
 
 # Writes to the console the annotations of the files in the current directory.
@@ -61,8 +74,11 @@ get-file-id () {
   # The '-L' flag dereferences symbolic links.
   if [ -d "$1" ]; then
     file_id="$( ls -diL "$1" | awk '{print $1}' )"
-  else
+  elif [ -f "$1" ]; then
     file_id="$( ls -iL "$1" | awk '{print $1}' )"
+  else
+    >&2 echo "'get-file-id' requires a file or directory."
+    exit 1
   fi
   echo "$file_id"
 }
