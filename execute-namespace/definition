@@ -21,8 +21,6 @@ args=( "${args[@]//&/\\&}" )   # Escape all ampersands in "$args[@]".
 args=( "${args[@]//|/\\|}" )   # Escape all pipes in "$args[@]".
 args=( "${args[@]//>/\\>}" )   # Escape all greater-than signs in "$args[@]".
 args=( "${args[@]//</\\<}" )   # Escape all less-than signs in "$args[@]".
-args=( "${args[@]//\(/\\\(}" ) # Escape all left-parens in "$args[@]".
-args=( "${args[@]//\)/\\\)}" ) # Escape all right-parens in "$args[@]".
 
 # Start a subshell, in which all of the functions of ...
 # ... the namespace $NAMESPACE can be loaded.

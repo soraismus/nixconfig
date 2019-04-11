@@ -29,3 +29,4 @@
 - Consider untentacling i3, rofi, and bash.
 - Change `ls -l` in bash functions like 'derefMark' to `readlink`.
 - Check whether namespaces/tag has access to bash fn 'inode'.
+- Add traceability to namespace actions.
