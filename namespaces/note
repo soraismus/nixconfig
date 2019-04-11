@@ -23,7 +23,7 @@ set () {
   # This behavior contrasts with `$@`, for which expansions, even brackted by
   # double quotes, are treated as a sequence of space-delimited tokens.
   for note in "$*"; do
-    printf "%s (%s) %s" "${file_id}" "${file}" "${note}" >> "${FILE_ANNOTATIONS}"
+    printf "%s (%s) %s\n" "${file_id}" "${file}" "${note}" >> "${FILE_ANNOTATIONS}"
   done
 }
 
