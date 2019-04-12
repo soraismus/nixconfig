@@ -15,6 +15,7 @@ let
       dc = diff --cached
       dump = cat-file -p
       hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+      s = status
       st = status
       type = cat-file -t
     [core]
@@ -31,7 +32,7 @@ in
 
       environment.systemPackages =
         [ pkgs.gitAndTools.git
-          pkgs.gitAndTools.git-annex # manage files without committing file contents 
+          pkgs.gitAndTools.git-annex # manage files without committing file contents
           pkgs.gitAndTools.git-crypt # encrypts particular files
           pkgs.gitAndTools.gitRemoteGcrypt # encrypts an entire repository
         ];

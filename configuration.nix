@@ -241,7 +241,9 @@
         gcob = "git cob";
         gd = "git diff";
         gdiff = "git diff";
+        gits = "git status";
         gitst = "git status";
+        gs = "git status";
         gst = "git status";
         l = "ls -Alh --color=tty";
         l1 = "ls -1A --color=tty --group-directories-first";
