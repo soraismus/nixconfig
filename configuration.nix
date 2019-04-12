@@ -41,6 +41,10 @@
       HISTSIZE = "1000";
       MARKPATH = "${CONFIG_ROOT}/.marks";
       NAMESPACES = "/etc/nixos/namespaces";
+      NIXOS_UNSTABLE_NIX_PATH =
+        "nixpkgs="
+          + "https://github.com/NixOS/nixpkgs-channels/archive/"
+          + "nixos-unstable.tar.gz";
       PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
       # PROMPT_COMMAND = "_promptCommand";
       TAGPATH = "${CONFIG_ROOT}/.tags";
