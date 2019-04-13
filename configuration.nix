@@ -163,7 +163,7 @@
         w3m # text-based web browser (cf. browsh, links2, lynx)
         xclip # clipboard utility
         yarn # variant to npm
-        # yi
+        # yi # yi text editor (written in haskell)
         youtube-dl # command-line tool to download videos from video platforms
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
         zim # desktop wiki
