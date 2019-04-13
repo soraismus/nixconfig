@@ -34,3 +34,4 @@
 - Consider upgrading to new verson of NixOS:
   https://nixos.org/nixos/manual/index.html#sec-upgrading
   https://nixos.org/nixos/manual/index.html#sec-release-19.03
+- restore sessions and history management
