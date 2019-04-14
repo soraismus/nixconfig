@@ -16,6 +16,12 @@ example                     effect
 {cmd mode}    :y%+          yank full file into the "+ register
 :[line]put {register}       paste from register onto specified line
 :[line]put! {register}      paste from register onto line before specified line
+<C-W>T                      move current window to a new tab page
+<C-W>t                      go to top page
+<C-W>H                      move current window to the far left (can change vsplit to h)
+<C-W>K                      move current window to the very top (can change hsplit to v)
+<C-W>R                      rotate windows upwards N times
+<C-W>r                      rotate windows downwards N times
 
 :command -nargs=1 -bang -complete=file Ren f <args>|w<bang>
                             rename the current buffer
