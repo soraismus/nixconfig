@@ -22,6 +22,11 @@ example                     effect
 <C-W>K                      move current window to the very top (can change hsplit to v)
 <C-W>R                      rotate windows upwards N times
 <C-W>r                      rotate windows downwards N times
+*                           Search for the [count]th (not 0) occurrence of the word
+                            ... nearest the cursor.
+#                           like * but backward
+g*                          like * but don't put "\<", "\>" around word in "/ register.
+                            ... this allows matches on partial words
 
 :command -nargs=1 -bang -complete=file Ren f <args>|w<bang>
                             rename the current buffer
