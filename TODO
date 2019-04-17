@@ -31,6 +31,8 @@
 - Check whether namespaces/tag has access to bash fn 'inode'.
 - Add traceability to namespace actions.
 - Modify prompt to indicate if PWD (or its immediate files) have notes
+- Add !gh/alexwl/haskell-code-explorer
+- Add !gh/pirate/ArchiveBox
 
 - Consider upgrading to new verson of NixOS:
   https://nixos.org/nixos/manual/index.html#sec-upgrading
