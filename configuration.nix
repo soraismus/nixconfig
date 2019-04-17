@@ -166,6 +166,7 @@
         # yi # yi text editor (written in haskell)
         youtube-dl # command-line tool to download videos from video platforms
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
+        zeal # offline API documentation browser
         zim # desktop wiki
       ];
 
