@@ -33,6 +33,7 @@ g*                          like * but don't put "\<", "\>" around word in "/ re
 :-tabnew	                  opens tabpage before the current one
 :0tabnew	                  opens tabpage before the first one
 :$tabnew	                  opens tabpage after the last one
+:!mv % ${new_filename}      rename the current file
 
 :command -nargs=1 -bang -complete=file Ren f <args>|w<bang>
                             rename the current buffer
