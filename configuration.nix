@@ -194,6 +194,7 @@
 
   networking.hostName = "theo"; # Define your hostname.
   networking.networkmanager.enable = true;
+  networking.enableIPv6 = false;
 
   nix.gc = {
     automatic = true;
