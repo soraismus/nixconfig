@@ -1,0 +1,23 @@
+# This script requires at least one argument (cmd).
+# If 'cmd' doesn't exist, exit.
+if [[ $# == 0 ]]; then
+  >&2 echo "  This script requires at least one argument (cmd, ...optional-args)"
+  exit 1;
+fi
+
+declare -r fn=$1
+shift
+declare args="$@"
+# The schema `${var//pattern/replacement}` performs global substitution.
+args=( "${args[@]//'/\\'}" )   # Escape all single-quotes in "$args[@]".
+args=( "${args[@]//\"/\\\"}" ) # Escape all double-quotes in "$args[@]".
+args=( "${args[@]//;/\\;}" )   # Escape all semicolons in "$args[@]".
+args=( "${args[@]//&/\\&}" )   # Escape all ampersands in "$args[@]".
+args=( "${args[@]//|/\\|}" )   # Escape all pipes in "$args[@]".
+args=( "${args[@]//>/\\>}" )   # Escape all greater-than signs in "$args[@]".
+args=( "${args[@]//</\\<}" )   # Escape all less-than signs in "$args[@]".
+
+# Start a subshell, in which all of the functions of ...
+# ... the namespace $NAMESPACE can be loaded.
+# In the subshell, run the function $fn with args $args.
+bash -c "source ${NAMESPACES}/${NAMESPACE}; ${fn} ${args[@]}"

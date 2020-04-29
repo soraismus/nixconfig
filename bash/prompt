@@ -1,0 +1,165 @@
+# Notes about bash prompts
+# ------------------------
+# '\e' is equivalent to ASCII escape character '\033'.
+# '[' and ']' surround a control sequence of non-printing characters.
+# '$PS2' is the continuation interactive prompt.
+# '$PS3' is the prompt used by the bash built-in 'select'.
+# '$PS4' is the prompt used by `set -x` to prefix tracing output.
+# '$SUDO_PS1', if set, overrides '$PS1' when `sudo` is invocated.
+# For example:
+#   `export PS4="$0.$LINENO+ "`
+#   `set -x`
+
+_basic_prompt () {
+  local colon=":"
+  local space=" "
+
+  local dark_blue="\[\033[1;34m\]"
+  local dark_red="\[\033[1;31m\]"
+  local green="\[\033[0;32m\]"
+  local no_color="\[\033[0m\]"
+
+  local job_count="\j"
+  local history_number="\!"
+  local command_number="\#"
+  local full_cwd="\w"
+  local abbrev_cwd="\W"
+  local user_type="\$" # If effective UID is 0 then '#' else '$'.
+
+  local index="${history_number}${colon}${command_number}${colon}"
+
+  local prefix="${green}${job_count}${colon}${dark_red}${index}"
+  local suffix="${dark_blue}${abbrev_cwd}${dark_red}${user_type} ${no_color}"
+
+  PS1="${prefix}${suffix}"
+}
+
+# Generate a message that indicates the branch and status
+# of a git-controlled directory. The '.bashrc' file uses this
+# function to determine the value of 'PS1'.
+git_prompt () {
+  # `git rev-parse` interprets a <rev> (i.e., a revision parameter).
+  # 'HEAD' refers to the content of '.git/HEAD', which is a pointer
+  # to the current <ref> (i.e., the file contains a specific path
+  # within the '.git/refs/heads' directory). The '--abbrev-ref'
+  # option provides the name of the branch.
+  #
+  # If there is an error (e.g., no git repository exists),
+  # 'branch' is set to an empty string.
+  local branch="$( git rev-parse --abbrev-ref HEAD 2> /dev/null )"
+
+  local result=""
+  local status=""
+
+  if [ -n "$branch" ]; then
+    # NOTE:
+    # `status -uno` determines status _without_ considering untracked files.
+    # NOTE:
+    # The format of the output of `git status -z`:
+    #   Each modified file has an output entry comprising three components:
+    #     0. a sigil representing the kind of modification,
+    #     1. the file's path,
+    #     2. and, most importantly, a NUL (ASCII 0) character.
+    #
+    # Thus, if the working tree is clean, `git status -z` seems not to emit
+    # any NUL characters at all. However, when files have been introduced or
+    # modified, `git status -z` will emit NUL characters, which, because of
+    # command substitution, will cause bash to display the message
+    # "bash: warning: command substitution: ignored null byte in input".
+    #
+    # To suppress this warning, the following strips all NUL characters from
+    # the output of `git status -z` and appends an 'x' to every git status
+    # update. If the working tree is clean, only the single character 'x'
+    # remains, and 'x' will equal 'x'; otherwise, the status update will
+    # contain characters other than just 'x'.
+    #
+    # NOTE: `git status -z | tr -d '\0'` often seems to hang up
+    # `cd`ing to a directory under git source control.
+    # Would checking the '.git/index' file be a feasible alternative?
+    if [ 'x' = "$( git status -uno -z | tr -d '\0' )x" ]; then
+      #status="✔" # checkmark at \x2714 (\u2714)
+      status="OK"
+    else
+      #status="✘" # x-mark at \x2718 (\u2718)
+      status="X"
+    fi
+    result="($branch $status) "
+  fi
+
+  printf "$result"
+}
+
+_titlebar_prompt () {
+  local titlebar_start="\[\033]0;"
+  local titlebar_end="\007\]"
+  local abbrev_cwd="\W"
+  local titlebar="${titlebar_start}${abbrev_cwd} \$(git_prompt)${titlebar_end}"
+
+  case "$TERM" in
+  # In the previous iteration of this code,
+  # "$TERM" was matched against "screen" exactly (i.e., not "screen*").
+  # "screen*" is being tried here b/c with tmux, "$TERM" is "screen-256color".
+  # (Tmux, however, does allow its setting of $TERM to be modified.)
+  xterm*|rxvt*|screen*)
+      PS1="${titlebar}${PS1}"
+      ;;
+  *)
+      # Preserve $PS1.
+      ;;
+  esac
+}
+
+_elevated_prompt () {
+  local colon=":"
+  local space=" "
+
+  local dark_blue="\[\033[1;34m\]"
+  local dark_red="\[\033[1;31m\]"
+  local green="\[\033[0;32m\]"
+  local yellow="\[\033[1;33m\]"
+  local no_color="\[\033[0m\]"
+
+  local job_count="\j"
+  local history_number="\!"
+  local command_number="\#"
+  local full_cwd="\w"
+  local abbrev_cwd="\W"
+  local user_type="\$" # If eff UID is 0 then '#' else '$'; thus, should be '$'
+
+  local index="${history_number}${colon}${command_number}${colon}"
+  local caution="${yellow}--"
+
+  local prefix="${green}${job_count}${colon}${dark_red}${index}"
+  local infix="${dark_blue}${abbrev_cwd}"
+  local suffix="${dark_red}${user_type} ${no_color}"
+
+  SUDO_PS1="${caution} ${prefix}${infix} ${caution}${suffix}"
+}
+
+
+_titlebar_elevated_prompt () {
+  local titlebar_start="\[\033]0;"
+  local titlebar_end="\007\]"
+  local abbrev_cwd="\W"
+  local titlebar="${titlebar_start}${abbrev_cwd} \$(git_prompt)${titlebar_end}"
+
+  case "$TERM" in
+  # In the previous iteration of this code,
+  # "$TERM" was matched against "screen" exactly (i.e., not "screen*").
+  # "screen*" is being tried here b/c with tmux, "$TERM" is "screen-256color".
+  # (Tmux, however, does allow its setting of $TERM to be modified.)
+  xterm*|rxvt*|screen*)
+      SUDO_PS1="${titlebar}${SUDO_PS1}"
+      ;;
+  *)
+      # Preserve $SUDO_PS1.
+      ;;
+  esac
+}
+
+_basic_prompt && _titlebar_prompt
+_elevated_prompt && _titlebar_elevated_prompt
+unset _basic_prompt
+unset _elevated_prompt
+unset _titlebar_elevated_prompt
+unset _titlebar_prompt

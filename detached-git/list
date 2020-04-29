@@ -1,0 +1,1 @@
+git --work-tree=/etc/nixos/easy-purescript-nix clone https://github.com/justinwoo/easy-purescript-nix.git detached-git/easy-purescript-nix
