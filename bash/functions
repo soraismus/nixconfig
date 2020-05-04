@@ -122,6 +122,12 @@ ducks () {
   du -cks "$1" | sort -rn | head -11
 }
 
+# `echo` can have unspecified behavior.
+# Source: https://www.etalabs.net/sh_tricks.html
+echo () {
+  printf %s\\n "$*"
+}
+
 fatal () {
   # Make file descriptor 1 also point to file descriptor 2.
   >&2 echo "Error: $2"

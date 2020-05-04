@@ -101,8 +101,9 @@
         fossil # version control system
         fzf # command-line fuzzy finder
         gitless # version control system built on top of git
-        gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
         gdrive # command-line utility for interacting with google drive
+        gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
+        golly # game of life
         haskellPackages.hakyll # static website compiler library
         heroku
         # hieroglyph # presentation editor
@@ -293,6 +294,7 @@
         oxclip = "xclip -o -sel clip";
         promptToggle = "togglePrompt";
         quit = "exit";
+        rm = "rm -I";
         stackBuild = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH stack build --nix --fast";
         startStackShell = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH nix-shell -p stack";
         touchpadToggle = "toggleTouchpad";
