@@ -69,7 +69,6 @@ countDirItems () {
   else
     directory="$PWD"
   fi
-  local directory="$1"
   # `ls -1` # Lists one file per line.
   # `ls -U` # Lists files in directory order (i.e., without sorting).
   # `wc -l` # Counts the number of newline characters.
@@ -128,16 +127,9 @@ echo () {
   printf %s\\n "$*"
 }
 
-fatal () {
+echoError () {
   # Make file descriptor 1 also point to file descriptor 2.
-  >&2 echo "Error: $2"
-  exit "$1"
-}
-
-fnFatal () {
-  # Make file descriptor 1 also point to file descriptor 2.
-  >&2 echo "Error: $2"
-  return "$1"
+  >&2 echo "Error: $1"
 }
 
 # Request ids of gdrive records for folders with the specified name.
@@ -177,10 +169,12 @@ githostclone () {
     repo="$2"
     dir="${repo}"
   else
-    fnFatal 1 'Incorrect number of arguments'
+    echoError 'Incorrect number of arguments'
+    return 1
   fi
   if [ -d "${dir}" ]; then
-    fnFatal 2 "The directory (${dir}) already exists."
+    echoError "The directory (${dir}) already exists."
+    return 2
   else
     git clone "https://${githost}/${owner}/${repo}.git" "${dir}"
   fi
@@ -209,7 +203,7 @@ hist () {
 # (Dependency of 'namespaces/tag')
 # (Cf. namespaces/note get-file-id)
 inode () {
-  [ -z "$1" ] && fnFatal 1 'This function requires an argument'
+  [ -z "$1" ] && { echoError 'This function requires an argument'; return 1; }
   local file_id
   # The '-d' flag of '[' determines whether the file is a directory.
   # The '-d' flag of 'ls' lists directory entries rather than directory contents.
@@ -257,8 +251,12 @@ listRecentFiles () {
 }
 
 lsmark () {
-  [ -z "$1" ] && fnFatal 1 'This function requires an argument'
-  local path="${1}"
+  local path
+  if [ -z "$1" ]; then
+    path='.'
+  else
+    path="${1}"
+  fi
   local initial_segment="${1%%/*}"
   if isMark "${initial_segment}"; then
     ls "${MARKPATH}/${path}"
@@ -334,7 +332,7 @@ tag () {
 
 # Go to the directory to which the provided bookmark links.
 to () {
-  [ -z "$1" ] && fnFatal 1 'This function requires an argument'
+  [ -z "$1" ] && { echoError 'This function requires an argument'; return 1; }
   local path="${1}"
   local initial_segment="${1%%/*}"
   if isMark "${initial_segment}"; then
@@ -369,13 +367,15 @@ toggleTouchpad () {
     )"
 
   if [ -z "$touchpad_device" ]; then
-    fnFatal 2 "The touchpad device ID could not be determined."
+    echoError "The touchpad device ID could not be determined."
+    return 2
   fi
 
   # https://unix.stackexchange.com/questions/151654/
   # Bash treats a regexp in quotes as a literal string.
   if ! [[ "${touchpad_device}" =~ ^[0-9]+$ ]]; then
-    fnFatal 3 "The touchpad device ID is not a number."
+    echoError "The touchpad device ID is not a number."
+    return 3
   fi
 
   # Default delimiter for `touch` is \t.
@@ -408,7 +408,7 @@ _trackPath () {
 
 # Go to the location, and rename the tmux window.
 tmuxto () {
-  [ -z "$1" ] && fnFatal 1 'This function requires an argument'
+  [ -z "$1" ] && { echoError 'This function requires an argument'; return 1; }
   to "$1"
   tmux rename-window "$1"
 }
@@ -452,7 +452,8 @@ workspace () {
   local window_name
   local path
   if [ "$#" -lt 2 ]; then
-    fnFatal 1 'Incorrect number of arguments'
+    echoError 'Incorrect number of arguments'
+    return 1
   elif [ "$#" -eq 2 ]; then
     window_name="$1"
     path="$2"

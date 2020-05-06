@@ -181,13 +181,15 @@ let
       )"
 
     if [ -z "$touchpadDevice" ]; then
-      fatal 2 "The touchpad device ID could not be determined."
+      echoError "The touchpad device ID could not be determined."
+      return 2
     fi
 
     # https://unix.stackexchange.com/questions/151654/
     # Bash treats a regexp in quotes as a literal string.
     if ! [[ "$touchpadDevice" =~ ^[0-9]+$ ]]; then
-      fatal 3 "The touchpad device ID is not a number."
+      echoError "The touchpad device ID is not a number."
+      return 3
     fi
 
     echo "touchpadDevice is $touchpadDevice"

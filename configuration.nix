@@ -299,6 +299,7 @@
         startStackShell = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH nix-shell -p stack";
         touchpadToggle = "toggleTouchpad";
         v = "vim";
+        worto = "vim $MARKPATH/expl/wortolisto";
       };
       shellInit = "";
     };
