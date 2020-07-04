@@ -62,6 +62,12 @@ bmvim () {
   vim "$filename"
 }
 
+connectWifi () {
+  local ssid="$1"
+  local pw="$2"
+  nmcli device wifi connect "$ssid" password "$pw"
+}
+
 countDirItems () {
   local directory
   if [[ "$#" -gt 0 ]]; then
@@ -250,6 +256,10 @@ listRecentFiles () {
   printf "\n"
 }
 
+listWifi () {
+  nmcli device wifi list
+}
+
 lsmark () {
   local path
   if [ -z "$1" ]; then
@@ -330,6 +340,8 @@ tag () {
   NAMESPACE=tag execute-namespace "$@"
 }
 
+# TODO: DEBUG: `to git` in a directory with a '.git' directory
+#              changes to the '.git' directory. Why?
 # Go to the directory to which the provided bookmark links.
 to () {
   [ -z "$1" ] && { echoError 'This function requires an argument'; return 1; }
