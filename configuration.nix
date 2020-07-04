@@ -151,6 +151,8 @@
         purs-utils.dhall-simple
         purs-utils.dhall-json-simple
         purs-utils.psc-package
+        purs-utils.psc-package2nix
+        purs-utils.purp
         purs-utils.purs
         purs-utils.purty
         purs-utils.spago
