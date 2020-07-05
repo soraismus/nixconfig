@@ -4,6 +4,7 @@ syntax enable " Equivalent to ':source $VIMRUNTIME/syntax/syntax.vim'
 let mapleader = ","
 
 let myConfigDir = expand('$VOLATILE_CONFIG/$USER/vim')
+let mySpellDir = myConfigDir . '/spellDir'
 
 " The prefix 'w:' indicates a window-specific variable.
 let w:counter = 0
@@ -56,6 +57,8 @@ set showmatch
 set sidescrolloff=0
 set smarttab
 setlocal spell
+let &spellfile = mySpellDir . '/mh.utf-8.add'
+  let &spellfile .= ',' . mySpellDir . '/purs.utf-8.add'
 set spelllang=en_us
 set statusline=[%n]\ [%f]
   set statusline+=%h%m%r%y
