@@ -333,7 +333,7 @@ peek () {
 # the following function in 'configuration.nix'.
 _promptCommand () {
   _updateHistory
-  _trackPath
+  #_trackPath
 }
 
 tag () {
@@ -426,29 +426,28 @@ tmuxto () {
 }
 
 # https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
+#https://metaredux.com/posts/2020/07/07/supercharge-your-bash-history.html
 _updateHistory () {
-  # `$$` represents the PID of the current shell.
-  # By convention, "${HISTFILE}.$$" is the current shell's hist file.
-  local shell_histfile="${HISTFILE}.$$"
-
-  # Create a new history file for the current shell,
-  # and append hist lines to it.
-  history -a "${shell_histfile}"
-
-  history -c # Clear the history list.
-  history -r # Load common $HISTFILE and append contents to the history list.
-
-  # Load other shells' history files.
-  # (`grep -v` inverts the match.)
-  # (The backslash escapes aliases.)
-  for f in "$(
-      \ls ${HISTFILE}.[0-9]* 2> /dev/null \
-        | grep -v "${shell_histfile}\$" 2> /dev/null
-    )"
-  do history -r "$f"
-  done
-
-  history -r "${shell_histfile}" # Load the current shell's history file.
+  history -a
+  history -n
+  # # `$$` represents the PID of the current shell.
+  # # By convention, "${HISTFILE}.$$" is the current shell's hist file.
+  # local shell_histfile="${HISTFILE}.$$"
+  # # Create a new history file for the current shell,
+  # # and append hist lines to it.
+  # history -a "${shell_histfile}"
+  # history -c # Clear the history list.
+  # history -r # Load common $HISTFILE and append contents to the history list.
+  # # Load other shells' history files.
+  # # (`grep -v` inverts the match.)
+  # # (The backslash escapes aliases.)
+  # for f in "$(
+  #     \ls ${HISTFILE}.[0-9]* 2> /dev/null \
+  #       | grep -v "${shell_histfile}\$" 2> /dev/null
+  #   )"
+  # do history -r "$f"
+  # done
+  # history -r "${shell_histfile}" # Load the current shell's history file.
 }
 
 # Search for the path of a file matching the name provided; open it with vim.

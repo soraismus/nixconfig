@@ -25,7 +25,6 @@
     interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
         (builtins.readFile ./bash/functions)
         (builtins.readFile ./bash/settings)
-        (builtins.readFile ./bash/direnv-hook)
         (builtins.readFile ./bash/completion)
         (builtins.readFile ./bash/tmux-completion)
       ];
@@ -37,8 +36,13 @@
       FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
       HISTCONTROL = "ignoredups:erasedups";
       HISTFILE = "${CONFIG_ROOT}/bash/history/.history";
-      HISTFILESIZE = "5000";
-      HISTSIZE = "5000";
+      HISTFILESIZE = "10000000";
+      HISTIGNORE =
+        "b:b1:b2:b3:b4:b5:bg:exit:fg:hist:history:ixclip:l:l1:ls:lsm"
+          + ":oxclip:promptToggle:pwd:quit"
+          + ":startStackShell:togglePrompt:toggleTouchpad"
+          + ":touchpadToggle:worto";
+      HISTSIZE = "100000";
       MARKPATH = "${CONFIG_ROOT}/.marks";
       NAMESPACES = "/etc/nixos/namespaces";
       NIXOS_UNSTABLE_NIX_PATH =
@@ -46,7 +50,7 @@
           + "https://github.com/NixOS/nixpkgs-channels/archive/"
           + "nixos-unstable.tar.gz";
       PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
-      # PROMPT_COMMAND = "_promptCommand";
+      PROMPT_COMMAND = "_promptCommand";
       TAGPATH = "${CONFIG_ROOT}/.tags";
       TAGSOURCES = "${CONFIG_ROOT}/.tag_sources";
       VOLATILE_CONFIG = "/etc/nixos/volatile_config";
@@ -84,7 +88,7 @@
         ctags # utility for fast source-code browsing (exuberant ctags)
         darcs # version control system
         dragon-drop # Simple drag-and-drop source/sink for X
-        direnv # environment switcher for the shell
+        # direnv # environment switcher for the shell
         docker # containerizer; OS-level virtualization: application container
         dotnet-sdk # .NET Core SDK 2.0.2 with .NET Core 2.0.0
         dotnetPackages.Nuget # .NET nuget
