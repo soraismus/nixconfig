@@ -188,6 +188,7 @@
         tor-browser-bundle # tor browser
         translate-shell # command-line translator
         tree # commandline directory visualizer
+        units # unit-conversion tool
         utox # (mu-tox) lightweight tox client
 
         # Currently, see ~/.vintrc.yaml for theo-wide vint configuration.
