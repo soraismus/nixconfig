@@ -131,3 +131,14 @@ Getting non-clobbered output from command substitution
     var=${f%/*}
 
     This will fail for files in the root directory, among other corner cases, so a good approach would be to write a shell function to consider such special cases. Note, however, that such a function must somehow store its results in a variable. If it printed them to stdout, as is common practice when writing shell functions to process strings, we would run into the issue of “$(...)” stripping trailing newlines once again and be back where we started...
+
+Don’t repeat your whole arguments
+- Don’t do this
+  ```
+  cp ~/this-is/my-long-file/name.txt ~/this-is/my-long-file/name.txt.bak
+  ```
+
+- Do this
+  ```
+  cp ~/this-is/my-long-file/name.txt{,.bak}
+  ```
