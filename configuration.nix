@@ -189,6 +189,7 @@
         translate-shell # command-line translator
         tree # commandline directory visualizer
         units # unit-conversion tool
+        usbutils # tools (e.g., lsusb) for working with USB devices
         utox # (mu-tox) lightweight tox client
 
         # Currently, see ~/.vintrc.yaml for theo-wide vint configuration.
