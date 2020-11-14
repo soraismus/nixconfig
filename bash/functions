@@ -340,6 +340,10 @@ tag () {
   NAMESPACE=tag execute-namespace "$@"
 }
 
+timestamp () {
+  date +'%Y.%m.%d.%H.%M.%S'
+}
+
 # TODO: DEBUG: `to git` in a directory with a '.git' directory
 #              changes to the '.git' directory. Why?
 # Go to the directory to which the provided bookmark links.
