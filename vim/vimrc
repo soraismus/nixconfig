@@ -69,6 +69,7 @@ set statusline=[%n]\ [%f]
   set statusline+=%*            " Restore highlight group User{N}.
   set statusline+=[%l\/%L,\ %c%V]
 set swapfile
+set suffixesadd=.c,.cs,.hs,.java,.js,.json,.md,.py,.purs,.txt
 set t_Co=16
 set tabpagemax=50
 set tabstop=2
