@@ -241,6 +241,7 @@
 
   nixpkgs.config = {
     allowUnfree = true;
+    # chromium.enableWideVine = true;
     packageOverrides = pkgs: {
       myVim = import ./vim { pkgs = pkgs; };
     };
