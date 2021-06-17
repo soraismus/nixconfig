@@ -29,13 +29,13 @@ pkgs.stdenv.mkDerivation rec {
     install -D -m555 -T $out/zephyr $ZEPHYR
 
     chmod u+w $ZEPHYR
-  '' + pkgs.stdenv.lib.optionalString pkgs.stdenv.isDarwin ''
+  '' + pkgs.lib.optionalString pkgs.stdenv.isDarwin ''
     install_name_tool \
       -change /usr/lib/libSystem.B.dylib ${pkgs.darwin.Libsystem}/lib/libSystem.B.dylib \
       -change /usr/lib/libz.1.dylib ${pkgs.zlib}/lib/libz.1.dylib \
       -change /usr/lib/libiconv.2.dylib ${pkgs.libiconv}/libiconv.2.dylib \
       $ZEPHYR
-  '' + pkgs.stdenv.lib.optionalString (!pkgs.stdenv.isDarwin) ''
+  '' + pkgs.lib.optionalString (!pkgs.stdenv.isDarwin) ''
     patchelf --interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" --set-rpath ${libPath} $ZEPHYR
   '' + ''
     chmod u-w $ZEPHYR

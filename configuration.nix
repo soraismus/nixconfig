@@ -18,6 +18,20 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  console =
+    let
+      callPackage = pkgs.lib.callPackageWith pkgs;
+      workman = (callPackage ./workman {}).workman;
+    in {
+      font = "Lat2-Terminus16";
+      keyMap = "us";
+      packages =
+        [ # pkgs.kbdKeymaps.dvp
+          # pkgs.kbdKeymaps.neo
+          workman # workman-p keyboard layout; see `services.xserver`
+        ];
+    };
+
   # bash and inputrc # see also `programs.bash`
   environment = {
     etc."inputrc".source = ./bash/inputrc;
@@ -158,7 +172,7 @@
         purs-utils.psc-package2nix
         purs-utils.purp
         purs-utils.purs
-        purs-utils.purty
+        # purs-utils.purty
         purs-utils.spago
         purs-utils.spago2nix
         purs-utils.zephyr # purescript tree-shaker
@@ -175,7 +189,7 @@
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
         scrot # command-line screen-capture utility
         stack # haskell tool stack
-        stack2nix # nix utility that transforms stack specs into nix specs
+        # stack2nix # nix utility that transforms stack specs into nix specs
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
         tcpdump # network sniffer
         termite # keyboard-centric VTE-based terminal
@@ -185,7 +199,7 @@
         tmux # terminal multiplexer
         tmuxp # manage tmux workspaces from JSON and YAML
         # tomb # file encryption
-        tor-browser-bundle # tor browser
+        # tor-browser-bundle-bin # tor browser
         translate-shell # command-line translator
         tree # commandline directory visualizer
         units # unit-conversion tool
@@ -209,26 +223,21 @@
         zim # desktop wiki
       ];
 
-  environment.theo.programs.bookmark.enable = true;
-  environment.theo.programs.execute-namespace.enable = true;
-  environment.theo.programs.git.enable = true;
-  environment.theo.programs.rofi.enable = true;
-  environment.theo.services.automatic-mac-spoofing.enable = false;
-  environment.theo.services.i3.enable = true;
+  environment.theo = {
+    programs = {
+      bookmark.enable = true;
+      execute-namespace.enable = true;
+      git.enable = true;
+      rofi.enable = true;
+    };
+    services = {
+      automatic-mac-spoofing.enable = false;
+      i3.enable = true;
+    };
+  };
 
-  i18n =
-    let
-      callPackage = pkgs.lib.callPackageWith pkgs;
-      workman = (callPackage ./workman {}).workman;
-    in {
-      consoleFont = "Lat2-Terminus16";
-      consoleKeyMap = "us";
+  i18n = {
       defaultLocale = "en_US.UTF-8";
-      consolePackages =
-        [ pkgs.kbdKeymaps.dvp
-          pkgs.kbdKeymaps.neo
-          workman # workman-p keyboard layout; see `services.xserver`
-        ];
     };
 
   networking.hostName = "theo"; # Define your hostname.
@@ -248,7 +257,7 @@
   };
 
   fonts = {
-    enableFontDir = true;
+    fontDir.enable = true;
     enableGhostscriptFonts = true;
     fonts =
       [ pkgs.powerline-fonts
@@ -321,7 +330,7 @@
       clock24 = true;
       customPaneNavigationAndResize = true;
       escapeTime = 500;
-      extraTmuxConf = builtins.readFile ./tmux/tmux.conf;
+      extraConfig = builtins.readFile ./tmux/tmux.conf;
       historyLimit = 10000;
       keyMode = "vi";
       newSession = true;
@@ -336,20 +345,10 @@
   services.mongodb.enable = false;
   services.openssh.enable = true;
 
-  # Ctrl-Alt-F8 displays the manual in the terminal.
-  services.nixosManual.showManual = true;
-
   services.xserver = {
     enable = true;
-    desktopManager = {
-      default = "none";
-      xterm.enable = false;
-    };
     displayManager = {
-      auto = {
-        enable = true;
-        user = "theo";
-      };
+      defaultSession = "none+i3";
       sessionCommands = ''
         ${pkgs.xlibs.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
       '';
@@ -359,7 +358,6 @@
     xkbModel = "pc104";
     xkbOptions = "ctrl:nocaps";
     xkbVariant = "";
-    windowManager.default = "i3";
   };
 
   # Enable sound.
