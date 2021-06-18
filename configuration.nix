@@ -91,7 +91,6 @@
         bat # a 'cat' clone with syntax highlighting and git integration
         bc # calculator
         # binutils # tools for manipulating binaries (linker, assembler
-        brave # private-oriented browser
         broot # interactive tree view, fuzzy search, balanced BFS descent
         browsh # text-based browser that can render css and js (cf. links2, lynx, w3m)
         cabal-install # haskell packaging and build system
