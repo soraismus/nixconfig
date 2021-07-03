@@ -60,7 +60,7 @@ setlocal spell
 let &spellfile = mySpellDir . '/mh.utf-8.add'
   let &spellfile .= ',' . mySpellDir . '/purs.utf-8.add'
 set spelllang=en_us
-set statusline=[%n]\ [%f]
+set statusline=[%n]\ [%t]
   set statusline+=%h%m%r%y
   set statusline+=%=            " separation point btw left- and right-aligned
   set statusline+=%{fugitive#statusline()}
@@ -141,10 +141,10 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 " Toggle between full path and relative path of current file.
 function! ToggleStatusLine()
   let myStatusLine = &statusline
-  if myStatusLine =~ "%f"
-    let myStatusLine = substitute(myStatusLine, "%f", "%F", "g")
+  if myStatusLine =~ "%t"
+    let myStatusLine = substitute(myStatusLine, "%t", "%F", "g")
   elseif myStatusLine =~ "%F"
-    let myStatusLine = substitute(myStatusLine, "%F", "%f", "g")
+    let myStatusLine = substitute(myStatusLine, "%F", "%t", "g")
   endif
   let &statusline = myStatusLine
 endfunction
@@ -153,8 +153,8 @@ command! ToggleStatusLine call ToggleStatusLine()
 " Toggle between concise and data-rich statusline modes.
 function! ToggleStatusLineMode()
   let myStatusLine = &statusline
-  if myStatusLine =~ "%f"
-    let myPathFormat = "%f"
+  if myStatusLine =~ "%t"
+    let myPathFormat = "%t"
   else
     let myPathFormat = "%F"
   endif
