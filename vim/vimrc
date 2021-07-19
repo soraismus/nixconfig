@@ -6,9 +6,6 @@ let mapleader = ","
 let myConfigDir = expand('$VOLATILE_CONFIG/$USER/vim')
 let mySpellDir = myConfigDir . '/spellDir'
 
-" The prefix 'w:' indicates a window-specific variable.
-let w:counter = 0
-
 set autoindent
 set autoread
 set background=dark
@@ -96,10 +93,6 @@ inoremap <C-A> <Esc>I
 inoremap <C-E> <Esc>A
 inoremap jk <Esc>
 inoremap kj <Esc>
-"inoremap <expr> <C-C> UtilityListCurrentCounter()
-"inoremap <expr> <C-N> UtilityListNextCounter()
-"noremap <expr> <C-P> UtilityListPreviousCounter()
-"inoremap <expr> <C-R> UtilityListResetCounter()
 inoremap <C-L> <C-G>u<Esc>[s1z=`]a<C-G>u
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
@@ -176,25 +169,6 @@ function! ToggleStatusLineMode()
   let &statusline = myStatusLine
 endfunction
 command! ToggleStatusLineMode call ToggleStatusLineMode()
-
-function! UtilityListCurrentCounter()
-  return w:counter
-endfunction
-
-function! UtilityListNextCounter()
-  let w:counter += 1
-  return w:counter
-endfunction
-
-function! UtilityListPreviousCounter()
-  let w:counter -= 1
-  return w:counter
-endfunction
-
-function! UtilityListResetCounter()
-  let w:counter = 0
-  return ''
-endfunction
 
 " Trim whitespace on save.
 function! <SID>StripTrailingWhitespaces()
