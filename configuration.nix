@@ -136,6 +136,7 @@
         kakoune # vim-inspired text editor
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
+        librsvg # library to assist pandoc in rendering SVG images to Cairo surfaces
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         links2 # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
         lsof # utility to list open files
@@ -193,6 +194,7 @@
         tcpdump # network sniffer
         termite # keyboard-centric VTE-based terminal
         termonad-with-packages # terminal emulator configurable in haskell
+        texlive.combined.scheme-full # pdflatex, xcolor.sty for PDF conversion
         # tig # text-mode interface for git
         # tinc # VPN daemon with full mesh routing
         tmux # terminal multiplexer
