@@ -111,6 +111,7 @@
         exa # replacement for 'ls'
         expect # tool for automating interactive applications
         feh # light-weight image viewer
+        ffmpeg # manager and converter of audio/vidoe files
         file # program that shows the type of files
         firefox-wrapper # browser
         fontforge-gtk # font editor with GTK UI
