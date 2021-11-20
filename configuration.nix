@@ -195,7 +195,7 @@
         #python39Packages.opencv4 # computer-vision library
         python39Packages.pandas # python data-analysis library
         python39Packages.pillow # fork of PIL (python imaging library)
-        python39Packages.pytorch # deep-learning platform
+        #python39Packages.pytorch # deep-learning platform
         #python39Packages.spacy # natural-language processing
         python39Packages.scikit-learn # machine learning & data mining
         python39Packages.scipy # science/engineering library
