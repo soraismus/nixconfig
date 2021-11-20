@@ -134,6 +134,7 @@
         irssi # terminal-based IRC client
         jitsi # open-source video calls and chat
         jq # command-line json processor
+        jupyter # web-based notebook environment for interactive computing
         kakoune # vim-inspired text editor
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
@@ -166,6 +167,7 @@
         pijul # distributed version control system inspired by categorical patches
         powertop # utility to analyze power consumption on Intel-based laptops
         # privoxy # non-caching web proxy with advanced filtering capabilities
+        # prover9 # automated theorem prover for first-order and eq logic
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
         purs-utils.dhall-simple
         purs-utils.dhall-json-simple
@@ -178,6 +180,32 @@
         purs-utils.spago2nix
         purs-utils.zephyr # purescript tree-shaker
         (python3.withPackages (pkgs: [ pkgs.pandas ])) # Cf nixos.wiki/wiki/Python
+        python36Packages.youtube-dl # command-line tool to download videos from video platforms
+        python39Packages.beautifulsoup # html- and xml-parser
+        #python39Packages.fastapi # web/api framework
+        #python39Packages.flask # web/api microframework
+        #python39Packages.gensim # topic-modelling library
+        #python39Packages.huggingface-hub # interface with huggingface.co hub
+        #python39Packages.imbalanced-learn # manage imbalanced data
+        #python39Packages.Keras # deep-learning library for Theano and TensorFlow
+        python39Packages.matplotlib # plotting library
+        python39Packages.networkx # network-management library
+        python39Packages.nltk # natural-language processing toolkit
+        python39Packages.numpy # scientific (num-processing) tools
+        python39Packages.opencv # computer-vision library
+        python39Packages.pandas # python data-analysis library
+        python39Packages.pillow # fork of PIL (python imaging library)
+        python39Packages.pytorch # deep-learning platform
+        #python39Packages.spacy # natural-language processing
+        python39Packages.scikit-learn # machine learning & data mining
+        python39Packages.scipy # science/engineering library
+        python39Packages.scrapy # web crawler and scraper
+        python39Packages.seaborn # statistical data visualization
+        #python39Packages.statsmodel # statistical modeling
+        #python39Packages.streamlit # build custom machine-learning tools
+        python39Packages.tensorflow # machine learning
+        python39Packages.xgboost # gradient boosting library (e.g., GBDTs)
+        #python39Packages.sklearn-deep # scikit-learn with evolutionary algorithms
         qtox # Qt tox client
         qutebrowser # keyboard-focused browser with minimal GUI
         ranger # file manager
@@ -219,7 +247,6 @@
         xdotool # fake keyboard/mouse input, window management
         yarn # variant to npm
         # yi # yi text editor (written in haskell)
-        python36Packages.youtube-dl # command-line tool to download videos from video platforms
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
         zeal # offline API documentation browser
         zim # desktop wiki
