@@ -181,7 +181,7 @@
         purs-utils.zephyr # purescript tree-shaker
         (python3.withPackages (pkgs: [ pkgs.pandas ])) # Cf nixos.wiki/wiki/Python
         python36Packages.youtube-dl # command-line tool to download videos from video platforms
-        python39Packages.beautifulsoup # html- and xml-parser
+        python39Packages.beautifulsoup4 # html- and xml-parser
         #python39Packages.fastapi # web/api framework
         #python39Packages.flask # web/api microframework
         #python39Packages.gensim # topic-modelling library
