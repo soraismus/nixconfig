@@ -192,7 +192,7 @@
         python39Packages.networkx # network-management library
         python39Packages.nltk # natural-language processing toolkit
         python39Packages.numpy # scientific (num-processing) tools
-        python39Packages.opencv # computer-vision library
+        #python39Packages.opencv4 # computer-vision library
         python39Packages.pandas # python data-analysis library
         python39Packages.pillow # fork of PIL (python imaging library)
         python39Packages.pytorch # deep-learning platform
