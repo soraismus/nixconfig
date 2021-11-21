@@ -134,7 +134,6 @@
         irssi # terminal-based IRC client
         jitsi # open-source video calls and chat
         jq # command-line json processor
-        jupyter # web-based notebook environment for interactive computing
         kakoune # vim-inspired text editor
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
@@ -187,7 +186,8 @@
           #pkgs.gensim # topic-modelling library
           #pkgs.huggingface-hub # interface with huggingface.co hub
           #pkgs.imbalanced-learn # manage imbalanced data
-          pkgs.jupyter_core # web-based notebook environment for interactive computing
+          pkgs.jupyter # web-based notebook environment for interactive computing
+          #pkgs.jupyter_core # web-based notebook environment for interactive computing
           #pkgs.Keras # deep-learning library for Theano and TensorFlow
           pkgs.matplotlib # plotting library
           pkgs.networkx # network-management library
