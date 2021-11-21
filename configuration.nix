@@ -179,34 +179,35 @@
         purs-utils.spago
         purs-utils.spago2nix
         purs-utils.zephyr # purescript tree-shaker
-        (python3.withPackages (pkgs: [ pkgs.pandas ])) # Cf nixos.wiki/wiki/Python
         python36Packages.youtube-dl # command-line tool to download videos from video platforms
-        python39Packages.beautifulsoup4 # html- and xml-parser
-        #python39Packages.fastapi # web/api framework
-        #python39Packages.flask # web/api microframework
-        #python39Packages.gensim # topic-modelling library
-        #python39Packages.huggingface-hub # interface with huggingface.co hub
-        #python39Packages.imbalanced-learn # manage imbalanced data
-        python39Packages.jupyter_core # web-based notebook environment for interactive computing
-        #python39Packages.Keras # deep-learning library for Theano and TensorFlow
-        python39Packages.matplotlib # plotting library
-        python39Packages.networkx # network-management library
-        python39Packages.nltk # natural-language processing toolkit
-        python39Packages.numpy # scientific (num-processing) tools
-        #python39Packages.opencv4 # computer-vision library
-        python39Packages.pandas # python data-analysis library
-        python39Packages.pillow # fork of PIL (python imaging library)
-        #python39Packages.pytorch # deep-learning platform
-        #python39Packages.spacy # natural-language processing
-        python39Packages.scikit-learn # machine learning & data mining
-        python39Packages.scipy # science/engineering library
-        python39Packages.scrapy # web crawler and scraper
-        python39Packages.seaborn # statistical data visualization
-        #python39Packages.statsmodel # statistical modeling
-        #python39Packages.streamlit # build custom machine-learning tools
-        python39Packages.tensorflow # machine learning
-        python39Packages.xgboost # gradient boosting library (e.g., GBDTs)
-        #python39Packages.sklearn-deep # scikit-learn with evolutionary algorithms
+        (python39.withPackages (pkgs: [
+          pkgs.beautifulsoup4 # html- and xml-parser
+          #pkgs.fastapi # web/api framework
+          #pkgs.flask # web/api microframework
+          #pkgs.gensim # topic-modelling library
+          #pkgs.huggingface-hub # interface with huggingface.co hub
+          #pkgs.imbalanced-learn # manage imbalanced data
+          pkgs.jupyter_core # web-based notebook environment for interactive computing
+          #pkgs.Keras # deep-learning library for Theano and TensorFlow
+          pkgs.matplotlib # plotting library
+          pkgs.networkx # network-management library
+          pkgs.nltk # natural-language processing toolkit
+          pkgs.numpy # scientific (num-processing) tools
+          #pkgs.opencv4 # computer-vision library
+          pkgs.pandas # python data-analysis library
+          pkgs.pillow # fork of PIL (python imaging library)
+          #pkgs.pytorch # deep-learning platform
+          #pkgs.spacy # natural-language processing
+          pkgs.scikit-learn # machine learning & data mining
+          pkgs.scipy # science/engineering library
+          pkgs.scrapy # web crawler and scraper
+          pkgs.seaborn # statistical data visualization
+          #pkgs.statsmodel # statistical modeling
+          #pkgs.streamlit # build custom machine-learning tools
+          pkgs.tensorflow # machine learning
+          pkgs.xgboost # gradient boosting library (e.g., GBDTs)
+          #pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
+        ])) # Cf nixos.wiki/wiki/Python
         qtox # Qt tox client
         qutebrowser # keyboard-focused browser with minimal GUI
         ranger # file manager
