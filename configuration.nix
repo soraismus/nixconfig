@@ -112,7 +112,7 @@
         exa # replacement for 'ls'
         expect # tool for automating interactive applications
         feh # light-weight image viewer
-        ffmpeg # manager and converter of audio/vidoe files
+        ffmpeg # manager and converter of audio/video files
         file # program that shows the type of files
         firefox-wrapper # browser
         fontforge-gtk # font editor with GTK UI
@@ -144,7 +144,7 @@
         lsof # utility to list open files
         lynx # terminal web-browser (cf. browsh, links2, w3m)
         macchanger # utility for manipulating MAC addresses
-        maim # cli screenshot utility
+        maim # cli screenshot utility [cf. scrot]
         # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
         # mopidy # extensible music server that plays music from local, Spotify, etc.
@@ -206,6 +206,7 @@
           # pkgs.statsmodel # statistical modeling
           # pkgs.streamlit # build custom machine-learning tools
           pkgs.tensorflow # machine learning
+          pkgs.unittest2 # backport of unittest testing framework
           pkgs.xgboost # gradient boosting library (e.g., GBDTs)
           # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
         ])) # Cf nixos.wiki/wiki/Python
@@ -219,7 +220,7 @@
         rstudio
         rtv # reddit terminal client
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
-        scrot # command-line screen-capture utility
+        scrot # command-line screen-capture utility [cf. maim]
         stack # haskell tool stack
         # stack2nix # nix utility that transforms stack specs into nix specs
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
