@@ -187,6 +187,7 @@
         #python39Packages.gensim # topic-modelling library
         #python39Packages.huggingface-hub # interface with huggingface.co hub
         #python39Packages.imbalanced-learn # manage imbalanced data
+        python39Packages.jupyter_core # web-based notebook environment for interactive computing
         #python39Packages.Keras # deep-learning library for Theano and TensorFlow
         python39Packages.matplotlib # plotting library
         python39Packages.networkx # network-management library
