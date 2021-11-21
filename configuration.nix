@@ -93,6 +93,7 @@
         # binutils # tools for manipulating binaries (linker, assembler
         broot # interactive tree view, fuzzy search, balanced BFS descent
         browsh # text-based browser that can render css and js (cf. links2, lynx, w3m)
+        # btrfs-progs # utilities for the btrfs filesystem
         cabal-install # haskell packaging and build system
         cabal2nix # nix utility that transforms cabal specs into nix specs
         chromium # browser
@@ -181,32 +182,32 @@
         python36Packages.youtube-dl # command-line tool to download videos from video platforms
         (python39.withPackages (pkgs: [
           pkgs.beautifulsoup4 # html- and xml-parser
-          #pkgs.fastapi # web/api framework
-          #pkgs.flask # web/api microframework
-          #pkgs.gensim # topic-modelling library
-          #pkgs.huggingface-hub # interface with huggingface.co hub
-          #pkgs.imbalanced-learn # manage imbalanced data
+          # pkgs.fastapi # web/api framework
+          # pkgs.flask # web/api microframework
+          # pkgs.gensim # topic-modelling library
+          # pkgs.huggingface-hub # interface with huggingface.co hub
+          # pkgs.imbalanced-learn # manage imbalanced data
           pkgs.jupyter # web-based notebook environment for interactive computing
-          #pkgs.jupyter_core # web-based notebook environment for interactive computing
-          #pkgs.Keras # deep-learning library for Theano and TensorFlow
+          # pkgs.jupyter_core # web-based notebook environment for interactive computing
+          # pkgs.Keras # deep-learning library for Theano and TensorFlow
           pkgs.matplotlib # plotting library
           pkgs.networkx # network-management library
           pkgs.nltk # natural-language processing toolkit
           pkgs.numpy # scientific (num-processing) tools
-          #pkgs.opencv4 # computer-vision library
+          # pkgs.opencv4 # computer-vision library
           pkgs.pandas # python data-analysis library
           pkgs.pillow # fork of PIL (python imaging library)
-          #pkgs.pytorch # deep-learning platform
-          #pkgs.spacy # natural-language processing
+          # pkgs.pytorch # deep-learning platform
+          # pkgs.spacy # natural-language processing
           pkgs.scikit-learn # machine learning & data mining
           pkgs.scipy # science/engineering library
           pkgs.scrapy # web crawler and scraper
           pkgs.seaborn # statistical data visualization
-          #pkgs.statsmodel # statistical modeling
-          #pkgs.streamlit # build custom machine-learning tools
+          # pkgs.statsmodel # statistical modeling
+          # pkgs.streamlit # build custom machine-learning tools
           pkgs.tensorflow # machine learning
           pkgs.xgboost # gradient boosting library (e.g., GBDTs)
-          #pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
+          # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
         ])) # Cf nixos.wiki/wiki/Python
         qtox # Qt tox client
         qutebrowser # keyboard-focused browser with minimal GUI
