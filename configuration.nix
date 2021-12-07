@@ -159,6 +159,7 @@
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nnn # ncurses-based file manager/browser
         nodejs-10_x # javascript engine
+        # opencv2 # Open Computer Vision library
         openvpn # tunneling application
         pandoc # utility that translates between markup formats
         pass # password-store manages passwords securely
@@ -196,6 +197,7 @@
           pkgs.numpy # scientific (num-processing) tools
           # pkgs.opencv4 # computer-vision library
           pkgs.pandas # python data-analysis library
+          # pkgs.pilkit # utilities for python imaging library
           pkgs.pillow # fork of PIL (python imaging library)
           # pkgs.pytorch # deep-learning platform
           # pkgs.spacy # natural-language processing
@@ -206,6 +208,7 @@
           # pkgs.statsmodel # statistical modeling
           # pkgs.streamlit # build custom machine-learning tools
           pkgs.tensorflow # machine learning
+          # pkgs.torchvision # deep-learning platform
           pkgs.unittest2 # backport of unittest testing framework
           pkgs.xgboost # gradient boosting library (e.g., GBDTs)
           # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
