@@ -159,13 +159,14 @@
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nnn # ncurses-based file manager/browser
         nodejs-10_x # javascript engine
-        # opencv2 # Open Computer Vision library
+        opencv2 # Open Computer Vision library
         openvpn # tunneling application
         pandoc # utility that translates between markup formats
         pass # password-store manages passwords securely
         patchelf
         pavucontrol # PulseAudio volume control
         pijul # distributed version control system inspired by categorical patches
+        poppler_utils # PDF tools like pdfunite and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
         # privoxy # non-caching web proxy with advanced filtering capabilities
         # prover9 # automated theorem prover for first-order and eq logic
@@ -197,9 +198,9 @@
           pkgs.numpy # scientific (num-processing) tools
           # pkgs.opencv4 # computer-vision library
           pkgs.pandas # python data-analysis library
-          # pkgs.pilkit # utilities for python imaging library
+          pkgs.pilkit # utilities for python imaging library
           pkgs.pillow # fork of PIL (python imaging library)
-          # pkgs.pytorch # deep-learning platform
+          pkgs.pytorchWithoutCuda # deep-learning platform
           # pkgs.spacy # natural-language processing
           pkgs.scikit-learn # machine learning & data mining
           pkgs.scipy # science/engineering library
@@ -208,7 +209,7 @@
           # pkgs.statsmodel # statistical modeling
           # pkgs.streamlit # build custom machine-learning tools
           pkgs.tensorflow # machine learning
-          # pkgs.torchvision # deep-learning platform
+          pkgs.torchvision # deep-learning platform
           pkgs.unittest2 # backport of unittest testing framework
           pkgs.xgboost # gradient boosting library (e.g., GBDTs)
           # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
