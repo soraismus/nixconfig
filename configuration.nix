@@ -184,6 +184,7 @@
         python36Packages.youtube-dl # command-line tool to download videos from video platforms
         (python39.withPackages (pkgs: [
           pkgs.beautifulsoup4 # html- and xml-parser
+          pkgs.bokeh # statistical and interactive HTML plots
           # pkgs.fastapi # web/api framework
           # pkgs.flask # web/api microframework
           # pkgs.gensim # topic-modelling library
