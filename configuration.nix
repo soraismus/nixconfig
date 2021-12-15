@@ -159,7 +159,8 @@
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nnn # ncurses-based file manager/browser
         nodejs-10_x # javascript engine
-        opencv2 # Open Computer Vision library
+        okular # unlike zathura, it has pdf-annotating and -highlighting features
+        # opencv2 # Open Computer Vision library
         openvpn # tunneling application
         pandoc # utility that translates between markup formats
         pass # password-store manages passwords securely
@@ -197,7 +198,7 @@
           pkgs.networkx # network-management library
           pkgs.nltk # natural-language processing toolkit
           pkgs.numpy # scientific (num-processing) tools
-          # pkgs.opencv4 # computer-vision library
+          pkgs.opencv4 # Open Computer Vision library
           pkgs.pandas # python data-analysis library
           pkgs.pilkit # utilities for python imaging library
           pkgs.pillow # fork of PIL (python imaging library)
