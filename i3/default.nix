@@ -5,7 +5,7 @@ let
     #
     # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-    exec ${pkgs.feh}/bin/feh --bg-scale '${./wallpapers/la-gerbe--matisse.jpg}'
+    exec ${pkgs.feh}/bin/feh --bg-scale '${./wallpapers/impression--soleil-levant--monet.jpg}'
     exec ${pkgs.rxvt_unicode}/bin/urxvt
 
     gaps inner 5
