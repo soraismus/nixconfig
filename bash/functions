@@ -1,0 +1,505 @@
+back () {
+  for i in `seq 1 $1`; do
+    cd ..
+  done
+}
+
+# Determine the path/filename corresponding to the ith ("$2") entry under the tag "$1".
+bmget () {
+  local searchterm=*"$1"*
+  # The backslash escapes aliases.
+  # See https://stackoverflow.com/questions/6162903/why-do-backslashes-prevent-alias-expansion.
+  local filename="$(
+      \ls -l $TAGPATH/$searchterm
+        | awk '!/total/ {print $11}' \
+        | awk -v fileIndex="$2"      \
+            'BEGIN { count = 0 } {count++; if (count == fileIndex) print}'
+    )"
+  echo "$filename"
+}
+
+# List all category tags that match an argument.
+bmgrep () {
+  local searchterm="*$1*"
+
+  # Process 1 is piped to process 2.
+  find "$TAGPATH" -type d -name "$searchterm" \
+    | awk 'BEGIN {FS="/"} {print $NF}'
+
+  # Note about process 1:
+  # Find directories in "$TAGPATH' with names
+  # that partially match "$searchterm".
+
+  # Note about process 2:
+  # Print only the last '/'-delimited field of each match.
+  # That is, print only the name of the bottom-most directory.
+  # (The value of "$NF" in awk is the number of fields in a record;
+  # in this context, "$NF" refers to the last field.)
+}
+
+# List all entries under the tag "$1".
+bmlist () {
+  local searchterm=*"$1"*
+  # The backslash escapes aliases.
+  \ls -l $TAGPATH/$searchterm    \
+    | awk '!/total/ {print $11}' \
+    | awk -F'/' 'BEGIN { count = 0 } {count++; printf "%-4s %s\n", count, $NF}'
+}
+
+# List all entries under the tag "$1".
+bmlistTitles () {
+  local searchterm=*"$1"*
+  # The backslash escapes aliases.
+  \ls -l $TAGPATH/$searchterm    \
+    | awk '!/total/ {print $11}' \
+    | sed 's/^.*~\(.*\)\.md/\1/' \
+    | awk -F'/' 'BEGIN { count = 0 } {count++; printf "%-4s %s\n", count, $NF}'
+}
+
+# Open in vim the ith ("$2") entry under the tag "$1".
+bmvim () {
+  local filename="$( bmget "$1" "$2" )"
+  vim "$filename"
+}
+
+connectWifi () {
+  local ssid="$1"
+  local pw="$2"
+  nmcli device wifi connect "$ssid" password "$pw"
+}
+
+countDirItems () {
+  local directory
+  if [[ "$#" -gt 0 ]]; then
+    directory="$1"
+  else
+    directory="$PWD"
+  fi
+  # `ls -1` # Lists one file per line.
+  # `ls -U` # Lists files in directory order (i.e., without sorting).
+  # `wc -l` # Counts the number of newline characters.
+  # `wc -m` # Counts the number of characters.
+  # `wc -w` # Counts the number of words.
+  # (The backslash escapes aliases.)
+  echo "$( \ls -1U "$directory" | wc -l )"
+}
+
+derefMark () {
+  # Because '$MARKPATH/$1' is a symlink, the 11th field of
+  # `ls -l "$MARKPATH/$1"` is the actual direct path.
+  # The backslash escapes aliases.
+  echo "$( \ls -l "$MARKPATH/$1" 2>/dev/null | awk '{print $11}' )"
+}
+
+# https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
+_disposeHistoryOrphans () {
+  # The following cmd lists all shell PIDs.
+  #   `--pid $$` -- Only list processes matching the PID of the current shell.
+  #   `--format comm=` instructs 'ps' to return the process's name only.
+  #   'pgrep' lists all PIDs corresponding the given executable name.
+  local active_shells="$( pgrep "$( ps --pid $$ --format comm=)" )"
+
+  local grep_pattern="$(
+      for pid in ${active_shells}; do
+        echo -n "-e \.${pid}\$ ";
+      done
+    )"
+
+  # `grep -v` inverts matching.
+  # The backslash escapes aliases.
+  local orphaned_files="$(
+      \ls ${HISTFILE}.[0-9]* 2> /dev/null \
+        | grep -v ${grep_pattern}
+    )"
+
+  if [ -n "$orphaned_files" ]; then
+    printf "Merging orphaned history files:\n"
+    for f in ${orphaned_files}; do
+      printf "  $( basename ${f} )"
+      \cat ${f} >> $HISTFILE
+      \rm ${f} # The backslash escapes aliases.
+    done
+    printf "\ndone\n"
+  fi
+}
+
+ducks () {
+  du -cks "$1" | sort -rn | head -11
+}
+
+# `echo` can have unspecified behavior.
+# Source: https://www.etalabs.net/sh_tricks.html
+echo () {
+  printf %s\\n "$*"
+}
+
+echoError () {
+  # Make file descriptor 1 also point to file descriptor 2.
+  >&2 echo "Error: $1"
+}
+
+# Request ids of gdrive records for folders with the specified name.
+gdrive_find_folder_ids_for_name () {
+  local query="name = '$1' and mimeType = 'application/vnd.google-apps.folder'"
+  # 'NR!=1'      # Apply to all rows except 1st row.
+  # '{print $1}' # Print 1st field, which is the record's id.
+  gdrive list --query "$query" | awk 'NR!=1{print $1}'
+}
+
+# Request gdrive records for all folders.
+# As of gdrive's API of 2019 January 29,
+# the following fields will be included in the record:
+# Id, Name, Type, Size, Created
+gdrive_list_folders () {
+  gdrive list --query "mimeType = 'application/vnd.google-apps.folder'"
+}
+
+githostclone () {
+  local githost
+  local owner
+  local repo
+  local dir
+  if [[ "$#" -eq 4 ]]; then
+    githost="$1"
+    owner="$2"
+    repo="$3"
+    dir="$4/${owner}/${repo}"
+  elif [[ "$#" -eq 3 ]]; then
+    githost="$1"
+    owner="$2"
+    repo="$3"
+    dir="${owner}/${repo}"
+  elif [[ "$#" -eq 2 ]]; then
+    githost="$1"
+    owner="$( basename "$PWD" )"
+    repo="$2"
+    dir="${repo}"
+  else
+    echoError 'Incorrect number of arguments'
+    return 1
+  fi
+  if [ -d "${dir}" ]; then
+    echoError "The directory (${dir}) already exists."
+    return 2
+  else
+    git clone "https://${githost}/${owner}/${repo}.git" "${dir}"
+  fi
+}
+
+ghclone () {
+  githostclone "github.com" "$@"
+}
+
+gitlabclone () {
+  githostclone "gitlab.com" "$@"
+}
+
+grepNormalize () {
+  echo "\(^\|\s\+\)$1\(\s\+\|$\)"
+}
+
+# Use `fzf` to search through the command history.
+hist () {
+  # --tac: Reverse the order of the input.
+  # --no-sort: Leave the list of matching results unsorted.
+  history | fzf --tac --no-sort
+}
+
+# Return the index number (inode) of the provided file.
+# (Dependency of 'namespaces/tag')
+# (Cf. namespaces/note get-file-id)
+inode () {
+  [ -z "$1" ] && { echoError 'This function requires an argument'; return 1; }
+  local file_id
+  # The '-d' flag of '[' determines whether the file is a directory.
+  # The '-d' flag of 'ls' lists directory entries rather than directory contents.
+  # The '-i' flag prints the inode number for each file.
+  # The '-L' flag dereferences symbolic links.
+  if [ -d "$1" ]; then
+    file_id="$( ls -diL "$1" | awk '{print $1}' )"
+  else
+    file_id="$( ls -iL "$1" | awk '{print $1}' )"
+  fi
+  echo "$file_id"
+}
+
+
+isMark () {
+  if [ "$( listMarks | grep "$( grepNormalize "$1" )" -c )" -gt 0 ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+listMarks () {
+  if [ ! -e "$MARKPATH" ]; then
+    echo "Creating directory at (" "$MARKPATH" ")."
+    mkdir -p "$MARKPATH"
+  fi
+  # The backslash escapes aliases.
+  for name in "$( \ls "$MARKPATH" )"; do
+    echo "$name"
+  done
+}
+
+listRecentFiles () {
+  # List first four files.
+  # -F --> with indicator suffixes (*/=>@|)
+  # -t --> sorted by modification time
+  # -1 --> one per line
+  # Then transform each newline to a space.
+  # (The backslash escapes aliases.)
+  \ls -Ft1         2> /dev/null  \
+    | head -4      2> /dev/null  \
+    | tr "\\n" " " 2> /dev/null
+  printf "\n"
+}
+
+listWifi () {
+  nmcli device wifi list
+}
+
+lsmark () {
+  local path
+  if [ -z "$1" ]; then
+    path='.'
+  else
+    path="${1}"
+  fi
+  local initial_segment="${1%%/*}"
+  if isMark "${initial_segment}"; then
+    ls "${MARKPATH}/${path}"
+  else
+    ls "${path}"
+  fi
+}
+
+mark () {
+  NAMESPACE=mark execute-namespace "$@"
+}
+
+mcd () {
+  mkdir -p "$1"
+  cd "$1"
+}
+
+# https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
+_mergeShellHistory () {
+  # `$$` represents the PID of the current shell.
+  # By convention, "${HISTFILE}.$$" is the current shell's hist file.
+  local shell_histfile="${HISTFILE}.$$"
+
+  # `-es` puts vim in ex mode and silent mode.
+  # Without `redir >> /dev/stdout`, ex-vim doesn't redirect to stdout.
+  # 'ex' has a special command ('undofile') that displays
+  # what the undofile corresponding to the input would be.
+  # Finally, `-c 'q'` instructs ex-mode vim to quit.
+  # (It might be possible to use the flag '-q' instead of this last command.)
+  # (Note that, for bash variable expansion of `${shell_histfile}` to occur
+  # inside a vim-recognized string, a pair of of single-quotes must be
+  # interior to a pair of double-quotes.)
+  local shell_undofile="$(
+      vim                                       \
+        -es                                     \
+        -c "redir >> /dev/stdout"               \
+        -c "echo undofile('${shell_histfile}')" \
+        -c "q"
+    )"
+
+
+  if [ -e "${shell_histfile}" ]; then
+    if [ -e "${HISTFILE}" ]; then
+      \cat "${shell_histfile}" >> "${HISTFILE}"
+    fi
+
+    \rm "${shell_histfile}" # The backslash escapes aliases.
+  fi
+
+  if [ -e "${shell_undofile}" ]; then
+    \rm "${shell_undofile}"
+  fi
+}
+
+note () {
+  NAMESPACE=note execute-namespace "$@"
+}
+
+peek () {
+  tmux split-window -p 33 "$EDITOR" "$@" || exit;
+}
+
+# The variable 'PROMPT_COMMAND' is set to
+# the following function in 'configuration.nix'.
+_promptCommand () {
+  _updateHistory
+  #_trackPath
+}
+
+tag () {
+  NAMESPACE=tag execute-namespace "$@"
+}
+
+timestamp () {
+  date +'%Y.%m.%d.%H.%M.%S'
+}
+
+# TODO: DEBUG: `to git` in a directory with a '.git' directory
+#              changes to the '.git' directory. Why?
+# Go to the directory to which the provided bookmark links.
+to () {
+  [ -z "$1" ] && { echoError 'This function requires an argument'; return 1; }
+  local path="${1}"
+  local initial_segment="${1%%/*}"
+  if isMark "${initial_segment}"; then
+    CDPATH="$MARKPATH" cd -P "${path}" &> /dev/null
+  else
+    cd "${path}"
+  fi
+}
+
+# Toggle between a prompt that displays the full current-working-directory
+# path and a prompt that displays only the end-most directory.
+togglePrompt () {
+  # A lowercase 'w' indicates a full path,
+  # whereas an uppercase 'W' indicates an abbreviated path.
+  # Toggle the value of the prompt variable 'PS1'.
+  if [[ "$PS1" =~ w ]]; then
+    PS1="$( echo "$PS1" 2> /dev/null | sed 's/w/W/g' 2> /dev/null )"
+  else
+    PS1="$( echo "$PS1" 2> /dev/null | sed 's/W/w/g' 2> /dev/null )"
+  fi
+}
+
+# Activate/deactivate the touchpad.
+toggleTouchpad () {
+  # See `xinput list` to check device IDs.
+  local prop="Device Enabled"
+
+  local touchpad_device="$(
+      xinput list          \
+        | grep -i touchpad \
+        | sed 's/.*id=\([0-9]*\).*/\1/'
+    )"
+
+  if [ -z "$touchpad_device" ]; then
+    echoError "The touchpad device ID could not be determined."
+    return 2
+  fi
+
+  # https://unix.stackexchange.com/questions/151654/
+  # Bash treats a regexp in quotes as a literal string.
+  if ! [[ "${touchpad_device}" =~ ^[0-9]+$ ]]; then
+    echoError "The touchpad device ID is not a number."
+    return 3
+  fi
+
+  # Default delimiter for `touch` is \t.
+  # The third field should be either 0 or 1.
+  local setting="$(
+      xinput list-props "${touchpad_device}" \
+        | grep "${prop}"                     \
+        | cut -f3
+    )"
+
+  local newSetting
+  if [ "${setting}" -eq 0 ]; then
+    newSetting=1
+  elif [ "${setting}" -eq 1 ]; then
+    newSetting=0
+  fi
+
+  xinput set-prop "${touchpad_device}" "${prop}" "${newSetting}"
+}
+
+_trackPath () {
+  # Record the current working directory.
+  pwd > "${CONFIG_ROOT}/.lastdir"
+  local countLimit="30"
+  [ "$LASTDIR" != "$PWD" ]                               \
+    && [ "$( countDirItems "$PWD" )" -lt "$countLimit" ] \
+    && listRecentFiles
+  export LASTDIR="$PWD"
+}
+
+# Go to the location, and rename the tmux window.
+tmuxto () {
+  [ -z "$1" ] && { echoError 'This function requires an argument'; return 1; }
+  to "$1"
+  tmux rename-window "$1"
+}
+
+# https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
+#https://metaredux.com/posts/2020/07/07/supercharge-your-bash-history.html
+_updateHistory () {
+  history -a
+  history -n
+  # # `$$` represents the PID of the current shell.
+  # # By convention, "${HISTFILE}.$$" is the current shell's hist file.
+  # local shell_histfile="${HISTFILE}.$$"
+  # # Create a new history file for the current shell,
+  # # and append hist lines to it.
+  # history -a "${shell_histfile}"
+  # history -c # Clear the history list.
+  # history -r # Load common $HISTFILE and append contents to the history list.
+  # # Load other shells' history files.
+  # # (`grep -v` inverts the match.)
+  # # (The backslash escapes aliases.)
+  # for f in "$(
+  #     \ls ${HISTFILE}.[0-9]* 2> /dev/null \
+  #       | grep -v "${shell_histfile}\$" 2> /dev/null
+  #   )"
+  # do history -r "$f"
+  # done
+  # history -r "${shell_histfile}" # Load the current shell's history file.
+}
+
+# Search for the path of a file matching the name provided; open it with vim.
+vff () {
+  local file_name="*$1*"
+  vim "$(find . -name "$file_name")"
+}
+
+# Examples:
+# `workspace     spago gh/matthew-hilty/spago`
+# `workspace new spago gh/matthew-hilty/spago`
+workspace () {
+  local window_name
+  local path
+  if [ "$#" -lt 2 ]; then
+    echoError 'Incorrect number of arguments'
+    return 1
+  elif [ "$#" -eq 2 ]; then
+    window_name="$1"
+    path="$2"
+    # The following doesn't work as I'd expect.
+    tmux rename-window "$window_name"
+  else
+    window_name="$2"
+    path="$3"
+    tmux new-window -n "$window_name"
+  fi
+  to "$path"
+  tmux split-window -h
+  to "$path"
+}
+
+youtube-dl-ids () {
+  echo "Preparing to download youtube videos corresponding to the following IDs:"
+  local id_array=("$@")
+  echo "  --  " "${id_array[@]}"
+  local catalogDir="${HOME}/Downloads/videos/catalog"
+  local catalog="${catalogDir}/catalog"
+  if [ ! -d "${catalogDir}" ]; then
+    echo "making directory " "${catalogDir}"
+    mkdir -p "${catalogDir}"
+  fi
+  for i in "${id_array[@]}"; do
+    local url="https://www.youtube.com/watch?v=${i} "
+    echo "  ------------------------------------ "
+    if youtube-dl "${url}" -o "$HOME/Downloads/videos/${i}-%(title)s.%(ext)s"
+      then echo "${url}" "$( date )" >> "${catalog}";
+      else echo "ERROR -- " "${url}" "$( date )" >> "${catalog}";
+    fi
+  done
+}

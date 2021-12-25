@@ -1,0 +1,144 @@
+# Refer to a command's arguments by position.
+# The following is equivalent to `echo a b c c b a a echo`.
+$ echo a b c !#:3 !#:2 !#:1 !#:6 !#:0
+a b c c b a a echo
+
+# Rename files.
+$ touch config.txt
+# Note that `!$` refers to the last argument of the previous command.
+$ mv !$ !#:1:s/txt/json # `mv config.txt config.json`
+
+# Rename files.
+$ touch config.txt
+$ mv con[tab]
+$ mv config.txt # Then in command mode, press 'b', 'yw', 'w', 'p'.
+$ mv config.txt config.txt # Then edit the second argument as needed.
+
+$ apropos rename
+
+$ touch abc1 abc2 abc33 abc44 abc555
+# The following renames every file with a name of the template /abc\d\b/.
+$ rename abc abc00 abc? # mv abc1 abc001; mv abc2 abc002
+# The following renames every file with a name of the template /abc\d\d\b/.
+$ rename abc abc0 abc?? # mv abc33 abc033; mv abc44 abc044
+# The effect of the preceding two commands is to change the set of files
+# from {abc1,   abc2,   abc33,  abc44,  abc555}
+# to   {abc001, abc002, abc033, abc044, abc555}.
+
+# Remember to use `fzf` instead of `find . -name`.
+# Globbing isn't supported.
+# However, search for multiple substrings is supported.
+# Also, ^ and $ are supported, and search inversion ! is also supported.
+$ fzf
+> abc ^def .ghi$ !xyz
+
+$ fzf | xargs ls -l
+$ vim -o `fzf`
+$ history | fzf +s --tac  # `+s` == `--no-sort`
+
+# Start vim in diff mode.
+$ vim -d file0 file1 [file2 [file3...]]
+
+--------------------------------------------------
+
+The first two statements of your BASH script should be…
+by Ashish on January 11, 2020
+(https://ashishb.net/all/the-first-two-statements-of-your-bash-script-should-be/)
+
+```shell
+#!/usr/bin/env bash
+set -euo pipefail
+```
+
+The first statement is a Mac, GNU/Linux, and BSD portable way of finding
+the location of the bash interpreter.
+
+The second statement combines
+- `set -e` [`set -o errtrace`],
+  which ensures that your script stops on first command failure.
+  By default, when a command fails, bash executes the next command.
+  Looking at the logs, you might feel that the script executed successfully
+  while some commands might have failed.
+- `set -u` [`set -o nounset`],
+  which ensures that your script exits on first unset variable encountered.
+  Otherwise, bash replaces the unset variables with empty default values.
+- `set -o pipefail`,
+  which ensures that if any command in a set of piped commands failed,
+  the overall exit status is the status of the failed command.
+  Otherwise, the exit status is the status of the last command.
+
+$ dirs # Display the directory stack used by `pushd` and `popd` commands.
+$ printenv # Print the values of all or specified environment variables.
+$ git clone ... abc; cd abc/x/y/; git rev-parse --git-dir # .../abc/.git
+
+
+Bash functions can be declared inside other bash functions.
+For example,
+```shell
+function fn0 () {
+  function fn1 () {
+    echo "Hello, world."
+  }
+  fn1
+}
+```
+
+See bash-it for completion and script examples.
+
+# Source: https://www.etalabs.net/sh_tricks.html
+# ----------------------------------------------
+
+Reading input line-by-line
+  ```shell
+  IFS= read -r var
+  ```
+
+Because POSIX doesn't specify which pipeline commands are to be run in
+the main shell, do (0) instead of (1):
+  ```shell
+  # 0
+  IFS= read var << EOF
+  $(foo)
+  EOF
+  # 1
+  foo | IFS= read var
+  ```
+
+Reading input byte-by-byte
+  ```shell
+  read dummy oct << EOF
+  $(dd bs=1 count=1|od -b)
+  EOF
+  ```
+
+Getting non-clobbered output from command substitution
+    The following is not safe:
+
+    var=$(dirname "$f")
+
+    Due to most commands writing a newline at the end of their output, Bourne-style command substitution was designed to strip training newlines from the output. But it doesn’t just strip one trailing newline; it strips them all. In the above command, if f contains any trailing newlines in the last directory component, they will be stripped, yielding a different directory name. While no one sane would put newlines in directory names, such corruption of the results could lead to exploitable vulnerabilities in scripts.
+
+    The solution to this problem is very simple: add a safety character after the last newline, then use the shell’s parameter substitution to remove the safety character:
+
+    var=$(command ; echo x) ; var=${var%?}
+
+    In the case of the dirname command, one also wants to remove the single final newline added by dirname, i.e.
+
+    var=$(dirname "$f" ; echo x) ; var=${var%??}
+
+    Of course there is an easier way to get the directory part of a pathname, provided you don’t care about some of the odd corner-case semantics of the dirname command:
+
+    var=${f%/*}
+
+    This will fail for files in the root directory, among other corner cases, so a good approach would be to write a shell function to consider such special cases. Note, however, that such a function must somehow store its results in a variable. If it printed them to stdout, as is common practice when writing shell functions to process strings, we would run into the issue of “$(...)” stripping trailing newlines once again and be back where we started...
+
+Don’t repeat your whole arguments
+- Don’t do this
+  ```
+  cp ~/this-is/my-long-file/name.txt ~/this-is/my-long-file/name.txt.bak
+  ```
+
+- Do this
+  ```
+  cp ~/this-is/my-long-file/name.txt{,.bak}
+  ```

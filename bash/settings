@@ -1,0 +1,11 @@
+shopt -s cdspell
+shopt -s checkjobs
+shopt -s checkwinsize
+shopt -s dotglob
+shopt -s extglob
+shopt -s globstar
+shopt -s histappend
+shopt -s lithist
+
+set -o notify
+set -o pipefail

@@ -1,0 +1,103 @@
+# NB: The syntax `( $str )` transforms a space-delimited string into an array.
+# NB: For help with 'compgen', try either `help compgen` or `man bash`.
+
+_completeNamespaceScript () {
+  local command=${COMP_WORDS[0]}
+  local currentword=${COMP_WORDS[COMP_CWORD]}
+  # `$command help` returns a newline-delimited string, so
+  # transform the newlines into spaces.
+  local wordlist=$( "$command" help | tr '\\n' ' ' )
+  COMPREPLY=( $( compgen -W "$wordlist" -- "$currentword" ) )
+  return 0
+}
+
+_completeTags () {
+  local currentword=${COMP_WORDS[COMP_CWORD]}
+  # Set 'wordlist' to the set of directories in '$TAGPATH'.
+  local wordlist=$( find $TAGPATH -type d -printf "%f " )
+  COMPREPLY=( $( compgen -W "$wordlist" -- "$currentword" ) )
+  return 0
+}
+
+_completeTo () {
+  shopt -s nullglob
+
+  local IFS=$' \t\n' # Normalize IFS.
+  local currentword
+  local is_dot
+  local _cdpath
+
+  local path
+  local completion
+  local completion_index
+
+  # Tilde expansion, which also expands tilde to full pathname.
+  case "$2" in
+  \~*)    eval currentword="$2" ;;
+  *)      currentword=$2 ;;
+  esac
+
+  IFS=$'\n'
+
+  # Include all symlinked directories under $MARKPATH in $CDPATH.
+  _cdpath=${CDPATH}:${MARKPATH}
+
+  # Preprocess CDPATH to convert null directory names to ".".
+  _cdpath=${_cdpath/#:/.:}     # `/#...` -- Match from the beginning.
+  _cdpath=${_cdpath//::/:.:}   # `//...` -- Replace all matches.
+  _cdpath=${_cdpath/%:/:.}     # `/%...` -- Match from the end.
+
+  # `compgen -d -- "$fragment"` lists all of $PWD's subdirectories
+  # that start with "$fragment".
+  # `compgen -d -- "$path"` lists all directories that descend from "$path".
+  COMPREPLY+=( $(compgen -d -- "$currentword") )
+
+  for path in ${_cdpath//:/$'\n'} # Change delimiter from ':' to '\n'.
+  do
+    is_dot=false
+
+    # `test f0 -ef f1` is true if 'f0' is a hard link to 'f1'.
+    if [[ $path -ef . ]]; then
+      is_dot=true
+    fi
+
+    completion_index="${#COMPREPLY[@]}"
+
+    # Generate directories under "$path/$currentword".
+    for completion in $( compgen -d -- "$path/$currentword" ); do
+      if ! $is_dot; then
+        # Remove "${path}/" from the beginning of the full pathname of
+        # "$completion", and append a '/'.
+        COMPREPLY[completion_index++]="${completion#$path/}/"
+      fi
+    done
+  done
+
+  IFS=$' \t\n'
+
+  # Variable names if appropriate shell option set and no completions
+  if shopt -q cdable_vars && [[ ${#COMPREPLY[@]} -eq 0 ]]; then
+    # `compgen -v -- "$fragment"` lists all shell vars starting w/ "$fragment".
+    COMPREPLY=( $(compgen -v -- "$currentword") )
+  fi
+
+  return 0
+}
+
+_completeVff () {
+  local currentword=${COMP_WORDS[COMP_CWORD]}
+  # Set 'wordlist' to the set of filenames found in any subdirectory
+  # of the current directory.
+  local wordlist=$( find . -type f -printf "%f " | uniq | sort )
+  COMPREPLY=( $( compgen -W "$wordlist" -- "$currentword" ) )
+  return 0
+}
+
+# ----------
+# Functions
+# ----------
+complete -F _completeVff vff
+complete -F _completeNamespaceScript mark note tag
+complete -F _completeTags bm bmgrep bookmark
+complete -o filenames -o nospace -o bashdefault -F _completeTo tmuxto to workspace
+complete -o nospace -S = -W '$(printenv | awk -F= "{print \$1}")' export

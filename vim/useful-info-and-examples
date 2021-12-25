@@ -1,0 +1,304 @@
+example                     effect
+-------                     ------
+"+yy                        copy the current line into the windowing system's clipboard
+"*p                         paste the contents of the clipboard
+@:                          repeat the most recent cmdmode command.
+0w                          go to the first word
+:let @/ = "hello, world"    set a register (specifically, here register "/)
+{insert mode} <C-R>2        paste contents of register 2
+{insert mode} <C-R>=        paste the evaluation of an expression in register "=
+:lvimgrep /myFn/ **/*.c     search for pattern "myFn" in **/*.c files
+:lopen                      open location list (containing files found by lgrep)
+`adiw`bviwp`aP              swap words at marks `a and `b
+"Ayw                        yank a word & append it into register "A
+/<C-R>A                     put the contents of register "A into the search string
+{normal mode} "+y{motion}   yank motion into the "+ register
+{cmd mode}    :y%+          yank full file into the "+ register
+:[line]put {register}       paste from register onto specified line
+:[line]put! {register}      paste from register onto line before specified line
+<C-W>T                      move current window to a new tab page
+<C-W>t                      go to top page
+<C-W>H                      move current window to the far left (can change vsplit to h)
+<C-W>K                      move current window to the very top (can change hsplit to v)
+[N]<C-W>R                   rotate windows upwards N times
+[N]<C-W>r                   rotate windows downwards N times
+*                           Search for the [count]th (not 0) occurrence of the word
+                            ... nearest the cursor.
+#                           like * but backward
+g*                          like * but don't put "\<", "\>" around word in "/ register.
+                            ... this allows matches on partial words
+:tabnew	                    opens tabpage after the current one
+:.tabnew	                  same as above
+:+tabnew	                  opens tabpage after the next tab page
+:-tabnew	                  opens tabpage before the current one
+:0tabnew	                  opens tabpage before the first one
+:$tabnew	                  opens tabpage after the last one
+:!mv % ${new_filename}      rename the current file
+<C-V>                       blockwise visual mode (i.e., vertical highlighting)
+[N]<C-A>                    jump to next number and increment it N times
+[N]<C-X>                    jump to next number and decrement it N times
+q:                          opens a history of commands
+q/                          opens a history of searches
+v_o                         go to the other end of highlighted text (cf. v_O)
+d2j                         delete current and next two lines (linewise motion)
+d<C-V>2j                    delete current char and corresponding chars in the following two lines (blockwise motion)
+d/{str}                     delete charwise to the match
+dV/                         delete linewise to the match
+/{regex}/{n}                go to the nth line below the match
+d/{str}//0                  delete until the match and then also the line of the match itself
+:norm {cmd}
+g/{regex}/norm f dw         delete the first word after the first space on every line matching {regex}
+:{m,n}co .                  copy the range to the current line
+:y {register}
+[N]^                        go to the first non-blak char of the line
+[N]g_                       go to the last non-blank of the line
+g0
+g^
+g$
+":,@:
+gf                          go to a file related to the word under the cursor (cf. 'suffesadd')
+:inoremap ;1 <C-O>ma        set mark `a while typing ";1" in insert mode
+:undolist
+:[addr]@{0-9a-z".=+}        Execute the contents of register {0-9a-z".=*+} as an Ex command. First move cursor.
+:@=                         "; the last expression is used.
+:[addr]@:                   Repeat the last command-line. First move cursor.
+g~_                         Toggle casing of current line.
+g~+                         Toggle casing of current and next lines.
+g~-                         Toggle casing of current and previous lines.
+g?_                         Rot13-encode the current line.
+gq{motion}                  Format the lines the {motion} moves over.
+gqip                        Format the current paragraph.
+gc{motion}                  WITH vim-commentary plugin, comments line.
+ggn                         Go to the first match.
+GN                          Go to the last match.
+<ctrl>+]                    Jump to a section referenced by a tag.
+diffoff                     Turn off diff mode.
+scrollbind
+scrolljump
+]c                          With gitgutter, jump to the next git hunk.
+[c                          With gitgutter, jump to the previous git hunk.
+<leader>hp                  [leader=`,`] Preview the differences.
+<leader>hs                  [leader=`,`] Stage the change.
+<leader>hu                  [leader=`,`] Undo the unstaged change.
+:23put =range(11,15)          Puts each of the number 11 thru 15 on successive lines.
+:call append(23,range(11,15)))
+:put =map(range(1,150), 'printf(''%04d'', v:val)')
+:for i in range(1,10) | put ='192.168.0.'.i | endfor
+:pwd                        See the current working directory
+:cd %:p:h                   Change the dir to that of cur'ly open file for all windows
+                              %     -> current file's name
+                              %:p   -> current file's full path
+                              %:p:h -> head of current file's full path (i.e., dir)
+:lcd %:p:h                  Change the dir to that of cur'ly open file for cur. window
+                              %     -> current file's name
+                              %:p   -> current file's full path
+                              %:p:h -> head of current file's full path (i.e., dir)
+
+digraphs
+--------
+- + M = em dash
+- + N = en dash
+
+:command -nargs=1 -bang -complete=file Ren f <args>|w<bang>
+                            rename the current buffer
+
+:command -range -nargs=1 -complete=file Replace <line1>-pu_|<line1>,<line2>d|r <args>|<line1>d
+                            replace a range with the contents of a file
+
+:command! -range -nargs=0 Lines  echo <line2> - <line1> + 1 "lines"
+                            count the number of lines in the range
+
+:command -nargs=* Mycmd call Myfunc(<f-args>)
+                            call a user function
+
+register            purpose
+--------            -------
+"" (unnamed)        the default when otherwise unspecified; often also a copy
+"*                  primary X11 selection
+"+                  clipboard X11 selection
+".                  most recent insert
+"%                  name of current file
+":                  most recent cmdmode line
+"#                  name of the current window's alternate file
+"= (expression)
+"~ (drop)           dropped text from most recent drag'n'drop
+"_ (black hole)     to prevent changes to the other registers' state
+"/                  most recent search-pattern
+"{\d}               history of yank/delete commands
+"- (small delete)   most recent delete of length less than one line
+"{[a-z]}            lowercase if to replace
+"{[A-Z]}            uppercase if to append
+
+:h quoteplus
+------------
+There are three X selections:
+  primary   - represents the current visual selection
+  secondary - ill-defined
+  clipboard - cut/copy/paste
+
+longer examples
+---------------
+  [1]
+:let i = 1
+qa
+/^Paragraph #\d<CR>
+0w
+i
+<c-r>=i<CR>
+.<esc>
+:let i = i + 1<CR>
+q
+
+  [2]
+:function! LineNumber()
+:  return substitute(v:thowpoint, '.*\D\(\d\+\).*', '\1', "")
+:endfuntion
+:command! LineNumber try | throw "" | catch | echo LineNumber() | endtry
+
+  [3]
+:function! Foo()
+:  throw "foo"
+:endfunction
+:try
+:  call Foo()
+:catch /foo/
+:  echo "foo"
+:finally
+:  echo "finally"
+:endtry
+
+  [4]
+:function Allargs(command)
+:   let i = 0
+:   while i < argc()
+:	  if filereadable(argv(i))
+:	     execute "e " . argv(i)
+:	     execute a:command
+:      endif
+:      let i = i + 1
+:   endwhile
+:endfunction
+:command -nargs=+ -complete=command Allargs call Allargs(<q-args>)
+
+  [5]
+inoremap <expr> <C-L> nr2char(getchar())
+inoremap <expr> <C-L>x "foo"
+
+  [6]
+(https://www.hillelwayne.com/post/intermediate-vim/)
+selected <C-A>  g<C-A> 2g<C-A>
+-------- -----  ------ -------   Note that they're automatically increasing.
+a 0      a 1    a 1     a 2
+b 0      b 1    b 2     b 4
+c        c      c       c
+d 0      d 1    d 3     d 6
+
+plugin examples
+---------------
+
+[tpope's commentary]
+
+example                           purpose
+-------                           -------
+{normal mode} [count] gcc         comment/uncomment line
+{normal mode} gc {motion}         comment/uncomment {motion}
+{visual mode} gc                  comment/uncomment section
+gc                                text object for a comment (operator-pending mode)
+gcgc                              gc (comment/uncomment) + gc (text object)
+ugc                               u (undo) + gc (text object)
+{command mode} :[range]Commentary comment/uncomment range
+
+
+ https://www.dannyadam.com/blog/2019/05/debugging-in-vim/
+ --------------------------------------------------------
+ Vim 8.1 was released in May 2018.
+ The “main new feature” was official support for running a terminal within vim.
+ Along with this came a built-in debugger plugin, termdebug,
+ which provides a visual interface for interacting with gd
+
+https://begriffs.com/posts/2019-07-19-history-use-vim.html
+https://aonemd.github.io/blog/handy-keymaps-in-vim
+
+
+https://vim.fandom.com/wiki/Search_and_replace_in_a_visual_selection
+--------------------------------------------------------------------
+0. Visual selection automatically creates the marks `<` and `>`.
+  - Press `'<` to go the first line of the visual selection.
+  - Press `'>` to go the last line of the visual selection.
+  - Press ``<` to go the first character of the visual selection.
+  - Press ``>` to go the last character of the visual selection.
+  - Thus, in ex-mode, the prompt `:'<,'>`.
+1. The substiution command `:s` applies to whole lines.
+   - However, the `\%V` atom restricts actions to the visual selection.
+   - Also, the \%>'< and \%<'> atoms are the markers defined by the visual selection.
+
+https://www.reddit.com/r/vim/comments/haq2t9/0_vs_vs_vs/
+--------------------------------------------------------
+  Press `^` to go to the first non-blank character of a line.
+  Press `_` to go to the first non-blank character of a line.
+  Press `0` to go to the first character of a line.
+  Unless it's reset, press [count]`|` to go to screen column # {count}.
+  Press `g_` to go to the last non-blank character of the line. [Like `$`, not `_`.]
+  Press `g0` to go to the first character of the screen line.
+  Press `g^` to go to the first non-blank character of the screen line.
+  Press `gm` to go to the character occupying the midpoint of the screen.
+  Press `g$` to go to the last character of the screen line.
+'The Patient Vimmer' writes:
+"`0` and `|` are only superficially equivalent."
+  - Both `0` and `|` seek the first column of the current line.
+    Hover, `|` takes a [count] parameter, whereas `0` doesn't.
+"`^` and `_` are only superficially equivalent."
+  - Both `^` and `_` seek the column of the first printable character of the current line.
+    Hover, `_` takes a [count] parameter, whereas `^` doesn't.
+'The Patient Vimmer' writes:
+" That's the whole point. That _ has the same effect as ^ in some conditions is a happy accident. A side-effect.
+The behaviour of _ is contextual: it depends on how it is used and/or if it is preceded by a count or not. _ without a count has the same effect as ^ when used directly but the effect is different with a count and different in another way if used after an operator and it's even different between operators.
+Because it depends too much on its context, _ is ambiguous. Because ^ doesn't care about context, it is unambiguous. And the more precise and the less ambiguous you are, the more likely you are to get your point across or, in this case, to get your editor to do exactly what you want. That's why explicit is always better than implicit: miscommunication is horrible.
+Tell her you love her, don't expect her to piece it together out of low-level signaling and impressions and vague stuff. Tell Vim to "move the cursor to the first printable character on the line", don't tell it to " move the cursor 0 - 1 lines downward on first printable character"."
+'aktivb' writes:
+"No, they are not the same. _ takes a count, and ^ doesn't, as you said. Furthermore, ^ is charwise exclusive, and _ is linewise. So d^ deletes until the last starting blank on the line, excluding the char it is on. d<count>_ deletes the current and count-1 additional whole lines."
+--
+"`|` is column movement."
+
+Atoms
+-----
+atom ::=
+  | ordinary-atom
+  | \( pattern \)
+  | \%( pattern \)
+  | \z( pattern \)
+Examples of ordinary atoms: (with either "magic" or "nomagic")
+---------------------------
+\zs                       sets start of match
+\ze                       sets end of match
+\%^                       beginning of file
+\%$                       end of file
+\%V                       visual area
+\%#                       cursor position
+\%'{mark}  [e.g., \%'m]   mark
+\%{count}l [e.g., \%23l]  column
+\%{count}c [e.g., \%23c]  column
+\%{count}v [e.g., \%23v]  virtual column
+
+magic
+-----
+Use of "\m" after a pattern interprets the pattern as if 'magic' were set.
+Use of "\M" after a pattern interprets the pattern as if 'magic' were not set.
+Use of "\v" after a pattern interprets the pattern as if very magic (?).
+
+https://vim.fandom.com/wiki/Highlight_all_search_pattern_matches
+----------------------------------------------------------------
+`:nohlsearch` is a command, not an option. It disables highlighting
+
+NOTE:
+-----
+`set writebackup` instructs vim to create temporary files during file writing.
+E.g., before writing to "file0",
+      vim might create a file called "1234".
+      vim would then write changes to "file0"
+      and only at that point delete the temporary file "1234".
+Because so many files actions are done,
+this process can interfere with any programs that use 'inotify' (e.g., spago).
+To toggle locally:          `setlocal writebackup!`.
+To turn off locally:        `setlocal nowritebackup`.
+To check activation status: `set writebackup?`.

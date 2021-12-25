@@ -1,0 +1,48 @@
+- TAG delete needs to be updated to remove entries from $TAGSOURCES.
+- Add bash and vim linters.
+- For more-assured stability, clone the git repositories that my config depends
+  on, and update this config to point to the clones.
+- Have rxvt_unicode titlebar's caption match $PWD
+  for all states of rxvt_unicode, i3, and tmux.
+  (I.e., currently, when in tmux, the terminal's title is not updated. Instead,
+  it persists as the last title before starting tmux.)
+- Consider changing "${pkgs.bash}/bin/bash" in 'execute-namespace/default.nix'
+  to "${pkgs.stdenv.shell}" or just "${stdenv.shell}".
+  Or consider using 'writeShellScriptBin' instead of 'writeScriptBin'.
+  ('writeShellScriptBin' has two advantages:
+      0. Including a hashbang is unnecessary.
+      1. It calls `${shell} -n ${script}` to perform a simple syntax check.)
+- Checkmark and 'invalid' X don't render -- perhaps b/c of font incompatibility
+- Refactor/restructure 'configuration.nix' into multiple more-specific
+  configurationally-contained components.
+- Transition from $HOME to $CONFIG_ROOT.
+- Boyscout i3/default.nix, graphical/Xresources.
+- Rewrite bookmark/definition to indicate its dependency on 'pandoc'.
+- 'bookmark/default.nix' indicates that 'pandoc' is a dependency;
+  however, should 'bookmark/definition' be written to indicate this dependency too?
+- Boyscout swap and un~ files as well as directories not needed in the master branch.
+- Consider renaming $NAMESPACE as $REGION, $BASH_SPACE, or $CLOSURE.
+- Namespaces are currently volatile; consider incorporating them into
+  static nixos management.
+- Better integrate MARKPATH links with basic linux utilities (like 'ls');
+  include completion.
+- Consider incorporating suggestions found at https://alex.dzyoba.com/blog/vim-revamp/.
+- Consider untentacling i3, rofi, and bash.
+- Change `ls -l` in bash functions like 'derefMark' to `readlink`.
+- Check whether namespaces/tag has access to bash fn 'inode'.
+- Add traceability to namespace actions.
+- Modify prompt to indicate if PWD (or its immediate files) have notes
+- Add !gh/alexwl/haskell-code-explorer
+- Add !gh/pirate/ArchiveBox
+- Follow advice of https://an3223.github.io/Living-without-the-modern-browser/
+- Follow the advice of https://www.c0ffee.net/blog/mail-server-guide/
+  (how to run your own mail server).
+- Investigate incompatibility between vim's '+ register and xclip.
+- bash 'prompt' command induces errors when the working path is
+  under any ".git" directory
+- consider !gh Olical/vim-enmasse
+
+- Consider upgrading to new verson of NixOS:
+  https://nixos.org/nixos/manual/index.html#sec-upgrading
+  https://nixos.org/nixos/manual/index.html#sec-release-19.03
+- restore sessions and history management

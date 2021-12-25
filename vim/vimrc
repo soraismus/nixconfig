@@ -1,0 +1,185 @@
+" vim-utils.nix sets 'filetype indent plugin on | syn on'.
+syntax enable " Equivalent to ':source $VIMRUNTIME/syntax/syntax.vim'
+
+let mapleader = ","
+
+let myConfigDir = expand('$VOLATILE_CONFIG/$USER/vim')
+let mySpellDir = myConfigDir . '/spellDir'
+
+set autoindent
+set autoread
+set background=dark
+set backspace=indent,eol,start
+set backupcopy=auto
+set breakindent
+set colorcolumn=80,115
+set complete=.,w,b,u,t
+" `&directory` is the list of dir names for swap files.
+" The default value of `&directory` is '.,~/tmp,/var/tmp,/tmp'.
+" A double slash ensures swapfile-name uniqueness.
+set directory=/var/tmp//,/tmp//
+set display=truncate,uhex
+set encoding=utf-8
+set expandtab
+set foldclose=all
+set foldopen=hor,undo
+set formatoptions=tcqj
+set hidden
+set history=1000
+set hlsearch
+set laststatus=2
+set lazyredraw
+set linebreak
+set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+set matchpairs=(:),[:],{:},<:>
+set modeline
+set mouse=
+set nobackup " Do not persist backup after successful write. Cf. writebackup
+set nocompatible
+set nocursorcolumn
+set nocursorline
+set noincsearch
+set nojoinspaces
+set novisualbell
+set nrformats=bin,hex
+set number
+set relativenumber
+set ruler
+set scrolloff=0
+set sessionoptions=blank,buffers,curdir,folds,help,options,tabpages,winsize,terminal
+set shiftround
+set shiftwidth=2
+set showbreak=↪
+set showmatch
+set sidescrolloff=0
+set smarttab
+setlocal spell
+let &spellfile = mySpellDir . '/mh.utf-8.add'
+  let &spellfile .= ',' . mySpellDir . '/purs.utf-8.add'
+set spelllang=en_us
+set statusline=[%n]\ [%t]
+  set statusline+=%h%m%r%y
+  set statusline+=%=            " separation point btw left- and right-aligned
+  set statusline+=%{fugitive#statusline()}
+  set statusline+=%#warningmsg# " Set highlight group 'warningmsg'.
+  set statusline+=%{SyntasticStatuslineFlag()}
+  set statusline+=%*            " Restore highlight group User{N}.
+  set statusline+=[%l\/%L,\ %c%V]
+set swapfile
+set suffixesadd=.c,.cs,.hs,.java,.js,.json,.md,.py,.purs,.txt
+set t_Co=16
+set tabpagemax=50
+set tabstop=2
+setglobal tags=./tags
+set ttimeout
+set ttimeoutlen=100
+set viminfo=!,'100,<50,s10,h
+let &viminfofile = myConfigDir . '/info'
+set virtualedit=all
+set wildmenu
+set writebackup " Protect against crash-during-write. Might affect 'inotify'.
+set wrap
+
+nmap = <Plug>VinegarSplitUp
+" The pipe character must be escaped.
+nmap \| <Plug>VinegarVerticalSplitUp
+
+ noremap <C-H> <C-W>h
+ noremap <C-J> <C-W>j
+ noremap <C-K> <C-W>k
+ noremap <C-L> <C-W>l
+cnoremap w!! %!sudo tee > /dev/null %
+inoremap <C-A> <Esc>I
+inoremap <C-E> <Esc>A
+inoremap jk <Esc>
+inoremap kj <Esc>
+inoremap <C-L> <C-G>u<Esc>[s1z=`]a<C-G>u
+inoremap <C-U> <C-G>u<C-U>
+inoremap <C-W> <C-G>u<C-W>
+nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
+nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+nnoremap Q @q
+nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
+nnoremap ## :set relativenumber!<CR>
+vnoremap Q :norm @q<CR>
+
+if has("patch-8.1.0251")
+  let myBackupDir = myConfigDir . '/backupDir'
+  call system('mkdir -p ' . myBackupDir)
+  let &backupdir = myBackupDir
+end
+
+if has('persistent_undo')
+  let myUndoDir = myConfigDir . '/undoDir'
+  call system('mkdir -p ' . myUndoDir)
+  let &undodir = myUndoDir
+  set undofile
+endif
+
+" Syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_close = 0
+
+" UltiSnips
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+
+" Per !gh/kuniwak/vint
+" Vint seems to require configuration to work without throwing errors.
+" let g:syntastic_vim_checkers = ['vint']
+
+" Toggle between full path and relative path of current file.
+function! ToggleStatusLine()
+  let myStatusLine = &statusline
+  if myStatusLine =~ "%t"
+    let myStatusLine = substitute(myStatusLine, "%t", "%F", "g")
+  elseif myStatusLine =~ "%F"
+    let myStatusLine = substitute(myStatusLine, "%F", "%t", "g")
+  endif
+  let &statusline = myStatusLine
+endfunction
+command! ToggleStatusLine call ToggleStatusLine()
+
+" Toggle between concise and data-rich statusline modes.
+function! ToggleStatusLineMode()
+  let myStatusLine = &statusline
+  if myStatusLine =~ "%t"
+    let myPathFormat = "%t"
+  else
+    let myPathFormat = "%F"
+  endif
+  if myStatusLine =~ "fugitive"
+    let myStatusLine =
+      \ "[%n] [" . myPathFormat . "]"
+      \   . "%="
+      \   . "[%l\/%L,\ %c%V]"
+  else
+    let myStatusLine =
+      \ "[%n] [" . myPathFormat . "]"
+      \   . "%h%m%r%y"
+      \   . "%="
+      \   . "%{fugitive#statusline()}"
+      \   . "%#warningmsg#%{SyntasticStatuslineFlag()}"
+      \   . "%*"
+      \   . "[%l\/%L,\ %c%V]"
+  endif
+  let &statusline = myStatusLine
+endfunction
+command! ToggleStatusLineMode call ToggleStatusLineMode()
+
+" Trim whitespace on save.
+function! <SID>StripTrailingWhitespaces()
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e       " [e] flag suppresses error messages.
+  call cursor(l, c) " Restore former cursor position.
+endfunction
+
+augroup vimrc
+  " Remove all vimrc autocommands so not to enter twice.
+  autocmd!
+  autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+augroup END

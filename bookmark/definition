@@ -1,0 +1,211 @@
+# Wed Feb  5 17:36:53 EST 2014
+# This file curls an HTTP URL, converts the HTML document
+# into markdown, and saves the file in $BOOKMARKPATH or $PRIV_BKM_PATH.
+#
+# Usage: bookmark [-s] [-@ url] [-t token-sequence] [-n title] [tag1 ... tagN]
+
+
+# The following variable and two functions are used in help-messages.
+# --------------------------------------------------------------
+USAGE="Usage: '`basename $0` [-s] [-@ url] [-t token-sequence] [-n title] [tag1 ... tagN]"
+function displayTokenOptions {
+cat <<END_OF_HELP_MSG
+
+The default token sequence is "I12".
+Majuscule tokens indicate records appropriate for public use; minuscule tokens indicate private records.
+
+Available Tokens:
+  A  - description or list of characteristics (including criticisms)
+  B  - code repository (deprecated use: code exemplar; cf. L)
+  C  - communication exchanged like email, IMs, etc
+  D  - guide, explanation, or tutorial
+  E  - summary, cheatsheet, or overview of the theory or principles of a topic
+  F  - library or utility
+  G  - cast, podcast, screencast, or collection of slides
+  H  - hub, portal, wiki, or platform
+  I  - information collected like articles, bookmarks, etc
+  J  - book
+  K  - blog, personal website
+  L  - exemplar (e.g., résumé or web app)
+  M  - posting, advertisement, notice, or application (e.g., job notice)
+  N  - FAQs, responses to queries, or interviews
+  O  - exercises, challenges, tests, quizzes, puzzles, or kata
+  P  - graphs, pictorial data
+  R  - records created like writings, pictures, etc
+  S  - bookmark (like a reference pointer or symlink to an outside reference)
+  T  - authoritative guide or description
+  U  - biographies, info pertaining to persons
+  V  - list or catalog
+  W  - online journal, library, or academic paper
+  X  - systematic or formal comparison
+  Y  - services
+  Z  - programs, courses, MOOCs
+  AA - webapp or service
+  1  - important documents like backups, finance, taxes, etc
+  2  - writing
+  3  - design and visuals: art, scientific figures, seminar slides, etc
+  4  - life: recipes, productivity, vacations, etc
+  5  - commerce: transactions, returns, insurance, etc
+  6  - government: taxes, identification, papers, etc.
+  7  - maintenance: cars, etc
+  8  - career advancement or transition
+  9  - sysadmin
+  10 - software development of any kind
+  11 - hardware
+  12 - miscellaneous
+  13 - computer science
+  14 - systems software (e.g., operating systems)
+  15 - networking, routing
+  16 - political economy
+  17 - hard sciences
+
+END_OF_HELP_MSG
+}
+
+function displayHelpMessage {
+  echo "$USAGE"
+  displayTokenOptions
+}
+# --------------------------------------------------------------
+
+# A guard to determine whether to save the full document or merely the URL.
+JUST_SAVE_LINK=false
+
+# Default token-sequence is "I10".
+TS="I12"
+
+# Default title is the empty string "".
+TITLE=""
+
+# The first colon silences error messaging.
+# Colons following the "-@", "-t", and "-n" flags indicate that arguments are required.
+while getopts ":@:t:s?n:x" opt; do case $opt in
+
+    # Set xtrace.
+    # (NOTE: A trap may be necessary to unset this in case of an error.)
+    x) set -x
+       ;;
+
+    # The default URL is gotten from the buffer,
+    # but it can be overridden with the "-@" flag.
+    @) SRC="$OPTARG"
+       ;;
+
+    # By default, the resulting document will principally
+    # comprise the html document (in markdown format)
+    # found at the URL ($SRC). However, the "-s" flag
+    # saves only the URL link ($SRC) itself and not the document.
+    s) JUST_SAVE_LINK=true
+       ;;
+
+    t) TS="$OPTARG"
+       ;;
+    n) TITLE="$( echo "$OPTARG" | sed 's/\(.*\)/\L\1/' | tr [:space:] '_' )"
+       ;;
+   \?) displayHelpMessage
+       set +x
+       exit 0
+       ;;
+
+    # An unescaped '?' represents the default setting.
+    ?) echo "Invalid Option Specified."
+       echo "$USAGE" 1>&2
+       set +x
+       exit 1
+       ;;
+  esac
+done
+
+# OPTIND should now be the index of the first non-flag-related argument.
+# Shift off all preceding arguments.
+shift $(($OPTIND - 1))
+
+if [[ -z "$SRC" ]]; then
+  SRC="$(
+      xclip -o -selection clipboard 2> /dev/null      \
+        || xclip -o -selection primary 2> /dev/null   \
+        || xclip -o -selection secondary 2> /dev/null
+    )"
+fi
+
+if [ -z "$SRC" -o "$SRC"x = "x" ]; then
+  echo "A src wasn't provided either via xclip or following the -@ flag."
+  set +x
+  exit 2
+fi
+
+DATE="$( date +%Y%m%d-%H%M%s )"
+
+if $JUST_SAVE_LINK; then
+  TS="S""$TS"
+fi
+
+NAME="$DATE"-"$TS"
+
+if [[ "$#" < 1 ]]; then
+  echo "Optimal use of this script requires at least one tag."
+else
+  for arg in "$@"; do
+    if [ "$arg" = 'help' ]; then
+      displayHelpMessage
+      set +x
+      exit 0
+    else
+      NAME="$NAME"."$arg"
+    fi
+  done
+fi
+
+if [[ -n "$TITLE" ]]; then
+  NAME="$NAME"~"$TITLE"
+fi
+
+NAME="$NAME".md
+
+# --------------------------------------------------------------
+function rgxTest {
+  echo "$1" | grep -c "$2" | grep -cv 0
+}
+
+function minuscule {
+  rgxTest "$1" [a-z]
+}
+
+PRIVATE="$(minuscule "$TS")"
+
+if [ "$PRIVATE" -eq 1 ]; then
+  if [ ! -e "$PRIV_BKM_PATH" ]; then
+    mkdir -p "$PRIV_BKM_PATH"
+  fi
+  TGT="$PRIV_BKM_PATH/$NAME"
+else
+  if [ ! -e "$BOOKMARKPATH" ]; then
+    mkdir -p "$BOOKMARKPATH"
+  fi
+  TGT="$BOOKMARKPATH/$NAME"
+fi
+# --------------------------------------------------------------
+
+if [ -e "$TGT" ]; then
+  echo "File ($TGT) already exists."
+  set +x
+  exit 1;
+elif $JUST_SAVE_LINK; then
+  echo "Find pertinent document or resource at the following URL:" >> "$TGT"
+  echo "$SRC" >> "$TGT"
+  echo "$SRC has been bookmarked at $TGT."
+else
+  echo "$SRC"
+  curl "$SRC" | pandoc -f html -o "$TGT"
+  echo >> "$TGT"
+  echo "This markdown document has been converted from the html document located at:" >> "$TGT"
+  echo "$SRC" >> "$TGT"
+  echo "$SRC has been bookmarked at $TGT."
+fi
+
+for arg in "$@"; do
+  tag set "$TGT" "$arg"
+done
+
+set +x
+exit 0;
