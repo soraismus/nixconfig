@@ -74,6 +74,8 @@
 
   environment.systemPackages =
     let
+      # magma_cudatoolkit_11_4 = pkgs.magma.override { cudatoolkit = pkgs.cudatoolkit_11_4; };
+
       # http://fontforge.github.io/en-US/documentation/utilities/
       # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
       fonttools = pkgs.fontforge-fonttools;
@@ -100,6 +102,10 @@
         # conky # configurable X system monitor
         coq # interactive theorem prover
         ctags # utility for fast source-code browsing (exuberant ctags)
+
+        # cudatoolkit_11_4
+        # cudnn_cudatoolkit_11_4
+
         darcs # version control system
         dragon-drop # Simple drag-and-drop source/sink for X
         # direnv # environment switcher for the shell
@@ -111,6 +117,7 @@
         elmPackages.elm # haskell-like frontend development platform
         exa # replacement for 'ls'
         expect # tool for automating interactive applications
+        fd # alternative to 'find'
         feh # light-weight image viewer
         ffmpeg # manager and converter of audio/video files
         file # program that shows the type of files
@@ -119,7 +126,7 @@
         fonttools
         fossil # version control system
         fzf # command-line fuzzy finder
-        gitless # version control system built on top of git
+        gitless # version control system built on top of git [Its cli abbrev is 'gl'.]
         gdrive # command-line utility for interacting with google drive
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
         golly # game of life
@@ -144,7 +151,9 @@
         lsof # utility to list open files
         lynx # terminal web-browser (cf. browsh, links2, w3m)
         macchanger # utility for manipulating MAC addresses
+        # magma_cudatoolkit_11_4 # matrix algebra on GPU and multicore architecture
         maim # cli screenshot utility [cf. scrot]
+        mcfly # bash-history-management tool
         # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
         # mopidy # extensible music server that plays music from local, Spotify, etc.
@@ -182,39 +191,51 @@
         purs-utils.spago
         purs-utils.spago2nix
         purs-utils.zephyr # purescript tree-shaker
-        (python39.withPackages (pkgs: [
-          pkgs.beautifulsoup4 # html- and xml-parser
-          pkgs.bokeh # statistical and interactive HTML plots
-          # pkgs.fastapi # web/api framework
-          # pkgs.flask # web/api microframework
-          # pkgs.gensim # topic-modelling library
-          # pkgs.huggingface-hub # interface with huggingface.co hub
-          # pkgs.imbalanced-learn # manage imbalanced data
-          pkgs.jupyter # web-based notebook environment for interactive computing
-          # pkgs.jupyter_core # web-based notebook environment for interactive computing
-          # pkgs.Keras # deep-learning library for Theano and TensorFlow
-          pkgs.matplotlib # plotting library
-          pkgs.networkx # network-management library
-          pkgs.nltk # natural-language processing toolkit
-          pkgs.numpy # scientific (num-processing) tools
-          pkgs.opencv4 # Open Computer Vision library
-          pkgs.pandas # python data-analysis library
-          pkgs.pilkit # utilities for python imaging library
-          pkgs.pillow # fork of PIL (python imaging library)
-          pkgs.pytorchWithoutCuda # deep-learning platform
-          # pkgs.spacy # natural-language processing
-          pkgs.scikit-learn # machine learning & data mining
-          pkgs.scipy # science/engineering library
-          pkgs.scrapy # web crawler and scraper
-          pkgs.seaborn # statistical data visualization
-          # pkgs.statsmodel # statistical modeling
-          # pkgs.streamlit # build custom machine-learning tools
-          pkgs.tensorflow # machine learning
-          pkgs.torchvision # deep-learning platform
-          pkgs.unittest2 # backport of unittest testing framework
-          pkgs.xgboost # gradient boosting library (e.g., GBDTs)
-          # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
-        ])) # Cf nixos.wiki/wiki/Python
+        (python39.withPackages (pkgs:
+          let
+            pytorch = pkgs.pytorch.override {
+              # cudaSupport = true;
+              cudaSupport = false;
+              # cudatoolkit = cudatoolkit_11_4;
+              # cudnn = cudnn_cudatoolkit_11_4;
+              # magma = magma_cudatoolkit_11_4;
+            };
+            torchvision = pkgs.torchvision.override { pytorch = pytorch; };
+          in [
+            pkgs.beautifulsoup4 # html- and xml-parser
+            pkgs.bokeh # statistical and interactive HTML plots
+            # pkgs.fastapi # web/api framework
+            # pkgs.flask # web/api microframework
+            # pkgs.gensim # topic-modelling library
+            # pkgs.huggingface-hub # interface with huggingface.co hub
+            # pkgs.imbalanced-learn # manage imbalanced data
+            pkgs.jupyter # web-based notebook environment for interactive computing
+            # pkgs.jupyter_core # web-based notebook environment for interactive computing
+            # pkgs.Keras # deep-learning library for Theano and TensorFlow
+            pkgs.matplotlib # plotting library
+            pkgs.networkx # network-management library
+            pkgs.nltk # natural-language processing toolkit
+            pkgs.numpy # scientific (num-processing) tools
+            pkgs.opencv4 # Open Computer Vision library
+            pkgs.pandas # python data-analysis library
+            pkgs.pilkit # utilities for python imaging library
+            pkgs.pillow # fork of PIL (python imaging library)
+            #pkgs.pytorchWithCuda # deep-learning platform
+            pytorch # deep-learning platform
+            # pkgs.spacy # natural-language processing
+            pkgs.scikit-learn # machine learning & data mining
+            pkgs.scipy # science/engineering library
+            pkgs.scrapy # web crawler and scraper
+            pkgs.seaborn # statistical data visualization
+            # pkgs.statsmodel # statistical modeling
+            # pkgs.streamlit # build custom machine-learning tools
+            pkgs.tensorflow # machine learning
+            torchvision # deep-learning platform
+            pkgs.unittest2 # backport of unittest testing framework
+            pkgs.xgboost # gradient boosting library (e.g., GBDTs)
+            # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
+          ]
+        )) # Cf nixos.wiki/wiki/Python
         qtox # Qt tox client
         qutebrowser # keyboard-focused browser with minimal GUI
         ranger # file manager
@@ -235,6 +256,7 @@
         texlive.combined.scheme-full # pdflatex, xcolor.sty for PDF conversion
         # tig # text-mode interface for git
         # tinc # VPN daemon with full mesh routing
+        tldr # community-managed man pages
         tmux # terminal multiplexer
         tmuxp # manage tmux workspaces from JSON and YAML
         # tomb # file encryption
@@ -395,6 +417,7 @@
     };
     layout = "us";
     synaptics.enable = true; # touchpad
+    # videoDrivers = [ "nvidia" ];
     xkbModel = "pc104";
     xkbOptions = "ctrl:nocaps";
     xkbVariant = "";
