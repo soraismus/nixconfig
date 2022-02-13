@@ -18,14 +18,18 @@ pkgs.vim_configurable.customize {
             "tabular"
             "tagbar"
             "ultisnips"
+            "vim-capslock"
             "vim-commentary"
+            "vim-dadbod"
             "vim-easymotion"
             "vim-eunuch"
             "vim-gitgutter"
             "vim-unimpaired"
             "vim-signature"
+            "vim-subversive"
             "vim-surround"
             # !gh machakan/vim-swap
+            "vim-tbone"
             "vim-vinegar"
             "vimtex"
           ];
