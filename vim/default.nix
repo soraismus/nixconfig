@@ -22,6 +22,7 @@ pkgs.vim_configurable.customize {
             "vim-easymotion"
             "vim-eunuch"
             "vim-gitgutter"
+            "vim-unimpaired"
             "vim-signature"
             "vim-surround"
             # !gh machakan/vim-swap

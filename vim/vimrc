@@ -98,10 +98,22 @@ inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
+" nnoremap o o<Esc>0"_D
+" nnoremap O O<Esc>0"_D
 nnoremap Q @q
 nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 nnoremap ## :set relativenumber!<CR>
 vnoremap Q :norm @q<CR>
+
+" Very Magic
+" ----------
+" " The following line is equivalent to `cnoremap %s/ %s/\v`.
+" cnoremap %s/ %smagic/
+" cnoremap \>s/ \>smagic/
+" nnoremap :g/ :g/\v
+" nnoremap :g// :g//
+" nnoremap / /\v
+" vnoremap / /\v
 
 if has("patch-8.1.0251")
   let myBackupDir = myConfigDir . '/backupDir'
