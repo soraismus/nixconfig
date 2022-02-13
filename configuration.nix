@@ -175,6 +175,7 @@
         pass # password-store manages passwords securely
         patchelf
         pavucontrol # PulseAudio volume control
+        pciutils # programs (like 'lspci') for managing PCI devices
         pijul # distributed version control system inspired by categorical patches
         poppler_utils # PDF tools like pdfunite and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
