@@ -1,2 +1,10 @@
-/detached-git
+**/.git
+/detached-git/*
+/notes
+/secrets
 /volatile_config
+*.note
+*.secret
+*.swo
+*.swp
+!/detached-git/list
