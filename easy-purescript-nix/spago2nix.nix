@@ -1,12 +1,14 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 
-import (
-  pkgs.fetchFromGitHub {
-    owner = "justinwoo";
-    repo = "spago2nix";
-    rev = "704fc193dd1066d3bee91e525ad5ea4876ad990e";
-    sha256 = "1g82s3wz18lxif3pdd9nk6vb3c5cy1i1w5xpkl9gpvc44x8w7lrl";
-  }
-) {
+import
+  (
+    pkgs.fetchFromGitHub {
+      owner = "justinwoo";
+      repo = "spago2nix";
+      rev = "da4a833b53f9139e596f89ad89d892f4f60fc179";
+      sha256 = "sha256-oTBdCpCJmuMQ6nYR1+tamL9xDPm720dRVxsKtKOzTfs=";
+    }
+  )
+{
   inherit pkgs;
 }

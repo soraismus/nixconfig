@@ -1,9 +1,11 @@
 { pkgs ? import <nixpkgs> { inherit system; }
 , system ? builtins.currentSystem
-, nodejs ? pkgs."nodejs-12_x"
+, nodejs ? pkgs."nodejs-14_x"
 }:
 
 let
+  version = "0.16.2";
+
   nodeEnv = import ./node-env.nix {
     inherit (pkgs) stdenv lib python2 runCommand writeTextFile;
     inherit pkgs nodejs;
@@ -15,6 +17,6 @@ let
     inherit nodeEnv;
   };
 
-  source = nodePackage.sources."pscid-2.9.3".src;
+  source = nodePackage.sources."purescript-language-server-${version}".src;
 in
 nodeEnv.buildNodePackage (nodePackage.args // { src = source; })

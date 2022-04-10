@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { } }:
 
 let
   easy-dhall = import ./easy-dhall.nix {
@@ -6,6 +6,30 @@ let
   };
 
   inputs = rec {
+    purs-0_14_5 = import ./purs/0.14.5.nix {
+      inherit pkgs;
+    };
+
+    purs-0_14_4 = import ./purs/0.14.4.nix {
+      inherit pkgs;
+    };
+
+    purs-0_14_3 = import ./purs/0.14.3.nix {
+      inherit pkgs;
+    };
+
+    purs-0_14_2 = import ./purs/0.14.2.nix {
+      inherit pkgs;
+    };
+
+    purs-0_14_1 = import ./purs/0.14.1.nix {
+      inherit pkgs;
+    };
+
+    purs-0_14_0 = import ./purs/0.14.0.nix {
+      inherit pkgs;
+    };
+
     purs-0_13_8 = import ./purs/0.13.8.nix {
       inherit pkgs;
     };
@@ -34,7 +58,7 @@ let
       inherit pkgs;
     };
 
-    purs = purs-0_13_8;
+    purs = purs-0_14_5;
 
     purs-simple = purs;
 
@@ -68,7 +92,23 @@ let
       inherit pkgs;
     };
 
+    purs-tidy = import ./purs-tidy {
+      inherit pkgs;
+    };
+
+    psa = import ./psa {
+      inherit pkgs;
+    };
+
     pscid = import ./pscid {
+      inherit pkgs;
+    };
+
+    pulp = import ./pulp {
+      inherit pkgs;
+    };
+
+    purescript-language-server = import ./purescript-language-server {
       inherit pkgs;
     };
 
@@ -85,7 +125,8 @@ inputs // {
 
   buildInputs = buildInputs;
 
-  shell = pkgs.runCommand "easy-purescript-nix-shell" {
-    buildInputs = buildInputs;
-  } "";
+  shell = pkgs.runCommand "easy-purescript-nix-shell"
+    {
+      buildInputs = buildInputs;
+    } "";
 }

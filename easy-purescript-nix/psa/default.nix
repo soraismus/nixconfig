@@ -15,6 +15,6 @@ let
     inherit nodeEnv;
   };
 
-  source = nodePackage.sources."pscid-2.9.3".src;
+  source = nodePackage.sources."purescript-psa-0.8.2".src;
 in
 nodeEnv.buildNodePackage (nodePackage.args // { src = source; })

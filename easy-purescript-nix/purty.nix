@@ -1,50 +1,34 @@
 { pkgs ? import <nixpkgs> {} }:
+  pkgs.stdenv.mkDerivation rec {
+    pname = "purty";
+    version = "7.0.0";
 
-let
-  dynamic-linker = pkgs.stdenv.cc.bintools.dynamicLinker;
+    src = pkgs.fetchurl {
+      url = "https://registry.npmjs.org/purty/-/purty-${version}.tgz";
+      sha256 = "1h9z43aj1gflysy0379j7cpdvszjlk9lvg861hgk7dmqq59qzd4y";
+    };
 
-  patchelf = libPath: if pkgs.stdenv.isDarwin
-  then ""
-  else ''
-    chmod u+w $PURTY
-    patchelf --interpreter ${dynamic-linker} --set-rpath ${libPath} $PURTY
-    chmod u-w $PURTY
-  '';
+    binPath = if pkgs.stdenv.isDarwin
+      then
+        "package/bin/osx/purty"
+      else
+        "package/bin/linux/purty";
 
-in
-pkgs.stdenv.mkDerivation rec {
-  pname = "purty";
+    buildInputs = [ pkgs.zlib pkgs.gmp pkgs.ncurses5 ];
 
-  version = "4.5.1";
+    libPath = pkgs.lib.makeLibraryPath buildInputs;
 
-  src = if pkgs.stdenv.isDarwin
-  then pkgs.fetchurl {
-    url = "https://bintray.com/joneshf/generic/download_file?file_path=purty-4.5.1-osx.tar.gz";
-    sha256 = "1nl86ajix0kzz7l6my1nj22zra4pcz7mp6kb730p2a9jxdk37f12";
-  }
-  else pkgs.fetchurl {
-    url = "https://bintray.com/joneshf/generic/download_file?file_path=purty-4.5.1-linux.tar.gz";
-    sha256 = "050m7wnaz7d20amsprps02j65qywa4r0n873f444g6db9alvazrv";
-  };
+    dontStrip = true;
 
-  buildInputs = [ pkgs.zlib pkgs.gmp pkgs.ncurses5 ];
+    unpackPhase = ''
+      tar xf $src
+    '';
 
-  libPath = pkgs.lib.makeLibraryPath buildInputs;
-
-  dontStrip = true;
-
-  unpackPhase = ''
-    tar xf $src
-  '';
-
-  installPhase = ''
-    mkdir -p $out/bin
-    PURTY="$out/bin/purty"
-
-    install -D -m555 -T purty $PURTY
-    ${patchelf libPath}
-
-    mkdir -p $out/etc/bash_completion.d/
-    $PURTY --bash-completion-script $PURTY > $out/etc/bash_completion.d/purty-completion.bash
-  '';
+    installPhase = ''
+      mkdir -p $out/bin
+      PURTY="$out/bin/purty"
+      install -D -m555 -T $binPath $PURTY
+      mkdir -p $out/etc/bash_completion.d/
+      $PURTY --bash-completion-script $PURTY > $out/etc/bash_completion.d/purty-completion.bash
+    '';
 }

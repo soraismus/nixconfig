@@ -6,6 +6,10 @@ set -e
 which purs
 purs --version
 
+which pulp
+pulp --help
+pulp --version
+
 which psc-package
 psc-package --version
 
@@ -23,6 +27,12 @@ spago2nix
 
 which pscid
 pscid --version
+
+which purescript-language-server
+purescript-language-server --version
+
+which purs-tidy
+purs-tidy --version
 
 which purty
 purty --help

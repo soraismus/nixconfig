@@ -4,6 +4,8 @@
 }:
 
 let
+  version = "0.6.4";
+
   nodeEnv = import ./node-env.nix {
     inherit (pkgs) stdenv lib python2 runCommand writeTextFile;
     inherit pkgs nodejs;
@@ -15,6 +17,6 @@ let
     inherit nodeEnv;
   };
 
-  source = nodePackage.sources."pscid-2.9.3".src;
+  source = nodePackage.sources."purs-tidy-${version}".src;
 in
 nodeEnv.buildNodePackage (nodePackage.args // { src = source; })
