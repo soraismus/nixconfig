@@ -168,7 +168,7 @@
         nixops # utility for provisioning NixOS machines
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nnn # ncurses-based file manager/browser
-        nodejs-10_x # javascript engine
+        nodejs-17_x # javascript engine
         okular # unlike zathura, it has pdf-annotating and -highlighting features
         # opencv2 # Open Computer Vision library
         openvpn # tunneling application
