@@ -87,6 +87,7 @@
 
         # xorg.xmodmap # https://wiki.xfce.org/faq
         # xorg.xev     # https://wiki.xfce.org/faq
+
         ag # silver-searcher
         atop # console system performance monitor
         # autossh # automatically restart SSH sessions and tunnels
