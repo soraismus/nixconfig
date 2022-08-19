@@ -162,6 +162,7 @@
         mtr # network-diagnostics tool
         mupdf # parsing engine for PDF, XPS, and EPUB
         myVim # text editor
+        neovim # text editor
         newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
         nix-bash-completions
         nix-diff # utility that compares nix derivations
