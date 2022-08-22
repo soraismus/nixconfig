@@ -122,9 +122,6 @@
         # btrfs-progs # utilities for the btrfs filesystem
         cabal-install # haskell packaging and build system
         cabal2nix # nix utility that transforms cabal specs into nix specs
-
-        camelot
-
         chromium # browser
         cifs-utils # tools for managing CIFS client filesystems (CIFS is Microsoft's version of SMB)
         # conky # configurable X system monitor
@@ -234,6 +231,7 @@
           in [
             pkgs.beautifulsoup4 # html- and xml-parser
             pkgs.bokeh # statistical and interactive HTML plots
+            camelot
             # pkgs.fastapi # web/api framework
             # pkgs.flask # web/api microframework
             # pkgs.gensim # topic-modelling library
