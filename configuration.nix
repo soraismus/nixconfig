@@ -79,8 +79,31 @@
       # http://fontforge.github.io/en-US/documentation/utilities/
       # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
       fonttools = pkgs.fontforge-fonttools;
+
       easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
       purs-utils = easy-purescript-nix.inputs;
+
+      camelot =
+        let
+          callPackage = pkgs.lib.callPackageWith pkgs;
+          fetchFromGitHub = pkgs.fetchFromGitHub;
+          python39 = pkgs.python39;
+          python39Pkgs = python39.pkgs;
+        in
+          callPackage (import ./python-modules/camelot) {
+            buildPythonPackage = python39Pkgs.buildPythonPackage;
+            click = python39Pkgs.click;
+            fetchFromGitHub = fetchFromGitHub;
+            isPy3k = python39.passthru.isPy3k;
+            numpy = pkgs.numpy;
+            cv2 = python39Pkgs.opencv4;
+            pandas = python39Pkgs.pandas;
+            pdfminer_six = python39Pkgs.pdfminer;
+            pypdf2 = python39Pkgs.pypdf2;
+            tabulate = python39Pkgs.tabulate;
+            tkinter = python39Pkgs.tkinter;
+          };
+
     in
       with pkgs; [
         exim getmail mutt notmuch-mutt procmail spamassassin # email services
@@ -99,7 +122,11 @@
         # btrfs-progs # utilities for the btrfs filesystem
         cabal-install # haskell packaging and build system
         cabal2nix # nix utility that transforms cabal specs into nix specs
+
+        camelot
+
         chromium # browser
+        cifs-utils # tools for managing CIFS client filesystems (CIFS is Microsoft's version of SMB)
         # conky # configurable X system monitor
         coq # interactive theorem prover
         ctags # utility for fast source-code browsing (exuberant ctags)
@@ -221,7 +248,9 @@
             pkgs.nltk # natural-language processing toolkit
             pkgs.numpy # scientific (num-processing) tools
             pkgs.opencv4 # Open Computer Vision library
+            pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
             pkgs.pandas # python data-analysis library
+            pkgs.pdfminer # PDF parser and analyzer
             pkgs.pilkit # utilities for python imaging library
             pkgs.pillow # fork of PIL (python imaging library)
             #pkgs.pytorchWithCuda # deep-learning platform
@@ -283,6 +312,7 @@
         yarn # variant to npm
         # yi # yi text editor (written in haskell)
         youtube-dl # command-line tool to download videos from video platforms
+        yq # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
         zeal # offline API documentation browser

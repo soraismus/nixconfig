@@ -429,6 +429,12 @@ tmuxto () {
   tmux rename-window "$1"
 }
 
+# Rename a file so that spaces become underscores.
+underscore-file-name () {
+  local filename="${1}"
+  mv "${filename}" "$( echo "${filename}" | tr ' ' '_' )"
+}
+
 # https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
 #https://metaredux.com/posts/2020/07/07/supercharge-your-bash-history.html
 _updateHistory () {
