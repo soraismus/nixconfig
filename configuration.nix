@@ -425,6 +425,17 @@
         promptToggle = "togglePrompt";
         quit = "exit";
         rm = "rm -I";
+        s0 = "estimate --ignore-pr -o ../orders/0 --stage 0";
+        s1 = "estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1";
+        s6 = "estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x";
+        s7 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f";
+        s9 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --recache-components";
+        s10 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm-data";
+        s11 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm";
+        s12 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --ast";
+        s13 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --summary";
+        s14 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json";
+        s15 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json";
         stackBuild = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH stack build --nix --fast";
         startStackShell = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH nix-shell -p stack";
         touchpadToggle = "toggleTouchpad";
