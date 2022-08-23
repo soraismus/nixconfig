@@ -653,13 +653,13 @@ zpdf-overrides () {
       for i in $( awk "/^${startItem}/,EOF" "${overridesFile}" | grep '^[A-Z]' | tr -d ':' ); do
         files+=("${i}.pdf")
       done
-      /home/polytope/eb-scripts/zopen "${files[@]}"
+      /home/polytope/eb-bin/zopen "${files[@]}"
     else
       declare -a files=()
       for i in $( cat "${overridesFile}" | grep '^[A-Z]' | tr -d ':' ); do
         files+=("${i}.pdf")
       done
-      /home/polytope/eb-scripts/zopen "${files[@]}"
+      /home/polytope/eb-bin/zopen "${files[@]}"
     fi
   else
     2>1 echo "The overrides file '${overridesFile}' does not exist."
@@ -668,5 +668,5 @@ zpdf-overrides () {
 }
 
 zpdf-tubes () {
-  /home/polytope/eb-scripts/zopen "$( list-tubes )"
+  /home/polytope/eb-bin/zopen "$( list-tubes )"
 }
