@@ -327,7 +327,7 @@
         yarn # variant to npm
         # yi # yi text editor (written in haskell)
         youtube-dl # command-line tool to download videos from video platforms
-        yq # cli YAML processor
+        yq-go # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
         zeal # offline API documentation browser
