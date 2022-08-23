@@ -336,6 +336,81 @@ _promptCommand () {
   #_trackPath
 }
 
+sall () {
+  if [ "${#}" -lt 1 ]; then
+    s0 -m > ../stages/0.json
+    s1 -m > ../stages/1.json
+    s6 -m > ../stages/6.json
+    s7 -m > ../overrides/0.yaml
+  else
+    local client="${1}"
+    if [ "${client}x" = "--empirex" ]; then
+      s0 --empire > ../stages/0.json
+      s1 --empire > ../stages/1.json
+      s6 --empire > ../stages/6.json
+      s7 --empire > ../overrides/0.yaml
+    elif [ "${client}x" = "--ppgx" ]; then
+      s0 --ppg > ../stages/0.json
+      s1 --ppg > ../stages/1.json
+      s6 --ppg > ../stages/6.json
+      s7 --ppg > ../overrides/0.yaml
+    elif [ "${client}x" = "--sencox" ]; then
+      s0 --senco > ../stages/0.json
+      s1 --senco > ../stages/1.json
+      s6 --senco > ../stages/6.json
+      s7 --senco > ../overrides/0.yaml
+    else
+      s0 -c "${client}" > ../stages/0.json
+      s1 -c "${client}" > ../stages/1.json
+      s6 -c "${client}" > ../stages/6.json
+      s7 -c "${client}" > ../overrides/0.yaml
+    fi
+  fi
+}
+
+sall2 () {
+  if [ "${#}" -lt 1 ]; then
+    s10 -m > ../stages/9.json
+    s11 -m -- -o ../VCMs
+    s12 -m > ../stages/11.json
+    s13 -m > ../stages/12.json
+    s14 -m > ../stages/13.json
+    s15 -m -- -o ../quotes/0.pdf
+  else
+    local client="${1}"
+    # --ppg --senco
+    if [ "${client}x" = "--empirex" ]; then
+      s10 --empire > ../stages/9.json
+      s11 --empire -- -o ../VCMs
+      s12 --empire > ../stages/11.json
+      s13 --empire > ../stages/12.json
+      s14 --empire > ../stages/13.json
+      s15 --empire -- -o ../quotes/0.pdf
+    elif [ "${client}x" = "--ppgx" ]; then
+      s10 --ppg > ../stages/9.json
+      s11 --ppg -- -o ../VCMs
+      s12 --ppg > ../stages/11.json
+      s13 --ppg > ../stages/12.json
+      s14 --ppg > ../stages/13.json
+      s15 --ppg -- -o ../quotes/0.pdf
+    elif [ "${client}x" = "--sencox" ]; then
+      s10 --senco > ../stages/9.json
+      s11 --senco -- -o ../VCMs
+      s12 --senco > ../stages/11.json
+      s13 --senco > ../stages/12.json
+      s14 --senco > ../stages/13.json
+      s15 --senco -- -o ../quotes/0.pdf
+    else
+      s10 -c "${client}" > ../stages/9.json
+      s11 -c "${client}" -- -o ../VCMs
+      s12 -c "${client}" > ../stages/11.json
+      s13 -c "${client}" > ../stages/12.json
+      s14 -c "${client}" > ../stages/13.json
+      s15 -c "${client}" -- -o ../quotes/0.pdf
+    fi
+  fi
+}
+
 tag () {
   NAMESPACE=tag execute-namespace "$@"
 }
