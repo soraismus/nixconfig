@@ -440,6 +440,7 @@
         v = "vim";
         vimNoSpell = "vim -c 'set nospell'";
         worto = "vim $MARKPATH/expl/wortolisto";
+        zpdf = "/home/polytope/eb-scripts/zopen";
       };
       shellInit = "";
     };
