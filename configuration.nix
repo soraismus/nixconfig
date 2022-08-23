@@ -83,23 +83,37 @@
       easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
       purs-utils = easy-purescript-nix.inputs;
 
+      python-ghostscript =
+        let
+          callPackage = pkgs.lib.callPackageWith pkgs;
+          python39 = pkgs.python39;
+          python39Pkgs = python39.pkgs;
+          substituteAll = pkgs.substituteAll;
+        in
+          callPackage (import ./python-modules/python-ghostscript) {
+            buildPythonPackage = python39Pkgs.buildPythonPackage;
+            ghostscript = pkgs.ghostscript;
+            isPy3k = python39.passthru.isPy3k;
+            substituteAll = substituteAll;
+          };
+
       camelot =
         let
           callPackage = pkgs.lib.callPackageWith pkgs;
-          fetchFromGitHub = pkgs.fetchFromGitHub;
           python39 = pkgs.python39;
           python39Pkgs = python39.pkgs;
         in
           callPackage (import ./python-modules/camelot) {
             buildPythonPackage = python39Pkgs.buildPythonPackage;
             click = python39Pkgs.click;
-            fetchFromGitHub = fetchFromGitHub;
+            ghostscript = pkgs.ghostscript;
             isPy3k = python39.passthru.isPy3k;
-            numpy = pkgs.numpy;
+            numpy = python39Pkgs.numpy;
             cv2 = python39Pkgs.opencv4;
             pandas = python39Pkgs.pandas;
             pdfminer_six = python39Pkgs.pdfminer;
             pypdf2 = python39Pkgs.pypdf2;
+            python-ghostscript = python-ghostscript;
             tabulate = python39Pkgs.tabulate;
             tkinter = python39Pkgs.tkinter;
           };
@@ -153,6 +167,9 @@
         fzf # command-line fuzzy finder
         gitless # version control system built on top of git [Its cli abbrev is 'gl'.]
         gdrive # command-line utility for interacting with google drive
+
+        ghostscript # PostScript interpreter
+
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
         golly # game of life
         haskellPackages.hakyll # static website compiler library
@@ -252,6 +269,7 @@
             pkgs.pilkit # utilities for python imaging library
             pkgs.pillow # fork of PIL (python imaging library)
             #pkgs.pytorchWithCuda # deep-learning platform
+            python-ghostscript
             pytorch # deep-learning platform
             # pkgs.spacy # natural-language processing
             pkgs.scikit-learn # machine learning & data mining

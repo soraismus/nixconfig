@@ -1,7 +1,6 @@
 { lib
 , buildPythonPackage
 , click
-, fetchFromGitHub
 , ghostscript
 , isPy3k
 , cv2
@@ -9,6 +8,7 @@
 , pandas
 , pdfminer_six
 , pypdf2
+, python-ghostscript
 , tabulate
 , tkinter
 }:
@@ -18,21 +18,24 @@ buildPythonPackage rec {
   version = "0.10.1";
   disabled = !isPy3k;
 
-  src = fetchFromGitHub {
-    owner = "camelot-dev";
-    repo = "camelot";
-    rev = "644bbe7c6d57b95aefa2f049a9aacdbc061cc04f";
-    sha256 = "1ilydr0cbc39z4nqkyyiq6skig09k9jz16s5a902v4ajg2s1nz7v";
+  src = fetchGit {
+    url = https://bitbucket.org/ebdisplay_dev0/modified-camelot.git;
+    rev = "937cb2db551df3f807b231a963ff6dd6a89a3324";
   };
+
+  buildInputs = [ ghostscript ];
+
+  patches = [ ./ghostscript_backend.py.patch ];
 
   propagatedBuildInputs =
     [
       click
-      ghostscript
       cv2
+      numpy
       pandas
       pdfminer_six
       pypdf2
+      python-ghostscript
       tabulate
       tkinter
     ];
