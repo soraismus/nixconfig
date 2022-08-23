@@ -336,77 +336,111 @@ _promptCommand () {
   #_trackPath
 }
 
+prepare-s14 () {
+  local directory
+  local defaultDirectory="../quote-notes"
+  if [ "${#}" -lt 1 ]; then
+    if [ ! -d "${defaultDirectory}" ]; then
+      1>&2 echo "The directory '${defaultDirectory}' does not exist."
+      return 1
+    else
+      directory="${defaultDirectory}"
+    fi
+  elif [ ! -d "${1}" ]; then
+    1>&2 echo "The directory '${1}' does not exist."
+    return 2
+  else
+    directory="${1}"
+  fi
+  cp /home/polytope/eb-templates/quote-notes.template.json "${directory}/0.json"
+}
+
+s8 () {
+  if [ "${#}" -lt 1 ] || [ "${#}" -gt 2 ]; then
+    1>&2 echo "'s8' requires a local filepath."
+    return 1
+  elif [ "${1}" != "-o" ]; then
+    1>&2 echo "The -o option must be set."
+    return 2
+  else
+    local output="${2}"
+    local temporaryOutput="__temp.$(timestamp)"
+    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --override > "${temporaryOutput}"
+    mv "${temporaryOutput}" "${output}"
+  fi
+}
+
 sall () {
   if [ "${#}" -lt 1 ]; then
-    s0 -m > ../stages/0.json
-    s1 -m > ../stages/1.json
-    s6 -m > ../stages/6.json
-    s7 -m > ../overrides/0.yaml
+    estimate --ignore-pr -o ../orders/0 --stage 0 -m > ../stages/0.json
+    estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 -m > ../stages/1.json
+    estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x -m > ../stages/6.json
+    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f -m > ../overrides/0.yaml
   else
     local client="${1}"
     if [ "${client}x" = "--empirex" ]; then
-      s0 --empire > ../stages/0.json
-      s1 --empire > ../stages/1.json
-      s6 --empire > ../stages/6.json
-      s7 --empire > ../overrides/0.yaml
+      estimate --ignore-pr -o ../orders/0 --stage 0 --empire > ../stages/0.json
+      estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 --empire > ../stages/1.json
+      estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x --empire > ../stages/6.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f --empire > ../overrides/0.yaml
     elif [ "${client}x" = "--ppgx" ]; then
-      s0 --ppg > ../stages/0.json
-      s1 --ppg > ../stages/1.json
-      s6 --ppg > ../stages/6.json
-      s7 --ppg > ../overrides/0.yaml
+      estimate --ignore-pr -o ../orders/0 --stage 0 --ppg > ../stages/0.json
+      estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 --ppg > ../stages/1.json
+      estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x --ppg > ../stages/6.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f --ppg > ../overrides/0.yaml
     elif [ "${client}x" = "--sencox" ]; then
-      s0 --senco > ../stages/0.json
-      s1 --senco > ../stages/1.json
-      s6 --senco > ../stages/6.json
-      s7 --senco > ../overrides/0.yaml
+      estimate --ignore-pr -o ../orders/0 --stage 0 --senco > ../stages/0.json
+      estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 --senco > ../stages/1.json
+      estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x --senco > ../stages/6.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f --senco > ../overrides/0.yaml
     else
-      s0 -c "${client}" > ../stages/0.json
-      s1 -c "${client}" > ../stages/1.json
-      s6 -c "${client}" > ../stages/6.json
-      s7 -c "${client}" > ../overrides/0.yaml
+      estimate --ignore-pr -o ../orders/0 --stage 0 -c "${client}" > ../stages/0.json
+      estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 -c "${client}" > ../stages/1.json
+      estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x -c "${client}" > ../stages/6.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f -c "${client}" > ../overrides/0.yaml
     fi
   fi
 }
 
 sall2 () {
   if [ "${#}" -lt 1 ]; then
-    s10 -m > ../stages/9.json
-    s11 -m -- -o ../VCMs
-    s12 -m > ../stages/11.json
-    s13 -m > ../stages/12.json
-    s14 -m > ../stages/13.json
-    s15 -m -- -o ../quotes/0.pdf
+    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm-data -m > ../stages/9.json
+    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm -m -- -o ../VCMs
+    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --ast -m > ../stages/11.json
+    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --summary -m > ../stages/12.json
+    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json -m > ../stages/13.json
+    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json -m -- -o ../quotes/0.pdf
   else
     local client="${1}"
     # --ppg --senco
     if [ "${client}x" = "--empirex" ]; then
-      s10 --empire > ../stages/9.json
-      s11 --empire -- -o ../VCMs
-      s12 --empire > ../stages/11.json
-      s13 --empire > ../stages/12.json
-      s14 --empire > ../stages/13.json
-      s15 --empire -- -o ../quotes/0.pdf
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm-data --empire > ../stages/9.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm --empire -- -o ../VCMs
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --ast --empire > ../stages/11.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --summary --empire > ../stages/12.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json --empire > ../stages/13.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json --empire -- -o ../quotes/0.pdf
     elif [ "${client}x" = "--ppgx" ]; then
-      s10 --ppg > ../stages/9.json
-      s11 --ppg -- -o ../VCMs
-      s12 --ppg > ../stages/11.json
-      s13 --ppg > ../stages/12.json
-      s14 --ppg > ../stages/13.json
-      s15 --ppg -- -o ../quotes/0.pdf
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm-data --ppg > ../stages/9.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm --ppg -- -o ../VCMs
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --ast --ppg > ../stages/11.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --summary --ppg > ../stages/12.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json --ppg > ../stages/13.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json --ppg -- -o ../quotes/0.pdf
     elif [ "${client}x" = "--sencox" ]; then
-      s10 --senco > ../stages/9.json
-      s11 --senco -- -o ../VCMs
-      s12 --senco > ../stages/11.json
-      s13 --senco > ../stages/12.json
-      s14 --senco > ../stages/13.json
-      s15 --senco -- -o ../quotes/0.pdf
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm-data --senco > ../stages/9.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm --senco -- -o ../VCMs
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --ast --senco > ../stages/11.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --summary --senco > ../stages/12.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json --senco > ../stages/13.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json --senco -- -o ../quotes/0.pdf
     else
-      s10 -c "${client}" > ../stages/9.json
-      s11 -c "${client}" -- -o ../VCMs
-      s12 -c "${client}" > ../stages/11.json
-      s13 -c "${client}" > ../stages/12.json
-      s14 -c "${client}" > ../stages/13.json
-      s15 -c "${client}" -- -o ../quotes/0.pdf
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm-data -c "${client}" > ../stages/9.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm -c "${client}" -- -o ../VCMs
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --ast -c "${client}" > ../stages/11.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --summary -c "${client}" > ../stages/12.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json -c "${client}" > ../stages/13.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json -c "${client}" -- -o ../quotes/0.pdf
     fi
   fi
 }
