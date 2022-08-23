@@ -139,6 +139,9 @@ let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
+" vim-crunch
+let g:crunch_result_type_append = 0
+
 " Per !gh/kuniwak/vint
 " Vint seems to require configuration to work without throwing errors.
 " let g:syntastic_vim_checkers = ['vint']
