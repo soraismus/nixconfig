@@ -354,13 +354,6 @@ peek () {
   tmux split-window -p 33 "$EDITOR" "$@" || exit;
 }
 
-# The variable 'PROMPT_COMMAND' is set to
-# the following function in 'configuration.nix'.
-_promptCommand () {
-  _updateHistory
-  #_trackPath
-}
-
 prepare-s14 () {
   local directory
   local defaultDirectory="../quote-notes"
@@ -489,19 +482,6 @@ to () {
     CDPATH="$MARKPATH" cd -P "${path}" &> /dev/null
   else
     cd "${path}"
-  fi
-}
-
-# Toggle between a prompt that displays the full current-working-directory
-# path and a prompt that displays only the end-most directory.
-togglePrompt () {
-  # A lowercase 'w' indicates a full path,
-  # whereas an uppercase 'W' indicates an abbreviated path.
-  # Toggle the value of the prompt variable 'PS1'.
-  if [[ "$PS1" =~ w ]]; then
-    PS1="$( echo "$PS1" 2> /dev/null | sed 's/w/W/g' 2> /dev/null )"
-  else
-    PS1="$( echo "$PS1" 2> /dev/null | sed 's/W/w/g' 2> /dev/null )"
   fi
 }
 

@@ -10,7 +10,21 @@
 #   `export PS4="$0.$LINENO+ "`
 #   `set -x`
 
-_basic_prompt () {
+_get_job_prefix () {
+  grep 'prefix-' - | sed 's;.*prefix-\(\w\+\).*;\1;'
+}
+
+_get_numeric_directory_name () {
+  grep '/[0-9]\+\/' - | sed 's;.*\/\([0-9]\+\)\(\/.*\|$\);\1;'
+}
+
+_get_run_and_pr_numbers_from_path () {
+  grep 'run' - | sed 's;.*run-\([0-9]\+\)\.pr-\([0-9]\+\).*;\1-\2;'
+}
+
+export PROMPT_TOGGLE=0
+
+_eb_prompt () {
   local colon=":"
   local space=" "
 
@@ -26,12 +40,30 @@ _basic_prompt () {
   local abbrev_cwd="\W"
   local user_type="\$" # If effective UID is 0 then '#' else '$'.
 
-  local index="${history_number}${colon}${command_number}${colon}"
+  local job_prefix="$( pwd | _get_job_prefix )"
+  local job_number="$( pwd | _get_numeric_directory_name )"
+  local _run_and_pr_numbers="$( pwd | _get_run_and_pr_numbers_from_path )"
+  local run_and_pr_numbers=""
+  if [ "${_run_and_pr_numbers}x" != "x" ]; then
+    run_and_pr_numbers="-${_run_and_pr_numbers}"
+  fi
+  local index="${command_number}${colon}"
 
   local prefix="${green}${job_count}${colon}${dark_red}${index}"
-  local suffix="${dark_blue}${abbrev_cwd}${dark_red}${user_type} ${no_color}"
+  local green_job_number="${green}${job_prefix}${job_number}${run_and_pr_numbers}${colon}"
 
-  PS1="${prefix}${suffix}"
+  local suffix
+  if [ "${PROMPT_TOGGLE}x" = "0x" ]; then
+    suffix="${dark_blue}${abbrev_cwd}${dark_red}${user_type} ${no_color}"
+  else
+    suffix="${dark_blue}${full_cwd}${dark_red}${user_type} ${no_color}"
+  fi
+
+  if [ "${job_number}x" = "x" ]; then
+    PS1="${prefix}${suffix}"
+  else
+    PS1="${prefix}${green_job_number}${suffix}"
+  fi
 }
 
 # Generate a message that indicates the branch and status
@@ -157,9 +189,22 @@ _titlebar_elevated_prompt () {
   esac
 }
 
-_basic_prompt && _titlebar_prompt
+_eb_prompt && _titlebar_prompt
 _elevated_prompt && _titlebar_elevated_prompt
-unset _basic_prompt
-unset _elevated_prompt
-unset _titlebar_elevated_prompt
-unset _titlebar_prompt
+
+# The variable 'PROMPT_COMMAND' is set to
+# the following function in 'configuration.nix'.
+_promptCommand () {
+  _eb_prompt && _titlebar_prompt
+  _elevated_prompt && _titlebar_elevated_prompt
+}
+
+# Toggle between a prompt that displays the full current-working-directory
+# path and a prompt that displays only the end-most directory.
+togglePrompt () {
+  if [ "${PROMPT_TOGGLE}x" = "0x" ]; then
+    export PROMPT_TOGGLE=1
+  else
+    export PROMPT_TOGGLE=0
+  fi
+}
