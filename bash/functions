@@ -232,6 +232,27 @@ isMark () {
   fi
 }
 
+listCapsuleComponents () {
+  local capsuleRoot
+  local capsuleSource="../stages/6.json"
+  if [ "$#" -eq 0 ]; then
+    echo "A capsule root must be provided."
+    return 1
+  elif [ "$#" -eq 1 ]; then
+    capsuleRoot="${1}"
+  else
+    capsuleRoot="${1}"
+    capsuleSource="${2}"
+  fi
+  reduce \
+      -p "${capsuleSource}" \
+      -g id \
+      -w "<< ${capsuleRoot}" \
+      --keys-only \
+      --capsule "${capsuleRoot}" \
+    | jq -r '.[] | sort[]'
+}
+
 listMarks () {
   if [ ! -e "$MARKPATH" ]; then
     echo "Creating directory at (" "$MARKPATH" ")."
@@ -254,6 +275,10 @@ listRecentFiles () {
     | head -4      2> /dev/null  \
     | tr "\\n" " " 2> /dev/null
   printf "\n"
+}
+
+list-tubes () {
+  reduce -p ../stages/6.json -g material.type -w '~ steeltube' -s id | jq -r '. | map(values | .[][][])[]'
 }
 
 listWifi () {
@@ -617,4 +642,31 @@ youtube-dl-ids () {
       else echo "ERROR -- " "${url}" "$( date )" >> "${catalog}";
     fi
   done
+}
+
+zpdf-overrides () {
+  local overridesFile="${1}"
+  if [ -f "${overridesFile}" ]; then
+    if [ "${#}x" = "2x" ]; then
+      local startItem="${2}"
+      declare -a files=()
+      for i in $( awk "/^${startItem}/,EOF" "${overridesFile}" | grep '^[A-Z]' | tr -d ':' ); do
+        files+=("${i}.pdf")
+      done
+      /home/polytope/eb-scripts/zopen "${files[@]}"
+    else
+      declare -a files=()
+      for i in $( cat "${overridesFile}" | grep '^[A-Z]' | tr -d ':' ); do
+        files+=("${i}.pdf")
+      done
+      /home/polytope/eb-scripts/zopen "${files[@]}"
+    fi
+  else
+    2>1 echo "The overrides file '${overridesFile}' does not exist."
+    return 1
+  fi
+}
+
+zpdf-tubes () {
+  /home/polytope/eb-scripts/zopen "$( list-tubes )"
 }
