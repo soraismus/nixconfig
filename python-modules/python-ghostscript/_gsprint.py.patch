@@ -1,0 +1,13 @@
+diff --git a/ghostscript/_gsprint.py b/ghostscript/_gsprint.py
+index bd2c2c8..6d97d61 100644
+--- a/ghostscript/_gsprint.py
++++ b/ghostscript/_gsprint.py
+@@ -521,7 +521,7 @@ if sys.platform == 'win32':
+     libgs = windll.LoadLibrary(libgs)
+ else:
+     try:
+-        libgs = cdll.LoadLibrary("libgs.so")
++        libgs = cdll.LoadLibrary("@libgs@")
+     except OSError:
+         # shared object file not found
+         import ctypes.util
