@@ -406,7 +406,6 @@
         b3 = "cd ../../..";
         b4 = "cd ../../../..";
         b5 = "cd ../../../../..";
-        cat = "cat -A"; # So that scripts don't abuse carriage-return.
         gco = "git co";
         gcob = "git cob";
         gd = "git diff";
