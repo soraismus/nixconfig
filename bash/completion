@@ -93,11 +93,9 @@ _completeVff () {
   return 0
 }
 
-# ----------
-# Functions
-# ----------
 complete -F _completeVff vff
 complete -F _completeNamespaceScript mark note tag
 complete -F _completeTags bm bmgrep bookmark
 complete -o filenames -o nospace -o bashdefault -F _completeTo tmuxto to workspace
 complete -o nospace -S = -W '$(printenv | awk -F= "{print \$1}")' export
+complete -F _longopt zathura # So that 'zathura' follows the example of 'ls'.
