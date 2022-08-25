@@ -465,6 +465,34 @@
     };
   };
 
+  # Printing
+  services.avahi = {
+    enable = true;
+    publish.enable = true;
+    publish.userServices = true;
+    nssmdns = true;
+  };
+  services.printing = {
+    enable = true;
+    browsing = true;
+    drivers =
+      with pkgs; [
+        gutenprint
+        hplip
+        postscript-lexmark
+        brlaser
+      ];
+    # Note: With this present configuration, CUPS doesn't recognized IPv4,
+    # so a 'Bad Request' response is given to any request to http://localhost:631/.
+    # IPv6, however, is acceptable, so Navigate to http://[::1]:631/.
+    listenAddresses = [ "*:631" ];
+    defaultShared = true;
+  };
+  networking.firewall = {
+    allowedUDPPorts = [ 631 ];
+    allowedTCPPorts = [ 631 ];
+  };
+
   services.mongodb.enable = false;
   services.openssh.enable = true;
 
