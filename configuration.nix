@@ -214,6 +214,7 @@
         nodejs-17_x # javascript engine
         okular # unlike zathura, it has pdf-annotating and -highlighting features
         # opencv2 # Open Computer Vision library
+        openssl # cryptographic library that implements TSL protocol
         openvpn # tunneling application
         pandoc # utility that translates between markup formats
         pass # password-store manages passwords securely
