@@ -160,7 +160,10 @@
         feh # light-weight image viewer
         ffmpeg # manager and converter of audio/video files
         file # program that shows the type of files
-        firefox-wrapper # browser
+
+        # firefox-wrapper # browser
+        latest.firefox-nightly-bin
+
         fontforge-gtk # font editor with GTK UI
         fonttools
         fossil # version control system
@@ -370,12 +373,23 @@
     dates = "Sun 03:15";
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    # chromium.enableWideVine = true;
-    packageOverrides = pkgs: {
-      myVim = import ./vim { pkgs = pkgs; };
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      # chromium.enableWideVine = true;
+      packageOverrides = pkgs: {
+        myVim = import ./vim { pkgs = pkgs; };
+      };
     };
+    overlays =
+      let
+        # Change the following to a rev/sha to pin.
+        mozRev = "master";
+        mozUrl = builtins.fetchTarball {
+          url = "https://github.com/mozilla/nixpkgs-mozilla/archive/${mozRev}.tar.gz";
+        };
+        nightlyOverlay = (import "${mozUrl}/firefox-overlay.nix");
+      in [ nightlyOverlay ];
   };
 
   fonts = {
