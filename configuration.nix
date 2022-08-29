@@ -513,7 +513,7 @@
     defaultShared = true;
   };
 
-  services.mongodb.enable = false;
+  services.mongodb.enable = true;
   services.openssh.enable = true;
 
   services.xserver = {
