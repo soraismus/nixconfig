@@ -353,8 +353,17 @@
       defaultLocale = "en_US.UTF-8";
     };
 
-  networking.hostName = "theo"; # Define your hostname.
-  networking.networkmanager.enable = true;
+  networking = {
+    firewall = {
+      allowedUDPPorts = [ 631 ];
+      allowedTCPPorts = [ 631 3000 ];
+      # extraCommands = ''
+      #     iptables -A OUTPUT -o wlo1 -p tcp --sport 3000 -m state --state ESTABLISHED -j ACCEPT
+      #   '';
+    };
+    hostName = "theo"; # Define your hostname.
+    networkmanager.enable = true;
+  };
 
   nix.gc = {
     automatic = true;
@@ -488,10 +497,6 @@
     # IPv6, however, is acceptable, so Navigate to http://[::1]:631/.
     listenAddresses = [ "*:631" ];
     defaultShared = true;
-  };
-  networking.firewall = {
-    allowedUDPPorts = [ 631 ];
-    allowedTCPPorts = [ 631 ];
   };
 
   services.mongodb.enable = false;
