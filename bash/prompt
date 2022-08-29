@@ -10,6 +10,10 @@
 #   `export PS4="$0.$LINENO+ "`
 #   `set -x`
 
+_get_client () {
+  grep 'ebdisplay/assignments' | sed 's;.*assignments/\([-a-z0-9&]*\)/.*;\1;'
+}
+
 _get_job_prefix () {
   grep 'prefix-' - | sed 's;.*prefix-\(\w\+\).*;\1;'
 }
@@ -40,6 +44,13 @@ _eb_prompt () {
   local abbrev_cwd="\W"
   local user_type="\$" # If effective UID is 0 then '#' else '$'.
 
+  local _client="$( pwd | _get_client )"
+  local client
+  if [ "${_client}x" = "metx" ]; then
+    client=""
+  else
+    client="${_client}-"
+  fi
   local job_prefix="$( pwd | _get_job_prefix )"
   local job_number="$( pwd | _get_numeric_directory_name )"
   local _run_and_pr_numbers="$( pwd | _get_run_and_pr_numbers_from_path )"
@@ -50,7 +61,7 @@ _eb_prompt () {
   local index="${command_number}${colon}"
 
   local prefix="${green}${job_count}${colon}${dark_red}${index}"
-  local green_job_number="${green}${job_prefix}${job_number}${run_and_pr_numbers}${colon}"
+  local green_job_number="${green}${client}${job_prefix}${job_number}${run_and_pr_numbers}${colon}"
 
   local suffix
   if [ "${PROMPT_TOGGLE}x" = "0x" ]; then
