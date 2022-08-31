@@ -300,6 +300,11 @@
         # rtv # reddit terminal client # Consider using 'tuir'.
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
         scrot # command-line screen-capture utility [cf. maim]
+
+        sqldiff # SQLite-db differ
+        sqlite # self-contained ZQL database engine
+        sqlite-analyzer # stats tool for SQLite databases
+
         stack # haskell tool stack
         # stack2nix # nix utility that transforms stack specs into nix specs
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
