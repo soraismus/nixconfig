@@ -132,6 +132,7 @@
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
         golly # game of life
         haskellPackages.hakyll # static website compiler library
+        helix # post-modern modal text editor
         heroku
         # hieroglyph # presentation editor
         # hlint
