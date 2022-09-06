@@ -439,11 +439,13 @@
         gco = "git co";
         gcob = "git cob";
         gd = "git diff";
+        gdc = "git diff --cached";
         gdiff = "git diff";
         gits = "git s";
         gitst = "git st";
         gs = "git status";
         gst = "git st";
+        gti = "git";
         ixclip = "xclip -i -sel clip";
         l = "ls -Alh --color=tty";
         l1 = "ls -1A --color=tty --group-directories-first";
@@ -468,7 +470,6 @@
         startStackShell = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH nix-shell -p stack";
         touchpadToggle = "toggleTouchpad";
         v = "vim";
-        vimNoSpell = "vim -c 'set nospell'";
         worto = "vim $MARKPATH/expl/wortolisto";
         zpdf = "/home/polytope/eb-bin/zopen";
       };

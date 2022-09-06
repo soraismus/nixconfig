@@ -18,9 +18,11 @@ let
       hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
       log0 = log --graph --pretty=format:\"%h %ad | %s%d [%an]\" --date=short
       log1 = log --graph --decorate --pretty=oneline --abbrev-commit
+      restorest = restore --staged
       s = status --short --branch
       st = status --short --branch
       type = cat-file -t
+      strestore = restore --staged
     [core]
       excludesFile = ${./ignore}
   '';
