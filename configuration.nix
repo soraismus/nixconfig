@@ -118,6 +118,8 @@
             tkinter = python39Pkgs.tkinter;
           };
 
+      rpi-imager = pkgs.libsForQt515.callPackage ./rpi-imager {};
+
     in
       with pkgs; [
         exim getmail mutt notmuch-mutt procmail spamassassin # email services
@@ -296,6 +298,9 @@
         ripgrep # regex utility that's faster than the silver searcher ['rg']
         rofi # window switcher, run dialog and dmenu replacement
         rofi-pass # script to make rofi work with password-store
+
+        rpi-imager # raspberyy pi imaging utility
+
         rstudio
         # rtv # reddit terminal client # Consider using 'tuir'.
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
