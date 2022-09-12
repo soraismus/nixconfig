@@ -278,7 +278,7 @@ listRecentFiles () {
 }
 
 list-tubes () {
-  reduce -p ../stages/6.json -g material.type -w '~ steeltube' -s id | jq -r '. | map(values | .[][][])[]'
+  reduce -p ../stages/6.json -g material.type -w '~ steeltube' -s id --unique | jq -r '. | map(values | .[][][])[]'
 }
 
 listWifi () {
