@@ -430,7 +430,6 @@ sall2 () {
     estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json -m -- -o ../quotes/0.pdf
   else
     local client="${1}"
-    # --ppg --senco
     if [ "${client}x" = "--empirex" ]; then
       estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm-data --empire > ../stages/10.json
       estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm --empire -- -o ../vcms
@@ -453,12 +452,12 @@ sall2 () {
       estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json --senco > ../stages/14.json
       estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json --senco -- -o ../quotes/0.pdf
     else
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm-data -c "${client}" > ../stages/10.json
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm -c "${client}" -- -o ../vcms
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --ast -c "${client}" > ../stages/12.json
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --summary -c "${client}" > ../stages/13.json
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json -c "${client}" > ../stages/14.json
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json -c "${client}" -- -o ../quotes/0.pdf
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --include-graphics --vcm-data -c "${client}" > ../stages/10.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --include-graphics --vcm -c "${client}" -- -o ../vcms
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --include-graphics --ast -c "${client}" > ../stages/12.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --include-graphics --summary -c "${client}" > ../stages/13.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --include-graphics --quote-spec ../quote-notes/0.json -c "${client}" > ../stages/14.json
+      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --include-graphics --quote ../quote-notes/0.json -c "${client}" -- -o ../quotes/0.pdf
     fi
   fi
 }
