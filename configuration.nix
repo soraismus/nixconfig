@@ -299,6 +299,7 @@
         rstudio
         # rtv # reddit terminal client # Consider using 'tuir'.
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
+        sc-im # ncurses spreadsheet for terminal
         scrot # command-line screen-capture utility [cf. maim]
 
         sqldiff # SQLite-db differ
