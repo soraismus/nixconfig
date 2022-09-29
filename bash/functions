@@ -373,6 +373,18 @@ prepare-s14 () {
   cp /home/polytope/eb-templates/quote-notes.template.json "${directory}/0.json"
 }
 
+print-eb () {
+  local printer="konica-minolta-654e"
+  for file in "${@}"; do
+    local ext="${file##*.}"
+    if [ "${ext}x" -eq "xlsxx" ]; do
+      soffice -pt "${printer}" "${file}"
+    elif [ "${ext}x" -eq "pdfx" ]; do
+      lp -d "${printer}" "${file}"
+    fi
+  done
+}
+
 s8 () {
   if [ "${#}" -lt 1 ] || [ "${#}" -gt 2 ]; then
     1>&2 echo "'s8' requires a local filepath."
