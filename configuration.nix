@@ -496,14 +496,22 @@
     };
   };
 
-  # Printing
   services.avahi = {
+    # Printing. Also refer to `services.printing`.
     enable = true;
     publish.enable = true;
     publish.userServices = true;
     nssmdns = true;
   };
+
+  services.exim.enable = true;
+
+  services.mongodb.enable = true;
+
+  services.openssh.enable = true;
+
   services.printing = {
+    # Printing. Also refer to `services.avahi`.
     enable = true;
     browsing = true;
     drivers =
@@ -519,9 +527,6 @@
     listenAddresses = [ "*:631" ];
     defaultShared = true;
   };
-
-  services.mongodb.enable = true;
-  services.openssh.enable = true;
 
   services.xserver = {
     enable = true;
