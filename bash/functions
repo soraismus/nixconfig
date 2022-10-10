@@ -361,8 +361,12 @@ openeb () {
       pdfs+=( "${file}" )
     fi
   done
-  soffice "${spreadsheets[@]}"
-  zathura "${pdfs[@]}"
+  if [ "${#spreadsheets[@]}" -gt 0 ]; then
+    soffice "${spreadsheets[@]}"
+  fi
+  if [ "${#pdfs[@]}" -gt 0 ]; then
+    zathura "${pdfs[@]}"
+  fi
 }
 
 peek () {
