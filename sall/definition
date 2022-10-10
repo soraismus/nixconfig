@@ -1,0 +1,872 @@
+# Examples:
+#  0. `sall2 initialize --milwaukee`
+#  1. `sall2 init -m`
+#  2. `sall2 init -m -s ../alternative-stages`
+#  3. `sall2 estimate --milwaukee`
+#  4. `sall2 est -m`
+#  5. `sall2 est --client "FLOOR & DECOR"`
+#  6. `sall2 est -c "FLOOR & DECOR"`
+#  7. `sall2 est -m -6 ../alternative-stages/6.1.json`
+#  8. `sall2 est -m -w ../alternative-overrides/1.yaml`
+#  9. `sall2 est -m -w ../alternative-overrides/1.yaml --vcm-data-output dir ../alternative-stages/`
+# 10. `sall2 est -m -w ../alternative-overrides/1.yaml --vcm-data-output file ../alternative-stages/10.json`
+# 11. `sall2 est -m -w ../alternative-overrides/1.yaml -s ../alternative-stages`
+# 12. `sall2 est -m --all-same-dir`
+# 13. `sall2 est -m --all`
+# 14. `sall2 est -m --all --stages ../stages.1`
+# 15. `sall2 est -m --stages ../stages.1`
+# 16. `sall2 est -m --jq 0`
+# 17. `sall2 est -m --jq 1`
+
+# TODO
+# ----
+
+set -e
+set -u
+set -o pipefail
+
+die () {
+  if [ "${2}" = "1" ]; then
+    1>&2 echo "Error: ${3}"
+  fi
+  finalize
+  exit "${1}"
+}
+
+displayHelpMessage () {
+  cat <<END_OF_HELP_MESSAGE
+Commands:
+--------
+(est)  estimate
+(init) initialize
+
+General Options:
+------------------
+(-?) --help                                       for help
+(-c) --client client
+     --dry-run
+     --empire
+(-h) --help                                       for help
+     --jq (0|1)
+(-m) --milwaukee
+(-o) --order ./path/to/order
+(-w) --overrides ./path/to/overrides
+     --ppg
+     --quiet-errors                               suppresses error messags from stderr
+     --senco
+(-6) --stage-6 ./path/to/stage-6-file
+(-s) --stages ./path/to/stages-dir
+(-v) --verbose                                    prints results with preface
+
+Initializing Options:
+--------------------
+(-0) --stage-0 ./path/to/stage-0-file
+(-1) --stage-1 ./path/to/stage-1-file
+
+Estimating Options:
+------------------
+     --all | --all-same-dir
+     --ast-output (dir|file) ./path/to/ast
+     --include-graphics (0|1)
+     --quote-output (dir|file) ./path/to/quote/dir_or_file
+     --quote-spec-output (dir|file) ./path/to/quote-spec/dir_or_file
+     --summary-output (dir|file) ./path/to/summary/dir_or_file
+     --vcm-data-output (dir|file) ./path/to/vcm-data/dir_or_file
+     --vcm-output (dir|file) ./path/to/vcm/dir_or_file
+
+----------------------------------------------------------------------
+
+Examples of usage:
+------------------
+ 0. sall2 initialize --milwaukee
+ 1. sall2 init -m
+ 2. sall2 init -m -s ../alternative-stages
+ 3. sall2 estimate --milwaukee
+ 4. sall2 est -m
+ 5. sall2 est --client "FLOOR & DECOR"
+ 6. sall2 est -c "FLOOR & DECOR"
+ 7. sall2 est -m -6 ../alternative-stages/6.1.json
+ 8. sall2 est -m -w ../alternative-overrides/1.yaml
+ 9. sall2 est -m -w ../alternative-overrides/1.yaml --vcm-data-output dir ../alternative-stages
+10. sall2 est -m -w ../alternative-overrides/1.yaml --vcm-data-output file ../alternative-stages/10.json
+11. sall2 est -m -w ../alternative-overrides/1.yaml -s ../alternative-stages
+12. sall2 est -m --all-same-dir
+13. sall2 est -m --all
+14. sall2 est -m --all --stages ../stages.1
+15. sall2 est -m --stages ../stages.1
+16. sall2 est -m --jq 0
+17. sall2 est -m --jq 1
+
+Direct Dependencies:
+-------------------
+jq
+
+Indirect Dependencies:
+-------------------
+addDataToSpreadsheet
+cat
+createSpreadsheetData
+validateProject.js
+extract-text.py
+filter-camelot-output.js
+override.js
+structure-filtered-camelot-output-into-project.js
+yq
+
+...
+
+END_OF_HELP_MESSAGE
+}
+
+_estimate () {
+  local astPath="${1}"
+  local clientFlag="${2}"
+  local doJq="${3}"
+  local includeGraphics="${4}"
+  local orderPath="${5}"
+  local overridesPath="${6}"
+  local quoteNotesPath="${7}"
+  local quotePath="${8}"
+  local quoteSpecPath="${9}"
+  local stage6Path="${10}"
+  local summaryPath="${11}"
+  local vcmDataPath="${12}"
+  local vcmPath="${13}"
+  local includeGraphicsFlag
+  if [ "${includeGraphics}x" = "1x" ]; then
+    includeGraphicsFlag="--include-graphics"
+  elif [ "${includeGraphics}x" = "0x" ]; then
+    includeGraphicsFlag=""
+  else
+    die 1 "Invalid value for the local variable 'includeGraphics'."
+  fi
+  local estFlags="--ignore-pr -o ${orderPath} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
+  local _estFlags=( ${estFlags} )
+  if [ "${doJq}x" = "1x" ]; then
+    estimate "${_estFlags[@]}" --vcm-data | jq > "${vcmDataPath}"
+    estimate "${_estFlags[@]}" --vcm "${quoteNotesPath}" -- -o "${vcmPath}"
+    estimate "${_estFlags[@]}" --ast | jq  > "${astPath}"
+    estimate "${_estFlags[@]}" --summary  | jq > "${summaryPath}"
+    estimate "${_estFlags[@]}" --quote-spec "${quoteNotesPath}" | jq  > "${quoteSpecPath}"
+    estimate "${_estFlags[@]}" --quote "${quoteNotesPath}" -- -o "${quotePath}"
+  else
+    estimate "${_estFlags[@]}" --vcm-data > "${vcmDataPath}"
+    estimate "${_estFlags[@]}" --vcm "${quoteNotesPath}" -- -o "${vcmPath}"
+    estimate "${_estFlags[@]}" --ast > "${astPath}"
+    estimate "${_estFlags[@]}" --summary  > "${summaryPath}"
+    estimate "${_estFlags[@]}" --quote-spec "${quoteNotesPath}" > "${quoteSpecPath}"
+    estimate "${_estFlags[@]}" --quote "${quoteNotesPath}" -- -o "${quotePath}"
+  fi
+}
+
+finalize () {
+  unset astPath
+  unset _command
+  unset clientFlag
+  unset doJq
+  unset estArgs
+  unset estFlags
+  unset _estFlags
+  unset includeGraphics
+  unset includeGraphicsFlag
+  unset initArgs
+  unset initFlags
+  unset _initFlags
+  unset orderPath
+  unset overridesPath
+  unset quotePath
+  unset quoteNotesPath
+  unset quoteSpecPath
+  unset shouldExecute
+  unset stage0Path
+  unset stage1Path
+  unset stage6Path
+  unset stageAll
+  unset stagesDir
+  unset summaryPath
+  unset useMilwaukeeTemplate
+  unset vcmDataPath
+  unset vcmPath
+  unset verboseErrors
+  unset verboseInfo
+  unset verboseSetting
+}
+
+_initialize () {
+  local clientFlag="${1}"
+  local doJq="${2}"
+  local orderPath="${3}"
+  local overridesPath="${4}"
+  local stage0Path="${5}"
+  local stage1Path="${6}"
+  local stage6Path="${7}"
+  local initFlags="--ignore-pr -o ${orderPath} ${clientFlag}"
+  local _initFlags=( ${initFlags} )
+  if [ "${doJq}x" = "1x" ]; then
+    estimate "${_initFlags[@]}" --stage 0 | jq > "${stage0Path}"
+    estimate "${_initFlags[@]}" --start 0 "${stage0Path}" --stage 1 | jq > "${stage1Path}"
+    estimate "${_initFlags[@]}" --start 1 "${stage1Path}" -x | jq > "${stage6Path}"
+    estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f | jq > "${overridesPath}"
+  else
+    estimate "${_initFlags[@]}" --stage 0 > "${stage0Path}"
+    estimate "${_initFlags[@]}" --start 0 "${stage0Path}" --stage 1 > "${stage1Path}"
+    estimate "${_initFlags[@]}" --start 1 "${stage1Path}" -x > "${stage6Path}"
+    estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f > "${overridesPath}"
+  fi
+}
+
+declare -r defaultAstFilename="12.json"
+declare -r defaultQuoteDir="../quotes"
+declare -r defaultQuoteSpecFilename="14.json"
+declare -r defaultStage0Filename="0.json"
+declare -r defaultStage1Filename="1.json"
+declare -r defaultStage6Filename="6.json"
+declare -r defaultStagesDir="../stages"
+declare -r defaultSummaryFilename="13.json"
+declare -r defaultVcmDataFilename="10.json"
+declare -r defaultVcmDir="../vcms"
+declare -r originalCommand="$(basename $0) $@"
+
+declare shouldExecute=1
+declare verboseErrors=1
+declare verboseInfo=1
+
+declare astPath
+declare clientFlag
+declare _command
+declare doJq
+declare estArgs
+declare estFlags
+declare _estFlags
+declare includeGraphics
+declare includeGraphicsFlag
+declare initArgs
+declare initFlags
+declare _initFlags
+declare orderPath
+declare overridesPath
+declare quotePath
+declare quoteNotesPath
+declare quoteSpecPath
+declare stage0Path
+declare stage1Path
+declare stage6Path
+declare stageAll
+declare stagesDir
+declare summaryPath
+declare useMilwaukeeTemplate
+declare vcmDataPath
+declare vcmPath
+declare verboseSetting
+
+# NOTE: The bash option 'u' is unset temporarily
+# b/c it doesn't work well with positional parameters.
+set +u
+
+while true; do
+  case "$1" in
+    --all | --all-same-dir )
+      if [ -v stageAll ]; then
+        die 2 "${verboseErrors}" "The --all(-same-dir) flag has already been set."
+      fi
+      stageAll="1"
+      shift 1
+      ;;
+    --ast-output )
+      if [ -v astPath ]; then
+        die 3 "${verboseErrors}" "The --ast-output option has already been set."
+      fi
+      if [ "${2}x" = "dirx" ]; then
+        if [ -d "${3}" ]; then
+          astPath="${3%*/}/12.json"
+        else
+          die 4 "${verboseErrors}" \
+            "The second argument to the --ast-output option must be an existing output directory."
+        fi
+      elif [ "${2}x" = "filex" ]; then
+        astPath="${3%*/}"
+      else
+        die 5 "${verboseErrors}" \
+          "The --ast-output option requires two arguments, the first of which must be either 'dir' or 'file'."
+      fi
+      shift 3
+      ;;
+    -c | --client )
+      if [ -v clientFlag ]; then
+        die 6 "${verboseErrors}" "The --client (-c) option has already been set."
+      fi
+      if [ -v useMilwaukeeTemplate ]; then
+        die 7 "${verboseErrors}" "The --empire, --milwaukee (-m), --ppg, or --senco flag has already been set, so the --client (-c) option cannot be used."
+      fi
+      # NOTE: The scripts written in javascript use the 'minimist' library,
+      # which can support either the use of or the exclusion of an equals
+      # sign with command-line options.
+      # The equals sign is used here so that a bash array
+      # needn't be required to split the string into separate strings.
+      clientFlag="--client='${2}'"
+      shift 2
+      ;;
+    --dry-run )
+      if [ "${shouldExecute}" = "0" ]; then
+        die 8 "${verboseErrors}" "The --dry-run flag has already been set."
+      fi
+      shouldExecute=0
+      shift 1
+      ;;
+    --empire )
+      if [ -v useMilwaukeeTemplate ]; then
+        die 9 "${verboseErrors}" "The --empire, --milwaukee (-m), --ppg, or --senco flag has already been set."
+      fi
+      if [ -v clientFlag ]; then
+        die 10 "${verboseErrors}" "The --client (-c) option has already been set, so the --empire flag cannot be used."
+      fi
+      useMilwaukeeTemplate=1
+      clientFlag="--empire"
+      shift 1;
+      ;;
+    est | estimate )
+      if [ -v _command ]; then
+        die 11 "${verboseErrors}" "The command has already been set."
+      fi
+      _command="_estimate"
+      shift 1;
+      ;;
+    -h | -\? | --help )
+      displayHelpMessage
+      exit 0
+      ;;
+    --include-graphics )
+      if [ -v includeGraphics ]; then
+        die 12 "${verboseErrors}" "The --include-graphics option has already been set."
+      fi
+      if [ "${2}x" != "0x" ] && [ "${2}x" != "1x" ]; then
+        die 13 "${verboseErrors}" "The --include-graphics option requires an argument, and it must be either '0' (for 'false') or '1' (for 'true')."
+      fi
+      includeGraphics="${2}"
+      shift 2;
+      ;;
+    init | initialize )
+      if [ -v _command ]; then
+        die 14 "${verboseErrors}" "The command has already been set."
+      fi
+      _command="_initialize"
+      shift 1;
+      ;;
+
+    --jq )
+      if [ -v doJq ]; then
+        die 12 "${verboseErrors}" "The --jq option has already been set."
+      fi
+      if [ "${2}x" != "0x" ] && [ "${2}x" != "1x" ]; then
+        die 13 "${verboseErrors}" "The --jq option requires an argument, and it must be either '0' (for 'false') or '1' (for 'true')."
+      fi
+      doJq="${2}"
+      shift 2;
+      ;;
+
+    -m | --milwaukee )
+      if [ -v useMilwaukeeTemplate ]; then
+        die 15 "${verboseErrors}" "The --empire, --milwaukee (-m), --ppg, or --senco flag has already been set."
+      fi
+      if [ -v clientFlag ]; then
+        die 16 "${verboseErrors}" "The --client (-c) option has already been set, so the --milwaukee (-m) flag cannot be used."
+      fi
+      useMilwaukeeTemplate=1
+      clientFlag="--milwaukee"
+      shift 1;
+      ;;
+    -o | --order )
+      if [ -v orderPath ]; then
+        die 17 "${verboseErrors}" "The --order option has already been set."
+      fi
+      if [ ! -f "${2}" ]; then
+        die 18 "${verboseErrors}" \
+          "The --order option requires as an argument a path to an existing file containing order specifications."
+      fi
+      orderPath="${2}"
+      shift 2
+      ;;
+    -w | --overrides )
+      if [ -v overridesPath ]; then
+        die 19 "${verboseErrors}" "The --overrides option has already been set."
+      fi
+      if [ ! -f "${2}" ]; then
+        die 20 "${verboseErrors}" \
+          "The --overrides option requires as an argument a path to an existing file containing override specifications."
+      fi
+      overridesPath="${2}"
+      shift 2
+      ;;
+    --ppg )
+      if [ -v useMilwaukeeTemplate ]; then
+        die 21 "${verboseErrors}" "The --empire, --milwaukee (-m), --ppg, or --senco flag has already been set."
+      fi
+      if [ -v clientFlag ]; then
+        die 22 "${verboseErrors}" "The --client (-c) option has already been set, so the --ppg flag cannot be used."
+      fi
+      useMilwaukeeTemplate=1
+      clientFlag="--ppg"
+      shift 1
+      ;;
+    --quote-output )
+      if [ -v quotePath ]; then
+        die 23 "${verboseErrors}" "The --quote-output option has already been set."
+      fi
+      if [ "${2}x" = "dirx" ]; then
+        if [ -d "${3}" ]; then
+          quotePath="${3%*/}/"
+        else
+          die 24 "${verboseErrors}" \
+            "The second argument to the --quote-output option must be an existing output directory."
+        fi
+      elif [ "${2}x" = "filex" ]; then
+        quotePath="${3%*/}"
+      else
+        die 25 "${verboseErrors}" \
+          "The --quote-output option requires two arguments, the first of which must be either 'dir' or 'file'."
+      fi
+      shift 3
+      ;;
+    --quiet-errors )
+      if [ "${verboseErrors}x" = "0x" ]; then
+        die 26 0 "The --quiet-errors flag has already been set."
+      fi
+      verboseErrors=0
+      shift 1
+      ;;
+    --quote-notes )
+      if [ -v quoteNotesPath ]; then
+        die 27 "${verboseErrors}" "The --quote-notes option has already been set."
+      fi
+      if [ ! -f "${2}" ]; then
+        die 28 "${verboseErrors}" \
+          "The --quote-notes option requires as an argument a path to an existing file containing quote-notes."
+      fi
+      quoteNotesPath="${2}"
+      shift 2
+      ;;
+    --quote-spec-output )
+      if [ -v quoteSpecPath ]; then
+        die 29 "${verboseErrors}" "The --quote-spec-output option has already been set."
+      fi
+      if [ "${2}x" = "dirx" ]; then
+        if [ -d "${3}" ]; then
+          quoteSpecPath="${3%*/}/12.json"
+        else
+          die 30 "${verboseErrors}" \
+            "The second argument to the --quote-spec-output option must be an existing output directory."
+        fi
+      elif [ "${2}x" = "filex" ]; then
+        quoteSpecPath="${3%*/}"
+      else
+        die 31 "${verboseErrors}" \
+          "The --quote-spec-output option requires two arguments, the first of which must be either 'dir' or 'file'."
+      fi
+      shift 3
+      ;;
+    --senco )
+      if [ -v useMilwaukeeTemplate ]; then
+        die 32 "${verboseErrors}" "The --empire, --milwaukee (-m), --ppg, or --senco flag has already been set."
+      fi
+      if [ -v clientFlag ]; then
+        die 33 "${verboseErrors}" "The --client (-c) option has already been set, so the --senco flag cannot be used."
+      fi
+      useMilwaukeeTemplate=1
+      clientFlag="--senco"
+      shift 1;
+      ;;
+    -0 | --stage-0 | --stage-0-output )
+      if [ -v stage0Path ]; then
+        die 34 "${verboseErrors}" "The --stage-0 (-0) option has already been set."
+      fi
+      stage0Path="${2}"
+      shift 2
+      ;;
+    -1 | --stage-1 | --stage-1-output )
+      if [ -v stage1Path ]; then
+        die 36 "${verboseErrors}" "The --stage-1 (-1) option has already been set."
+      fi
+      stage1Path="${2}"
+      shift 2
+      ;;
+    -6 | --stage-6 | --stage-6-output )
+      if [ -v stage6Path ]; then
+        die 38 "${verboseErrors}" "The --stage-6 (-6) option has already been set."
+      fi
+      stage6Path="${2}"
+      shift 2
+      ;;
+    -s | --stages | --stages-output )
+      if [ -v stagesDir ]; then
+        die 34 "${verboseErrors}" "The --stages (-s) option has already been set."
+      fi
+      if [ ! -d "${2}" ]; then
+        die 35 "${verboseErrors}" \
+          "The --stages (-s) option requires as an argument a path to an existing stages directory."
+      fi
+      stagesDir="${2%*/}"
+      shift 2
+      ;;
+    --summary-output )
+      if [ -v summaryPath ]; then
+        die 40 "${verboseErrors}" "The --summary-output option has already been set."
+      fi
+      if [ "${2}x" = "dirx" ]; then
+        if [ -d "${3}" ]; then
+          summaryPath="${3%*/}/12.json"
+        else
+          die 41 "${verboseErrors}" \
+            "The second argument to the --summary-output option must be an existing output directory."
+        fi
+      elif [ "${2}x" = "filex" ]; then
+        summaryPath="${3%*/}"
+      else
+        die 42 "${verboseErrors}" \
+          "The --summary-output option requires two arguments, the first of which must be either 'dir' or 'file'."
+      fi
+      shift 3
+      ;;
+    --vcm-data-output )
+      if [ -v vcmDataPath ]; then
+        die 43 "${verboseErrors}" "The --vcm-data-output option has already been set."
+      fi
+      if [ "${2}x" = "dirx" ]; then
+        if [ -d "${3}" ]; then
+          vcmDataPath="${3%*/}/10.json"
+        else
+          die 44 "${verboseErrors}" \
+            "The second argument to the --vcm-data-output option must be an existing output directory."
+        fi
+      elif [ "${2}x" = "filex" ]; then
+        vcmDataPath="${3%*/}"
+      else
+        die 45 "${verboseErrors}" \
+          "The --vcm-data-output option requires two arguments, the first of which must be either 'dir' or 'file'."
+      fi
+      shift 3
+      ;;
+    --vcm-output )
+      if [ -v vcmPath ]; then
+        die 46 "${verboseErrors}" "The --vcm-output option has already been set."
+      fi
+      if [ "${2}x" = "dirx" ]; then
+        if [ -d "${3}" ]; then
+          vcmPath="${3%*/}/"
+        else
+          die 47 "${verboseErrors}" \
+            "The second argument to the --vcm-output option must be an existing output directory."
+        fi
+      elif [ "${2}x" = "filex" ]; then
+        vcmPath="${3%*/}"
+      else
+        die 48 "${verboseErrors}" \
+          "The --vcm--output option requires two arguments, the first of which must be either 'dir' or 'file'."
+      fi
+      shift 3
+      ;;
+    -v | --verbose )
+      if [ -v verboseSetting ]; then
+        die 49 "${verboseErrors}" "The --verbose (-v) option has already been set."
+      fi
+      if [ "${2}x" != "0x" ] && [ "${2}x" != "1x" ]; then
+        die 50 "${verboseErrors}" "The --verbose (-v) option requires an argument, and it must be either '0' (for 'false') or '1' (for 'true')."
+      fi
+      verboseInfo="${2}"
+      verboseSetting="${2}"
+      shift 2
+      ;;
+    -- )
+      shift 1
+      break
+      ;;
+    -* )
+      die 51 "${verboseErrors}" "'""$1""' is an invalid option."
+      ;;
+    '' )
+      break
+      ;;
+    * )
+      die 52 "${verboseErrors}" "'""$1""' is an invalid argument."
+      ;;
+  esac
+done
+
+# NOTE: The following setting doesn't work well with use of '$1' and '$2'.
+set -u
+
+if [ ! -v clientFlag ]; then
+  die 53 "${verboseErrors}" "No valid client has been set."
+fi
+
+if [ ! -v _command ]; then
+  die 54 "${verboseErrors}" "No valid command has been set."
+fi
+
+if [ ! -v orderPath ]; then
+  orderPath="../orders/0"
+fi
+
+if [ ! -v overridesPath ]; then
+  overridesPath="../overrides/0.yaml"
+fi
+
+if [ ! -v quoteNotesPath ]; then
+  quoteNotesPath="../quote-notes/0.json"
+fi
+
+if [ -v stagesDir ]; then
+  if [ -v stageAll ]; then
+    if [ -v quotePath ]; then
+      if [ "${quotePath}x" != "${quotePath##*/}x" ]; then
+        die 55 \
+          "When the --stages (-s) option is set, the argument to the --quote-output option may only be a single lexeme. It may not be a filepath specifying directories."
+      fi
+      quotePath="${stagesDir}/${quotePath}"
+    else
+      quotePath="${stagesDir}"
+    fi
+    if [ -v vcmPath ]; then
+      if [ "${vcmPath}x" != "${vcmPath##*/}x" ]; then
+        die 56 \
+          "When the --stages (-s) option is set, the argument to the --vcm-output option may only be a single lexeme. It may not be a filepath specifying directories."
+      fi
+      vcmPath="${stagesDir}/${vcmPath}"
+    else
+      vcmPath="${stagesDir}"
+    fi
+  else
+    if [ ! -v quotePath ]; then
+      quotePath="${defaultQuoteDir}"
+    fi
+    if [ ! -v vcmPath ]; then
+      vcmPath="${defaultVcmDir}"
+    fi
+  fi
+  if [ -v astPath ]; then
+    if [ "${astPath}x" != "${astPath##*/}x" ]; then
+      die 57 \
+        "When the --stages (-s) option is set, the argument to the --ast-output option may only be a single lexeme. It may not be a filepath specifying directories."
+    fi
+    astPath="${stagesDir}/${astPath}"
+  else
+    astPath="${stagesDir}/${defaultAstFilename}"
+  fi
+  if [ -v quoteSpecPath ]; then
+    if [ "${quoteSpecPath}x" != "${quoteSpecPath##*/}x" ]; then
+      die 58 \
+        "When the --stages (-s) option is set, the argument to the --quote-spec-output option may only be a single lexeme. It may not be a filepath specifying directories."
+    fi
+    quoteSpecPath="${stagesDir}/${quoteSpecPath}"
+  else
+    quoteSpecPath="${stagesDir}/${defaultQuoteSpecFilename}"
+  fi
+  if [ -v stage0Path ]; then
+    if [ "${stage0Path}x" != "${stage0Path##*/}x" ]; then
+      die 59 \
+        "When the --stages (-s) option is set, the argument to the --stage-0(-output) (-0) option may only be a single lexeme. It may not be a filepath specifying directories."
+    fi
+    stage0Path="${stagesDir}/${stage0Path}"
+  else
+    stage0Path="${stagesDir}/${defaultStage0Filename}"
+  fi
+  if [ -v stage1Path ]; then
+    if [ "${stage1Path}x" != "${stage1Path##*/}x" ]; then
+      die 60 \
+        "When the --stages (-s) option is set, the argument to the --stage-1(-output) (-1) option may only be a single lexeme. It may not be a filepath specifying directories."
+    fi
+    stage1Path="${stagesDir}/${stage1Path}"
+  else
+    stage1Path="${stagesDir}/${defaultStage1Filename}"
+  fi
+  if [ -v stage6Path ]; then
+    if [ "${stage6Path}x" != "${stage6Path##*/}x" ]; then
+      die 61 \
+        "When the --stages (-s) option is set, the argument to the --stage-6(-output) (-6) option may only be a single lexeme. It may not be a filepath specifying directories."
+    fi
+    stage6Path="${stagesDir}/${stage6Path}"
+  else
+    stage6Path="${stagesDir}/${defaultStage6Filename}"
+  fi
+  if [ -v summaryPath ]; then
+    if [ "${summaryPath}x" != "${summaryPath##*/}x" ]; then
+      die 62 \
+        "When the --stages (-s) option is set, the argument to the --summary-output option may only be a single lexeme. It may not be a filepath specifying directories."
+    fi
+    summaryPath="${stagesDir}/${summaryPath}"
+  else
+    summaryPath="${stagesDir}/${defaultSummaryFilename}"
+  fi
+  if [ -v vcmDataPath ]; then
+    if [ "${vcmDataPath}x" != "${vcmDataPath##*/}x" ]; then
+      die 63 \
+        "When the --stages (-s) option is set, the argument to the --vcm-data-output option may only be a single lexeme. It may not be a filepath specifying directories."
+    fi
+    vcmDataPath="${stagesDir}/${vcmDataPath}"
+  else
+    vcmDataPath="${stagesDir}/${defaultVcmDataFilename}"
+  fi
+else
+  if [ -v stageAll ]; then
+    if [ -v quotePath ]; then
+      if [ "${quotePath}x" != "${quotePath##*/}x" ]; then
+        die 64 \
+          "When the --all option is set, the first argument to the --quote-output option must be 'file' and the second argument may only be a single lexeme. It may not be a filepath specifying directories."
+      fi
+      quotePath="${defaultStagesDir}/${quotePath}"
+    else
+      quotePath="${defaultStagesDir}"
+    fi
+    if [ -v vcmPath ]; then
+      if [ "${vcmPath}x" != "${vcmPath##*/}x" ]; then
+        die 65 \
+          "When the --all option is set, the first argument to the --quote-output option must be 'file' and the second argument may only be a single lexeme. It may not be a filepath specifying directories."
+      fi
+      vcmPath="${defaultStagesDir}/${vcmPath}"
+    else
+      vcmPath="${defaultStagesDir}"
+    fi
+  else
+    if [ ! -v quotePath ]; then
+      quotePath="${defaultQuoteDir}"
+    fi
+    if [ ! -v vcmPath ]; then
+      vcmPath="${defaultVcmDir}"
+    fi
+  fi
+  if [ ! -v astPath ]; then
+    astPath="../stages/12.json"
+  fi
+  if [ ! -v quoteSpecPath ]; then
+    quoteSpecPath="../stages/14.json"
+  fi
+  if [ ! -v stage0Path ]; then
+    stage0Path="../stages/0.json"
+  fi
+  if [ ! -v stage1Path ]; then
+    stage1Path="../stages/1.json"
+  fi
+  if [ -v stage6Path ]; then
+    if [ "${_command}x" = "_estimatex" ] && [ ! -f "${stage6Path}" ]; then
+      die 66 "${verboseErrors}" \
+        "The argument to the -stage-6(-output) (-6) option must be a path to an existing stage-6 file."
+    fi
+  else
+    stage6Path="../stages/6.json"
+  fi
+  if [ ! -v summaryPath ]; then
+    summaryPath="../stages/13.json"
+  fi
+  if [ ! -v vcmDataPath ]; then
+    vcmDataPath="../stages/10.json"
+  fi
+fi
+
+if [ -v includeGraphics ]; then
+  if [ "${includeGraphics}x" = "0x" ]; then
+    includeGraphicsFlag=""
+  elif [ "${includeGraphics}x" = "1x" ]; then
+    includeGraphicsFlag="--include-graphics"
+  else
+    die 67 "The value of 'includeGraphics' may only be either '0' or '1'."
+  fi
+else
+  if [ -v useMilwaukeeTemplate ]; then
+    includeGraphics="0"
+    includeGraphicsFlag=""
+  else
+    includeGraphics="1"
+    includeGraphicsFlag="--include-graphics"
+  fi
+fi
+
+if [ ! -v doJq ]; then
+  doJq="1"
+fi
+
+if [ "${_command}x" = "_estimatex" ]; then
+  estFlags="--ignore-pr -o ${orderPath} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
+  _estFlags=( ${estFlags} )
+  estArgs="${astPath} ${clientFlag} ${doJq} ${includeGraphics} ${orderPath} ${overridesPath} ${quoteNotesPath} ${quotePath} ${quoteSpecPath} ${stage6Path} ${summaryPath} ${vcmDataPath} ${vcmPath}"
+  estArgs=( ${estArgs} )
+elif [ "${_command}x" = "_initializex" ]; then
+  initFlags="--ignore-pr -o ${orderPath} ${clientFlag}"
+  _initFlags=( ${initFlags} )
+  initArgs="${clientFlag} ${doJq} ${orderPath} ${overridesPath} ${stage0Path} ${stage1Path} ${stage6Path}"
+  initArgs=( ${initArgs} )
+else
+  die 68 "${verboseErrors}" "'${_command}' is a recognized valid command."
+fi
+
+if [ "${verboseInfo}x" = "1x" ]; then
+  if [ "${shouldExecute}x" = "0x" ]; then
+    echo "DRY RUN: Command to be executed: '${originalCommand}'"
+  else
+    echo "Command to be executed: '${originalCommand}'"
+  fi
+  echo
+  echo "Explanation: This executes a sequence of estimation stages."
+  echo
+  if [ "${_command}x" = "_estimatex" ]; then
+    if [ "${includeGraphicsFlag}x" = "x" ]; then
+      echo "Graphics are *not* to be included."
+      echo
+    else
+      echo "Graphics *are* to be included."
+      echo
+    fi
+    if [ "${doJq}x" = "1x" ]; then
+      echo estimate "${_estFlags[@]}" --vcm-data "|" jq ">" "${vcmDataPath}"
+      echo estimate "${_estFlags[@]}" --vcm "${quoteNotesPath}" -- -o "${vcmPath}"
+      echo estimate "${_estFlags[@]}" --ast "|" jq ">" "${astPath}"
+      echo estimate "${_estFlags[@]}" --summary "|" jq ">" "${summaryPath}"
+      echo estimate "${_estFlags[@]}" --quote-spec "${quoteNotesPath}" "|" jq ">" "${quoteSpecPath}"
+      echo estimate "${_estFlags[@]}" --quote "${quoteNotesPath}" -- -o "${quotePath}"
+    else
+      echo estimate "${_estFlags[@]}" --vcm-data ">" "${vcmDataPath}"
+      echo estimate "${_estFlags[@]}" --vcm "${quoteNotesPath}" -- -o "${vcmPath}"
+      echo estimate "${_estFlags[@]}" --ast ">" "${astPath}"
+      echo estimate "${_estFlags[@]}" --summary ">" "${summaryPath}"
+      echo estimate "${_estFlags[@]}" --quote-spec "${quoteNotesPath}" ">" "${quoteSpecPath}"
+      echo estimate "${_estFlags[@]}" --quote "${quoteNotesPath}" -- -o "${quotePath}"
+    fi
+  elif [ "${_command}x" = "_initializex" ]; then
+    if [ "${doJq}x" = "1x" ]; then
+      echo estimate "${_initFlags[@]}" --stage 0 "|" jq ">" "${stage0Path}"
+      echo estimate "${_initFlags[@]}" --start 0 "${stage0Path}" --stage 1 "|" jq ">" "${stage1Path}"
+      echo estimate "${_initFlags[@]}" --start 1 "${stage1Path}" -x "|" jq ">" "${stage6Path}"
+      echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f "|" jq ">" "${overridesPath}"
+    else
+      echo estimate "${_initFlags[@]}" --stage 0 ">" "${stage0Path}"
+      echo estimate "${_initFlags[@]}" --start 0 "${stage0Path}" --stage 1 ">" "${stage1Path}"
+      echo estimate "${_initFlags[@]}" --start 1 "${stage1Path}" -x ">" "${stage6Path}"
+      echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f ">" "${overridesPath}"
+    fi
+  else
+    die 69 "${verboseErrors}" "'${_command}' is a recognized valid command."
+  fi
+  echo
+  if [ "${shouldExecute}x" = "1x" ]; then
+    echo "Executing stages now..."
+    echo
+  fi
+fi
+
+if [ "${shouldExecute}x" = "1x" ]; then
+  if [ "${_command}x" = "_estimatex" ]; then
+    if [ -v estArgs ]; then
+      _estimate "${estArgs[@]}"
+    else
+      die 70 "${verboseErrors}" "The variable 'estArgs' has not been set."
+    fi
+  elif [ "${_command}x" = "_initializex" ]; then
+    if [ -v initArgs ]; then
+      _initialize "${initArgs[@]}"
+    else
+      die 71 "${verboseErrors}" "The variable 'initArgs' has not been set."
+    fi
+  else
+    die 72 "${verboseErrors}" "'${_command}' is a recognized valid command."
+  fi
+fi
+
+finalize

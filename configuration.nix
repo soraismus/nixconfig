@@ -13,6 +13,7 @@
       ./git
       ./i3
       ./rofi
+      ./sall
     ];
 
   boot.loader.systemd-boot.enable = true;
@@ -351,6 +352,7 @@
       execute-namespace.enable = true;
       git.enable = true;
       rofi.enable = true;
+      sall.enable = true;
     };
     services = {
       automatic-mac-spoofing.enable = false;

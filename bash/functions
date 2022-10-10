@@ -411,38 +411,6 @@ s8 () {
   fi
 }
 
-sall () {
-  if [ "${#}" -lt 1 ]; then
-    estimate --ignore-pr -o ../orders/0 --stage 0 -m > ../stages/0.json
-    estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 -m > ../stages/1.json
-    estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x -m > ../stages/6.json
-    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f -m > ../overrides/0.yaml
-  else
-    local client="${1}"
-    if [ "${client}x" = "--empirex" ]; then
-      estimate --ignore-pr -o ../orders/0 --stage 0 --empire > ../stages/0.json
-      estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 --empire > ../stages/1.json
-      estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x --empire > ../stages/6.json
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f --empire > ../overrides/0.yaml
-    elif [ "${client}x" = "--ppgx" ]; then
-      estimate --ignore-pr -o ../orders/0 --stage 0 --ppg > ../stages/0.json
-      estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 --ppg > ../stages/1.json
-      estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x --ppg > ../stages/6.json
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f --ppg > ../overrides/0.yaml
-    elif [ "${client}x" = "--sencox" ]; then
-      estimate --ignore-pr -o ../orders/0 --stage 0 --senco > ../stages/0.json
-      estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 --senco > ../stages/1.json
-      estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x --senco > ../stages/6.json
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f --senco > ../overrides/0.yaml
-    else
-      estimate --ignore-pr -o ../orders/0 --stage 0 -c "${client}" > ../stages/0.json
-      estimate --ignore-pr -o ../orders/0 --start 0 ../stages/0.json --stage 1 -c "${client}" > ../stages/1.json
-      estimate --ignore-pr -o ../orders/0 --start 1 ../stages/1.json -x -c "${client}" > ../stages/6.json
-      estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f -c "${client}" > ../overrides/0.yaml
-    fi
-  fi
-}
-
 tag () {
   NAMESPACE=tag execute-namespace "$@"
 }
