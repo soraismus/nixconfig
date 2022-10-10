@@ -462,7 +462,7 @@
         s7 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -f";
         s9 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --recache-components";
         s10 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm-data";
-        s11 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm";
+        s11 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --vcm ../quote-notes/0.json";
         s12 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --ast";
         s13 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --summary";
         s14 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json";
