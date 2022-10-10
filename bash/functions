@@ -350,15 +350,19 @@ note () {
   NAMESPACE=note execute-namespace "$@"
 }
 
-open-eb () {
+openeb () {
+  local pdfs=()
+  local spreadsheets=()
   for file in "${@}"; do
     local ext="${file##*.}"
     if [ "${ext}x" = "xlsxx" ]; then
-      soffice "${file}"
+      spreadsheets+=( "${file}" )
     elif [ "${ext}x" = "pdfx" ]; then
-      zathura "${file}"
+      pdfs+=( "${file}" )
     fi
   done
+  soffice "${spreadsheets[@]}"
+  zathura "${pdfs[@]}"
 }
 
 peek () {
