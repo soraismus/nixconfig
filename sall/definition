@@ -43,6 +43,7 @@ Commands:
 General Options:
 ------------------
 (-?) --help                                       for help
+     --chain
 (-c) --client client
      --dry-run
      --empire
@@ -159,6 +160,49 @@ _estimate () {
   fi
 }
 
+_estimate_chain () {
+  local astPath="${1}"
+  local clientFlag="${2}"
+  local doJq="${3}"
+  local includeGraphics="${4}"
+  local orderPath="${5}"
+  local overridesPath="${6}"
+  local quoteNotesPath="${7}"
+  local quotePath="${8}"
+  local quoteSpecPath="${9}"
+  local stage6Path="${10}"
+  local summaryPath="${11}"
+  local vcmDataPath="${12}"
+  local vcmPath="${13}"
+  local includeGraphicsFlag
+  if [ "${includeGraphics}x" = "1x" ]; then
+    includeGraphicsFlag="--include-graphics"
+  elif [ "${includeGraphics}x" = "0x" ]; then
+    includeGraphicsFlag=""
+  else
+    die 1 "Invalid value for the local variable 'includeGraphics'."
+  fi
+  local estFlags="--ignore-pr -o ${orderPath} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
+  local _estFlags=( ${estFlags} )
+  if [ "${doJq}x" = "1x" ]; then
+    :
+    # estimate "${_estFlags[@]}" --vcm-data | jq > "${vcmDataPath}"
+    # cat "${vcmDataPath}" | create-vcms "${clientFlag}" --quote-notes "${quoteNotesPath}" -o "${vcmPath}"
+    # estimate "${_estFlags[@]}" --ast | jq > "${astPath}"
+    # cat "${astPath}" | create-summary "${clientFlag}" | jq > "${summaryPath}"
+    # cat "${summaryPath}" | create-quote-spec "${clientFlag}" --quote-notes "${quoteNotesPath}" | jq > "${quoteSpecPath}"
+    # cat "${quoteSpecPath}" | generate-quote -o "${quotePath}"
+  else
+    :
+    # estimate "${_estFlags[@]}" --vcm-data > "${vcmDataPath}"
+    # cat "${vcmDataPath}" | create-vcms "${clientFlag}" --quote-notes "${quoteNotesPath}" -o "${vcmPath}"
+    # estimate "${_estFlags[@]}" --ast > "${astPath}"
+    # cat "${astPath}" | create-summary "${clientFlag}" > "${summaryPath}"
+    # cat "${summaryPath}" | create-quote-spec "${clientFlag}" --quote-notes "${quoteNotesPath}" > "${quoteSpecPath}"
+    # cat "${quoteSpecPath}" | generate-quote -o "${quotePath}"
+  fi
+}
+
 finalize () {
   unset astPath
   unset _command
@@ -177,6 +221,7 @@ finalize () {
   unset quotePath
   unset quoteNotesPath
   unset quoteSpecPath
+  unset shouldChain
   unset shouldExecute
   unset stage0Path
   unset stage1Path
@@ -215,11 +260,39 @@ _initialize () {
   fi
 }
 
+_initialize_chain () {
+  local clientFlag="${1}"
+  local doJq="${2}"
+  local orderPath="${3}"
+  local overridesPath="${4}"
+  local stage0Path="${5}"
+  local stage1Path="${6}"
+  local stage6Path="${7}"
+  local initFlags="--ignore-pr -o ${orderPath} ${clientFlag}"
+  local _initFlags=( ${initFlags} )
+  if [ "${doJq}x" = "1x" ]; then
+    :
+    # estimate "${_initFlags[@]}" --stage 0 | jq > "${stage0Path}"
+    # cat "${stage0Path}" | filter-camelot-output.js | jq > "${stage1Path}"
+    # cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orderPath}" | jq > "${defaultStage2Filename}"
+    # cat "${defaultStage2Filename}" | override "${overridesPath}" | jq > "${stage6Path}"
+    # estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f | jq > "${overridesPath}"
+  else
+    :
+    # estimate "${_initFlags[@]}" --stage 0 > "${stage0Path}"
+    # cat "${stage0Path}" | filter-camelot-output.js > "${stage1Path}"
+    # cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orderPath}" > "${defaultStage2Filename}"
+    # cat "${defaultStage2Filename}" | override "${overridesPath}" > "${stage6Path}"
+    # estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f > "${overridesPath}"
+  fi
+}
+
 declare -r defaultAstFilename="12.json"
 declare -r defaultQuoteDir="../quotes"
 declare -r defaultQuoteSpecFilename="14.json"
 declare -r defaultStage0Filename="0.json"
 declare -r defaultStage1Filename="1.json"
+declare -r defaultStage2Filename="2.json"
 declare -r defaultStage6Filename="6.json"
 declare -r defaultStagesDir="../stages"
 declare -r defaultSummaryFilename="13.json"
@@ -248,6 +321,7 @@ declare overridesPath
 declare quotePath
 declare quoteNotesPath
 declare quoteSpecPath
+declare shouldChain
 declare stage0Path
 declare stage1Path
 declare stage6Path
@@ -290,6 +364,13 @@ while true; do
           "The --ast-output option requires two arguments, the first of which must be either 'dir' or 'file'."
       fi
       shift 3
+      ;;
+    --chain )
+      if [ -v shouldChain ]; then
+        die 8 "${verboseErrors}" "The --chain flag has already been set."
+      fi
+      shouldChain=1
+      shift 1
       ;;
     -c | --client )
       if [ -v clientFlag ]; then
@@ -352,7 +433,6 @@ while true; do
       _command="_initialize"
       shift 1;
       ;;
-
     --jq )
       if [ -v doJq ]; then
         die 12 "${verboseErrors}" "The --jq option has already been set."
@@ -363,7 +443,6 @@ while true; do
       doJq="${2}"
       shift 2;
       ;;
-
     -m | --milwaukee )
       if [ -v useMilwaukeeTemplate ]; then
         die 15 "${verboseErrors}" "The --empire, --milwaukee (-m), --ppg, or --senco flag has already been set."
@@ -783,6 +862,10 @@ if [ ! -v doJq ]; then
   doJq="1"
 fi
 
+if [ ! -v shouldChain ]; then
+  shouldChain="0"
+fi
+
 if [ "${_command}x" = "_estimatex" ]; then
   estFlags="--ignore-pr -o ${orderPath} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
   _estFlags=( ${estFlags} )
@@ -814,32 +897,66 @@ if [ "${verboseInfo}x" = "1x" ]; then
       echo "Graphics *are* to be included."
       echo
     fi
-    if [ "${doJq}x" = "1x" ]; then
-      echo estimate "${_estFlags[@]}" --vcm-data "|" jq ">" "${vcmDataPath}"
-      echo estimate "${_estFlags[@]}" --vcm "${quoteNotesPath}" -- -o "${vcmPath}"
-      echo estimate "${_estFlags[@]}" --ast "|" jq ">" "${astPath}"
-      echo estimate "${_estFlags[@]}" --summary "|" jq ">" "${summaryPath}"
-      echo estimate "${_estFlags[@]}" --quote-spec "${quoteNotesPath}" "|" jq ">" "${quoteSpecPath}"
-      echo estimate "${_estFlags[@]}" --quote "${quoteNotesPath}" -- -o "${quotePath}"
+    if [ "${shouldChain}x" = "1x" ]; then
+      if [ "${doJq}x" = "1x" ]; then
+        echo estimate "${_estFlags[@]}" --vcm-data "|" jq ">" "${vcmDataPath}"
+        echo cat "${vcmDataPath}" "|" create-vcms "${clientFlag}" --quote-notes "${quoteNotesPath}" -o "${vcmPath}"
+        echo estimate "${_estFlags[@]}" --ast "|" jq ">" "${astPath}"
+        echo cat "${astPath}" "|" create-summary "${clientFlag}" "|" jq ">" "${summaryPath}"
+        echo cat "${summaryPath}" "|" create-quote-spec "${clientFlag}" --quote-notes "${quoteNotesPath}" "|" jq ">" "${quoteSpecPath}"
+        echo cat "${quoteSpecPath}" "|" generate-quote -o "${quotePath}"
+      else
+        echo estimate "${_estFlags[@]}" --vcm-data ">" "${vcmDataPath}"
+        echo cat "${vcmDataPath}" "|" create-vcms "${clientFlag}" --quote-notes "${quoteNotesPath}" -o "${vcmPath}"
+        echo estimate "${_estFlags[@]}" --ast ">" "${astPath}"
+        echo cat "${astPath}" "|" create-summary "${clientFlag}" ">" "${summaryPath}"
+        echo cat "${summaryPath}" "|" create-quote-spec "${clientFlag}" --quote-notes "${quoteNotesPath}" ">" "${quoteSpecPath}"
+        echo cat "${quoteSpecPath}" "|" generate-quote -o "${quotePath}"
+      fi
     else
-      echo estimate "${_estFlags[@]}" --vcm-data ">" "${vcmDataPath}"
-      echo estimate "${_estFlags[@]}" --vcm "${quoteNotesPath}" -- -o "${vcmPath}"
-      echo estimate "${_estFlags[@]}" --ast ">" "${astPath}"
-      echo estimate "${_estFlags[@]}" --summary ">" "${summaryPath}"
-      echo estimate "${_estFlags[@]}" --quote-spec "${quoteNotesPath}" ">" "${quoteSpecPath}"
-      echo estimate "${_estFlags[@]}" --quote "${quoteNotesPath}" -- -o "${quotePath}"
+      if [ "${doJq}x" = "1x" ]; then
+        echo estimate "${_estFlags[@]}" --vcm-data "|" jq ">" "${vcmDataPath}"
+        echo estimate "${_estFlags[@]}" --vcm "${quoteNotesPath}" -- -o "${vcmPath}"
+        echo estimate "${_estFlags[@]}" --ast "|" jq ">" "${astPath}"
+        echo estimate "${_estFlags[@]}" --summary "|" jq ">" "${summaryPath}"
+        echo estimate "${_estFlags[@]}" --quote-spec "${quoteNotesPath}" "|" jq ">" "${quoteSpecPath}"
+        echo estimate "${_estFlags[@]}" --quote "${quoteNotesPath}" -- -o "${quotePath}"
+      else
+        echo estimate "${_estFlags[@]}" --vcm-data ">" "${vcmDataPath}"
+        echo estimate "${_estFlags[@]}" --vcm "${quoteNotesPath}" -- -o "${vcmPath}"
+        echo estimate "${_estFlags[@]}" --ast ">" "${astPath}"
+        echo estimate "${_estFlags[@]}" --summary ">" "${summaryPath}"
+        echo estimate "${_estFlags[@]}" --quote-spec "${quoteNotesPath}" ">" "${quoteSpecPath}"
+        echo estimate "${_estFlags[@]}" --quote "${quoteNotesPath}" -- -o "${quotePath}"
+      fi
     fi
   elif [ "${_command}x" = "_initializex" ]; then
-    if [ "${doJq}x" = "1x" ]; then
-      echo estimate "${_initFlags[@]}" --stage 0 "|" jq ">" "${stage0Path}"
-      echo estimate "${_initFlags[@]}" --start 0 "${stage0Path}" --stage 1 "|" jq ">" "${stage1Path}"
-      echo estimate "${_initFlags[@]}" --start 1 "${stage1Path}" -x "|" jq ">" "${stage6Path}"
-      echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f "|" jq ">" "${overridesPath}"
+    if [ "${shouldChain}x" = "1x" ]; then
+      if [ "${doJq}x" = "1x" ]; then
+        echo estimate "${_initFlags[@]}" --stage 0 "|" jq ">" "${stage0Path}"
+        echo cat "${stage0Path}" "|" filter-camelot-output.js "|" jq ">" "${stage1Path}"
+        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orderPath}" "|" jq ">" "${defaultStage2Filename}"
+        echo cat "${defaultStage2Filename}" "|" override "${overridesPath}" "|" jq ">" "${stage6Path}"
+        echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f "|" jq ">" "${overridesPath}"
+      else
+        echo estimate "${_initFlags[@]}" --stage 0 ">" "${stage0Path}"
+        echo cat "${stage0Path}" "|" filter-camelot-output.js ">" "${stage1Path}"
+        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orderPath}" ">" "${defaultStage2Filename}"
+        echo cat "${defaultStage2Filename}" "|" override "${overridesPath}" ">" "${stage6Path}"
+        echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f ">" "${overridesPath}"
+      fi
     else
-      echo estimate "${_initFlags[@]}" --stage 0 ">" "${stage0Path}"
-      echo estimate "${_initFlags[@]}" --start 0 "${stage0Path}" --stage 1 ">" "${stage1Path}"
-      echo estimate "${_initFlags[@]}" --start 1 "${stage1Path}" -x ">" "${stage6Path}"
-      echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f ">" "${overridesPath}"
+      if [ "${doJq}x" = "1x" ]; then
+        echo estimate "${_initFlags[@]}" --stage 0 "|" jq ">" "${stage0Path}"
+        echo estimate "${_initFlags[@]}" --start 0 "${stage0Path}" --stage 1 "|" jq ">" "${stage1Path}"
+        echo estimate "${_initFlags[@]}" --start 1 "${stage1Path}" -x "|" jq ">" "${stage6Path}"
+        echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f "|" jq ">" "${overridesPath}"
+      else
+        echo estimate "${_initFlags[@]}" --stage 0 ">" "${stage0Path}"
+        echo estimate "${_initFlags[@]}" --start 0 "${stage0Path}" --stage 1 ">" "${stage1Path}"
+        echo estimate "${_initFlags[@]}" --start 1 "${stage1Path}" -x ">" "${stage6Path}"
+        echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f ">" "${overridesPath}"
+      fi
     fi
   else
     die 69 "${verboseErrors}" "'${_command}' is a recognized valid command."
@@ -854,13 +971,21 @@ fi
 if [ "${shouldExecute}x" = "1x" ]; then
   if [ "${_command}x" = "_estimatex" ]; then
     if [ -v estArgs ]; then
-      _estimate "${estArgs[@]}"
+      if [ "${shouldChain}x" = "1x" ]; then
+        _estimate_chain "${estArgs[@]}"
+      else
+        _estimate "${estArgs[@]}"
+      fi
     else
       die 70 "${verboseErrors}" "The variable 'estArgs' has not been set."
     fi
   elif [ "${_command}x" = "_initializex" ]; then
     if [ -v initArgs ]; then
-      _initialize "${initArgs[@]}"
+      if [ "${shouldChain}x" = "1x" ]; then
+        _initialize_chain "${initArgs[@]}"
+      else
+        _initialize "${initArgs[@]}"
+      fi
     else
       die 71 "${verboseErrors}" "The variable 'initArgs' has not been set."
     fi
