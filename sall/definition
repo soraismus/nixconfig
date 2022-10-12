@@ -50,7 +50,7 @@ General Options:
 (-h) --help                                       for help
      --jq (0|1)
 (-m) --milwaukee
-(-o) --order ./path/to/order
+(-o) --orders (./path/to/order|list-of-orders)
 (-w) --overrides ./path/to/overrides
      --ppg
      --quiet-errors                               suppresses error messags from stderr
@@ -100,7 +100,9 @@ Examples of usage:
 
 Direct Dependencies:
 -------------------
+cat
 jq
+tr
 
 Indirect Dependencies:
 -------------------
@@ -124,7 +126,7 @@ _estimate () {
   local clientFlag="${2}"
   local doJq="${3}"
   local includeGraphics="${4}"
-  local orderPath="${5}"
+  local orders="${5}"
   local overridesPath="${6}"
   local quoteNotesPath="${7}"
   local quotePath="${8}"
@@ -141,7 +143,7 @@ _estimate () {
   else
     die 1 "Invalid value for the local variable 'includeGraphics'."
   fi
-  local estFlags="--ignore-pr -o ${orderPath} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
+  local estFlags="--ignore-pr -o ${orders} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
   local _estFlags=( ${estFlags} )
   if [ "${doJq}x" = "1x" ]; then
     estimate "${_estFlags[@]}" --vcm-data | jq > "${vcmDataPath}"
@@ -165,7 +167,7 @@ _estimate_chain () {
   local clientFlag="${2}"
   local doJq="${3}"
   local includeGraphics="${4}"
-  local orderPath="${5}"
+  local orders="${5}"
   local overridesPath="${6}"
   local quoteNotesPath="${7}"
   local quotePath="${8}"
@@ -182,24 +184,22 @@ _estimate_chain () {
   else
     die 1 "Invalid value for the local variable 'includeGraphics'."
   fi
-  local estFlags="--ignore-pr -o ${orderPath} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
+  local estFlags="--ignore-pr -o ${orders} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
   local _estFlags=( ${estFlags} )
   if [ "${doJq}x" = "1x" ]; then
-    :
-    # estimate "${_estFlags[@]}" --vcm-data | jq > "${vcmDataPath}"
-    # cat "${vcmDataPath}" | create-vcms "${clientFlag}" --quote-notes "${quoteNotesPath}" -o "${vcmPath}"
-    # estimate "${_estFlags[@]}" --ast | jq > "${astPath}"
-    # cat "${astPath}" | create-summary "${clientFlag}" | jq > "${summaryPath}"
-    # cat "${summaryPath}" | create-quote-spec "${clientFlag}" --quote-notes "${quoteNotesPath}" | jq > "${quoteSpecPath}"
-    # cat "${quoteSpecPath}" | generate-quote -o "${quotePath}"
+    estimate "${_estFlags[@]}" --vcm-data | jq > "${vcmDataPath}"
+    cat "${vcmDataPath}" | create-vcms "${clientFlag}" --quote-notes "${quoteNotesPath}" -o "${vcmPath}"
+    estimate "${_estFlags[@]}" --ast | jq > "${astPath}"
+    cat "${astPath}" | create-summary "${clientFlag}" | jq > "${summaryPath}"
+    cat "${summaryPath}" | create-quote-spec "${clientFlag}" --quote-notes "${quoteNotesPath}" | jq > "${quoteSpecPath}"
+    cat "${quoteSpecPath}" | generate-quote -o "${quotePath}"
   else
-    :
-    # estimate "${_estFlags[@]}" --vcm-data > "${vcmDataPath}"
-    # cat "${vcmDataPath}" | create-vcms "${clientFlag}" --quote-notes "${quoteNotesPath}" -o "${vcmPath}"
-    # estimate "${_estFlags[@]}" --ast > "${astPath}"
-    # cat "${astPath}" | create-summary "${clientFlag}" > "${summaryPath}"
-    # cat "${summaryPath}" | create-quote-spec "${clientFlag}" --quote-notes "${quoteNotesPath}" > "${quoteSpecPath}"
-    # cat "${quoteSpecPath}" | generate-quote -o "${quotePath}"
+    estimate "${_estFlags[@]}" --vcm-data > "${vcmDataPath}"
+    cat "${vcmDataPath}" | create-vcms "${clientFlag}" --quote-notes "${quoteNotesPath}" -o "${vcmPath}"
+    estimate "${_estFlags[@]}" --ast > "${astPath}"
+    cat "${astPath}" | create-summary "${clientFlag}" > "${summaryPath}"
+    cat "${summaryPath}" | create-quote-spec "${clientFlag}" --quote-notes "${quoteNotesPath}" > "${quoteSpecPath}"
+    cat "${quoteSpecPath}" | generate-quote -o "${quotePath}"
   fi
 }
 
@@ -216,7 +216,7 @@ finalize () {
   unset initArgs
   unset initFlags
   unset _initFlags
-  unset orderPath
+  unset orders
   unset overridesPath
   unset quotePath
   unset quoteNotesPath
@@ -238,15 +238,19 @@ finalize () {
   unset verboseSetting
 }
 
+getOrders () {
+  cat "${1}" | tr -d "\r\n "
+}
+
 _initialize () {
   local clientFlag="${1}"
   local doJq="${2}"
-  local orderPath="${3}"
+  local orders="${3}"
   local overridesPath="${4}"
   local stage0Path="${5}"
   local stage1Path="${6}"
   local stage6Path="${7}"
-  local initFlags="--ignore-pr -o ${orderPath} ${clientFlag}"
+  local initFlags="--ignore-pr -o ${orders} ${clientFlag}"
   local _initFlags=( ${initFlags} )
   if [ "${doJq}x" = "1x" ]; then
     estimate "${_initFlags[@]}" --stage 0 | jq > "${stage0Path}"
@@ -264,30 +268,33 @@ _initialize () {
 _initialize_chain () {
   local clientFlag="${1}"
   local doJq="${2}"
-  local orderPath="${3}"
+  local orders="${3}"
   local overridesPath="${4}"
   local stage0Path="${5}"
   local stage1Path="${6}"
   local stage6Path="${7}"
-  local initFlags="--ignore-pr -o ${orderPath} ${clientFlag}"
+  local initFlags="--ignore-pr -o ${orders} ${clientFlag}"
   local _initFlags=( ${initFlags} )
   if [ "${doJq}x" = "1x" ]; then
     estimate "${_initFlags[@]}" --stage 0 | jq > "${stage0Path}"
     cat "${stage0Path}" | filter-camelot-output.js | jq > "${stage1Path}"
-    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orderPath}" | jq > "${stage2Path}"
+    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orders}" | jq > "${stage2Path}"
     cat "${stage2Path}" | override "${overridesPath}" | jq > "${stage6Path}"
     estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f | jq > "${overridesPath}"
   else
     estimate "${_initFlags[@]}" --stage 0 > "${stage0Path}"
     cat "${stage0Path}" | filter-camelot-output.js > "${stage1Path}"
-    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orderPath}" > "${stage2Path}"
+    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orders}" > "${stage2Path}"
     cat "${stage2Path}" | override "${overridesPath}" > "${stage6Path}"
     estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f > "${overridesPath}"
   fi
 }
 
 declare -r defaultAstFilename="12.json"
+declare -r defaultOrdersPath="../orders/0"
+declare -r defaultOverridesPath="../overrides/0.yaml"
 declare -r defaultQuoteDir="../quotes"
+declare -r defaultQuoteNotesPath="../quote-notes/0.json"
 declare -r defaultQuoteSpecFilename="14.json"
 declare -r defaultStage0Filename="0.json"
 declare -r defaultStage1Filename="1.json"
@@ -315,7 +322,7 @@ declare includeGraphicsFlag
 declare initArgs
 declare initFlags
 declare _initFlags
-declare orderPath
+declare orders
 declare overridesPath
 declare quotePath
 declare quoteNotesPath
@@ -454,15 +461,15 @@ while true; do
       clientFlag="--milwaukee"
       shift 1;
       ;;
-    -o | --order )
-      if [ -v orderPath ]; then
-        die 17 "${verboseErrors}" "The --order option has already been set."
+    -o | --orders )
+      if [ -v orders ]; then
+        die 17 "${verboseErrors}" "The --orders option has already been set."
       fi
-      if [ ! -f "${2}" ]; then
-        die 18 "${verboseErrors}" \
-          "The --order option requires as an argument a path to an existing file containing order specifications."
+      if [ -f "${2}" ]; then
+        orders="'$( getOrders "${2}" )'"
+      else
+        orders="${2}"
       fi
-      orderPath="${2}"
       shift 2
       ;;
     -w | --overrides )
@@ -681,16 +688,16 @@ if [ ! -v _command ]; then
   die 54 "${verboseErrors}" "No valid command has been set."
 fi
 
-if [ ! -v orderPath ]; then
-  orderPath="../orders/0"
+if [ ! -v orders ]; then
+  orders="'$( getOrders "${defaultOrdersPath}" )'"
 fi
 
 if [ ! -v overridesPath ]; then
-  overridesPath="../overrides/0.yaml"
+  overridesPath="${defaultOverridesPath}"
 fi
 
 if [ ! -v quoteNotesPath ]; then
-  quoteNotesPath="../quote-notes/0.json"
+  quoteNotesPath="${defaultQuoteNotesPath}"
 fi
 
 if [ -v stagesDir ]; then
@@ -881,14 +888,14 @@ if [ ! -v shouldChain ]; then
 fi
 
 if [ "${_command}x" = "_estimatex" ]; then
-  estFlags="--ignore-pr -o ${orderPath} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
+  estFlags="--ignore-pr -o ${orders} --start 6 ${stage6Path} -w ${overridesPath} ${clientFlag} ${includeGraphicsFlag}"
   _estFlags=( ${estFlags} )
-  estArgs="${astPath} ${clientFlag} ${doJq} ${includeGraphics} ${orderPath} ${overridesPath} ${quoteNotesPath} ${quotePath} ${quoteSpecPath} ${stage6Path} ${summaryPath} ${vcmDataPath} ${vcmPath}"
+  estArgs="${astPath} ${clientFlag} ${doJq} ${includeGraphics} ${orders} ${overridesPath} ${quoteNotesPath} ${quotePath} ${quoteSpecPath} ${stage6Path} ${summaryPath} ${vcmDataPath} ${vcmPath}"
   estArgs=( ${estArgs} )
 elif [ "${_command}x" = "_initializex" ]; then
-  initFlags="--ignore-pr -o ${orderPath} ${clientFlag}"
+  initFlags="--ignore-pr -o ${orders} ${clientFlag}"
   _initFlags=( ${initFlags} )
-  initArgs="${clientFlag} ${doJq} ${orderPath} ${overridesPath} ${stage0Path} ${stage1Path} ${stage6Path}"
+  initArgs="${clientFlag} ${doJq} ${orders} ${overridesPath} ${stage0Path} ${stage1Path} ${stage6Path}"
   initArgs=( ${initArgs} )
 else
   die 68 "${verboseErrors}" "'${_command}' is a recognized valid command."
@@ -949,13 +956,13 @@ if [ "${verboseInfo}x" = "1x" ]; then
       if [ "${doJq}x" = "1x" ]; then
         echo estimate "${_initFlags[@]}" --stage 0 "|" jq ">" "${stage0Path}"
         echo cat "${stage0Path}" "|" filter-camelot-output.js "|" jq ">" "${stage1Path}"
-        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orderPath}" "|" jq ">" "${stage2Path}"
+        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orders}" "|" jq ">" "${stage2Path}"
         echo cat "${stage2Path}" "|" override "${overridesPath}" "|" jq ">" "${stage6Path}"
         echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f "|" jq ">" "${overridesPath}"
       else
         echo estimate "${_initFlags[@]}" --stage 0 ">" "${stage0Path}"
         echo cat "${stage0Path}" "|" filter-camelot-output.js ">" "${stage1Path}"
-        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orderPath}" ">" "${stage2Path}"
+        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orders}" ">" "${stage2Path}"
         echo cat "${stage2Path}" "|" override "${overridesPath}" ">" "${stage6Path}"
         echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f ">" "${overridesPath}"
       fi
@@ -1009,4 +1016,3 @@ if [ "${shouldExecute}x" = "1x" ]; then
 fi
 
 finalize
-
