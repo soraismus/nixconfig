@@ -225,6 +225,7 @@ finalize () {
   unset shouldExecute
   unset stage0Path
   unset stage1Path
+  unset stage2Path
   unset stage6Path
   unset stageAll
   unset stagesDir
@@ -271,19 +272,17 @@ _initialize_chain () {
   local initFlags="--ignore-pr -o ${orderPath} ${clientFlag}"
   local _initFlags=( ${initFlags} )
   if [ "${doJq}x" = "1x" ]; then
-    :
-    # estimate "${_initFlags[@]}" --stage 0 | jq > "${stage0Path}"
-    # cat "${stage0Path}" | filter-camelot-output.js | jq > "${stage1Path}"
-    # cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orderPath}" | jq > "${defaultStage2Filename}"
-    # cat "${defaultStage2Filename}" | override "${overridesPath}" | jq > "${stage6Path}"
-    # estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f | jq > "${overridesPath}"
+    estimate "${_initFlags[@]}" --stage 0 | jq > "${stage0Path}"
+    cat "${stage0Path}" | filter-camelot-output.js | jq > "${stage1Path}"
+    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orderPath}" | jq > "${stage2Path}"
+    cat "${stage2Path}" | override "${overridesPath}" | jq > "${stage6Path}"
+    estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f | jq > "${overridesPath}"
   else
-    :
-    # estimate "${_initFlags[@]}" --stage 0 > "${stage0Path}"
-    # cat "${stage0Path}" | filter-camelot-output.js > "${stage1Path}"
-    # cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orderPath}" > "${defaultStage2Filename}"
-    # cat "${defaultStage2Filename}" | override "${overridesPath}" > "${stage6Path}"
-    # estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f > "${overridesPath}"
+    estimate "${_initFlags[@]}" --stage 0 > "${stage0Path}"
+    cat "${stage0Path}" | filter-camelot-output.js > "${stage1Path}"
+    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orderPath}" > "${stage2Path}"
+    cat "${stage2Path}" | override "${overridesPath}" > "${stage6Path}"
+    estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f > "${overridesPath}"
   fi
 }
 
@@ -324,6 +323,7 @@ declare quoteSpecPath
 declare shouldChain
 declare stage0Path
 declare stage1Path
+declare stage2Path
 declare stage6Path
 declare stageAll
 declare stagesDir
@@ -739,6 +739,7 @@ if [ -v stagesDir ]; then
   else
     quoteSpecPath="${stagesDir}/${defaultQuoteSpecFilename}"
   fi
+
   if [ -v stage0Path ]; then
     if [ "${stage0Path}x" != "${stage0Path##*/}x" ]; then
       die 59 \
@@ -748,6 +749,7 @@ if [ -v stagesDir ]; then
   else
     stage0Path="${stagesDir}/${defaultStage0Filename}"
   fi
+
   if [ -v stage1Path ]; then
     if [ "${stage1Path}x" != "${stage1Path##*/}x" ]; then
       die 60 \
@@ -756,6 +758,15 @@ if [ -v stagesDir ]; then
     stage1Path="${stagesDir}/${stage1Path}"
   else
     stage1Path="${stagesDir}/${defaultStage1Filename}"
+  fi
+  if [ -v stage2Path ]; then
+    if [ "${stage2Path}x" != "${stage2Path##*/}x" ]; then
+      die 59 \
+        "When the --stages (-s) option is set, the argument to the --stage-0(-output) (-0) option may only be a single lexeme. It may not be a filepath specifying directories."
+    fi
+    stage2Path="${stagesDir}/${stage2Path}"
+  else
+    stage2Path="${stagesDir}/${defaultStage2Filename}"
   fi
   if [ -v stage6Path ]; then
     if [ "${stage6Path}x" != "${stage6Path##*/}x" ]; then
@@ -813,16 +824,19 @@ else
     fi
   fi
   if [ ! -v astPath ]; then
-    astPath="../stages/12.json"
+    astPath="${defaultStagesDir}/${defaultAstFilename}"
   fi
   if [ ! -v quoteSpecPath ]; then
-    quoteSpecPath="../stages/14.json"
+    quoteSpecPath="${defaultStagesDir}/${defaultQuoteSpecFilename}"
   fi
   if [ ! -v stage0Path ]; then
-    stage0Path="../stages/0.json"
+    stage0Path="${defaultStagesDir}/${defaultStage0Filename}"
   fi
   if [ ! -v stage1Path ]; then
-    stage1Path="../stages/1.json"
+    stage1Path="${defaultStagesDir}/${defaultStage1Filename}"
+  fi
+  if [ ! -v stage2Path ]; then
+    stage2Path="${defaultStagesDir}/${defaultStage2Filename}"
   fi
   if [ -v stage6Path ]; then
     if [ "${_command}x" = "_estimatex" ] && [ ! -f "${stage6Path}" ]; then
@@ -830,13 +844,13 @@ else
         "The argument to the -stage-6(-output) (-6) option must be a path to an existing stage-6 file."
     fi
   else
-    stage6Path="../stages/6.json"
+    stage6Path="${defaultStagesDir}/${defaultStage6Filename}"
   fi
   if [ ! -v summaryPath ]; then
-    summaryPath="../stages/13.json"
+    summaryPath="${defaultStagesDir}/${defaultSummaryFilename}"
   fi
   if [ ! -v vcmDataPath ]; then
-    vcmDataPath="../stages/10.json"
+    vcmDataPath="${defaultStagesDir}/${defaultVcmDataFilename}"
   fi
 fi
 
@@ -935,14 +949,14 @@ if [ "${verboseInfo}x" = "1x" ]; then
       if [ "${doJq}x" = "1x" ]; then
         echo estimate "${_initFlags[@]}" --stage 0 "|" jq ">" "${stage0Path}"
         echo cat "${stage0Path}" "|" filter-camelot-output.js "|" jq ">" "${stage1Path}"
-        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orderPath}" "|" jq ">" "${defaultStage2Filename}"
-        echo cat "${defaultStage2Filename}" "|" override "${overridesPath}" "|" jq ">" "${stage6Path}"
+        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orderPath}" "|" jq ">" "${stage2Path}"
+        echo cat "${stage2Path}" "|" override "${overridesPath}" "|" jq ">" "${stage6Path}"
         echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f "|" jq ">" "${overridesPath}"
       else
         echo estimate "${_initFlags[@]}" --stage 0 ">" "${stage0Path}"
         echo cat "${stage0Path}" "|" filter-camelot-output.js ">" "${stage1Path}"
-        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orderPath}" ">" "${defaultStage2Filename}"
-        echo cat "${defaultStage2Filename}" "|" override "${overridesPath}" ">" "${stage6Path}"
+        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orderPath}" ">" "${stage2Path}"
+        echo cat "${stage2Path}" "|" override "${overridesPath}" ">" "${stage6Path}"
         echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f ">" "${overridesPath}"
       fi
     else
@@ -995,3 +1009,4 @@ if [ "${shouldExecute}x" = "1x" ]; then
 fi
 
 finalize
+
