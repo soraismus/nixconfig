@@ -362,10 +362,10 @@ openeb () {
     fi
   done
   if [ "${#spreadsheets[@]}" -gt 0 ]; then
-    soffice "${spreadsheets[@]}"
+    soffice "${spreadsheets[@]}" &
   fi
   if [ "${#pdfs[@]}" -gt 0 ]; then
-    zathura "${pdfs[@]}"
+    zathura "${pdfs[@]}" &
   fi
 }
 
