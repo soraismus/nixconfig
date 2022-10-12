@@ -57,7 +57,7 @@ General Options:
      --senco
 (-6) --stage-6 ./path/to/stage-6-file
 (-s) --stages ./path/to/stages-dir
-(-v) --verbose                                    prints results with preface
+(-v) --verbose (0|1)                              if on, prints results with preface
 
 Initializing Options:
 --------------------
@@ -103,18 +103,20 @@ Direct Dependencies:
 cat
 jq
 tr
+yq
+createOverridesFile.js
+estimate
+filter-camelot-output.js
+normalize-override-format.js
+structure-filtered-camelot-output-into-project.js
+validateProject.js
 
 Indirect Dependencies:
 -------------------
 addDataToSpreadsheet
-cat
 createSpreadsheetData
-validateProject.js
 extract-text.py
-filter-camelot-output.js
 override.js
-structure-filtered-camelot-output-into-project.js
-yq
 
 ...
 
@@ -238,6 +240,14 @@ finalize () {
   unset verboseSetting
 }
 
+fix () {
+  local orders="${1}"
+  validateProject.js --orders "${orders}" \
+    | createOverridesFile.js \
+    | normalize-override-format.js \
+    | yq eval -P
+}
+
 getOrders () {
   cat "${1}" | tr -d "\r\n "
 }
@@ -249,7 +259,9 @@ _initialize () {
   local overridesPath="${4}"
   local stage0Path="${5}"
   local stage1Path="${6}"
-  local stage6Path="${7}"
+  local stage2Path="${7}"
+  local stage6Path="${8}"
+  local verboseErrors="${9}"
   local initFlags="--ignore-pr -o ${orders} ${clientFlag}"
   local _initFlags=( ${initFlags} )
   if [ "${doJq}x" = "1x" ]; then
@@ -272,21 +284,21 @@ _initialize_chain () {
   local overridesPath="${4}"
   local stage0Path="${5}"
   local stage1Path="${6}"
-  local stage6Path="${7}"
+  local stage2Path="${7}"
+  local stage6Path="${8}"
+  local verboseErrors="${9}"
   local initFlags="--ignore-pr -o ${orders} ${clientFlag}"
   local _initFlags=( ${initFlags} )
   if [ "${doJq}x" = "1x" ]; then
     estimate "${_initFlags[@]}" --stage 0 | jq > "${stage0Path}"
     cat "${stage0Path}" | filter-camelot-output.js | jq > "${stage1Path}"
-    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orders}" | jq > "${stage2Path}"
-    cat "${stage2Path}" | override "${overridesPath}" | jq > "${stage6Path}"
-    estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f | jq > "${overridesPath}"
+    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orders}" | jq > "${stage6Path}"
+    cat "${stage6Path}" | fix "${orders}" > "${overridesPath}"
   else
     estimate "${_initFlags[@]}" --stage 0 > "${stage0Path}"
     cat "${stage0Path}" | filter-camelot-output.js > "${stage1Path}"
-    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orders}" > "${stage2Path}"
-    cat "${stage2Path}" | override "${overridesPath}" > "${stage6Path}"
-    estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f > "${overridesPath}"
+    cat "${stage1Path}" | structure-filtered-camelot-output-into-project.js --orders "${orders}" > "${stage6Path}"
+    cat "${stage6Path}" | fix "${orders}" > "${overridesPath}"
   fi
 }
 
@@ -895,7 +907,7 @@ if [ "${_command}x" = "_estimatex" ]; then
 elif [ "${_command}x" = "_initializex" ]; then
   initFlags="--ignore-pr -o ${orders} ${clientFlag}"
   _initFlags=( ${initFlags} )
-  initArgs="${clientFlag} ${doJq} ${orders} ${overridesPath} ${stage0Path} ${stage1Path} ${stage6Path}"
+  initArgs="${clientFlag} ${doJq} ${orders} ${overridesPath} ${stage0Path} ${stage1Path} ${stage2Path} ${stage6Path} ${verboseErrors}"
   initArgs=( ${initArgs} )
 else
   die 68 "${verboseErrors}" "'${_command}' is a recognized valid command."
@@ -956,15 +968,12 @@ if [ "${verboseInfo}x" = "1x" ]; then
       if [ "${doJq}x" = "1x" ]; then
         echo estimate "${_initFlags[@]}" --stage 0 "|" jq ">" "${stage0Path}"
         echo cat "${stage0Path}" "|" filter-camelot-output.js "|" jq ">" "${stage1Path}"
-        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orders}" "|" jq ">" "${stage2Path}"
-        echo cat "${stage2Path}" "|" override "${overridesPath}" "|" jq ">" "${stage6Path}"
-        echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f "|" jq ">" "${overridesPath}"
+        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orders}" "|" jq ">" "${stage6Path}"
+        echo cat "${stage6Path}" "|" fix "${orders}" ">" "${overridesPath}"
       else
         echo estimate "${_initFlags[@]}" --stage 0 ">" "${stage0Path}"
         echo cat "${stage0Path}" "|" filter-camelot-output.js ">" "${stage1Path}"
-        echo cat "${stage1Path}" "|" structure-filtered-camelot-output-into-project.js --orders "${orders}" ">" "${stage2Path}"
-        echo cat "${stage2Path}" "|" override "${overridesPath}" ">" "${stage6Path}"
-        echo estimate "${_initFlags[@]}" --start 6 "${stage6Path}" -f ">" "${overridesPath}"
+        echo cat "${stage6Path}" "|" fix "${orders}" ">" "${overridesPath}"
       fi
     else
       if [ "${doJq}x" = "1x" ]; then
