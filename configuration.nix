@@ -169,6 +169,7 @@
         fonttools
         fossil # version control system
         fzf # command-line fuzzy finder
+        gimp # GNU image-manipulation program
         gitless # version control system built on top of git [Its cli abbrev is 'gl'.]
         gdrive # command-line utility for interacting with google drive
 
