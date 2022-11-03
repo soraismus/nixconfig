@@ -440,6 +440,7 @@
         b3 = "cd ../../..";
         b4 = "cd ../../../..";
         b5 = "cd ../../../../..";
+        dsall2 = "sall2 --dry-run";
         gco = "git co";
         gcob = "git cob";
         gd = "git diff";
