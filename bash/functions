@@ -414,6 +414,10 @@ s8 () {
   fi
 }
 
+summarize () {
+  jq -C | sed 's/\\n/\n/g' | less -r
+}
+
 tag () {
   NAMESPACE=tag execute-namespace "$@"
 }
