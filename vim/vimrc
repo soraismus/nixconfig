@@ -30,6 +30,7 @@ set hlsearch
 set laststatus=2
 set lazyredraw
 set linebreak
+set list
 set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
 set matchpairs=(:),[:],{:},<:>
 set modeline
@@ -190,6 +191,8 @@ function! <SID>StripTrailingWhitespaces()
   let l = line(".")
   let c = col(".")
   %s/\s\+$//e       " [e] flag suppresses error messages.
+
+  %s/ / /ge " %s/non-breaking-space/ordinary-space/ge
   call cursor(l, c) " Restore former cursor position.
 endfunction
 

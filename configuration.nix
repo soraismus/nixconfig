@@ -159,6 +159,7 @@
         expect # tool for automating interactive applications
         fd # alternative to 'find'
         feh # light-weight image viewer
+        # fail2ban # ban IP addresses after repeated failing login attempts
         ffmpeg # manager and converter of audio/video files
         file # program that shows the type of files
 
@@ -177,6 +178,8 @@
 
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
         golly # game of life
+        # hashcat # password cracker
+        # hashcat-utils # utilities for advanced password cracking
         haskellPackages.hakyll # static website compiler library
         helix # post-modern modal text editor
         heroku
@@ -189,11 +192,14 @@
         iotop
         irssi # terminal-based IRC client
         jitsi # open-source video calls and chat
+        # john # 'John the Ripper' password cracker
         jq # command-line json processor
         kakoune # vim-inspired text editor
+        # libapparmor # access control system
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
         librsvg # library to assist pandoc in rendering SVG images to Cairo surfaces
+        # libselinux # SELinux
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         links2 # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
         lsof # utility to list open files
@@ -323,6 +329,7 @@
         # tomb # file encryption
         # tor-browser-bundle-bin # tor browser
         translate-shell # command-line translator
+        # trash-cli # CLI for recoverable deletion # Remember to set an alias: `rm='trash -v'`.
         tree # commandline directory visualizer
         units # unit-conversion tool
         usbutils # tools (e.g., lsusb) for working with USB devices
@@ -368,7 +375,7 @@
   networking = {
     firewall = {
       allowedUDPPorts = [ 631 ];
-      allowedTCPPorts = [ 631 3000 ];
+      allowedTCPPorts = [ 25 80 443 631 3000 8024 ];
       # extraCommands = ''
       #     iptables -A OUTPUT -o wlo1 -p tcp --sport 3000 -m state --state ESTABLISHED -j ACCEPT
       #   '';
@@ -410,13 +417,18 @@
         pkgs.hasklig
         pkgs.inconsolata
         pkgs.ubuntu_font_family
-        pkgs.liberation_ttf
+        pkgs.liberation_ttf # Liberation Fonts, replacements for Times New Roman, Arial, and Courier New
+        # pkgs.liberationsansnarrow # Liberation Sans Narrow Font Family, a replacement for Arial Narrow
         pkgs.unifont
         pkgs.fira-code
         pkgs.iosevka
         pkgs.fira-mono
         pkgs.terminus_font
         pkgs.fira
+        # pkgs.corefonts # Microsoft's TrueType core fonts for the Web
+        # pkgs.vistafonts # Some TrueType fonts from Microsoft Windows Vista
+        # # pkgs.eot-_utilities # Create Embedded Open Type from OpenType or TrueType font
+        # # pkgs.python39Packages.afdko # Adobe Font Development Kit for OpenType
       ];
   };
 
@@ -500,13 +512,49 @@
     };
   };
 
-  # Printing
+  # Printing (0 of 2)
   services.avahi = {
     enable = true;
     publish.enable = true;
     publish.userServices = true;
     nssmdns = true;
   };
+
+  services.exim = {
+    enable = true;
+    config = "";
+    group = "exim";
+    user = "exim";
+    package = pkgs.exim;
+    queueRunnerInterval = "5m";
+    spoolDir = "/var/spool/exim";
+    # networking.wireless.fallbackToWPA2 = true;
+    # networking.wireguard.interfaces.<name>.peers.*.presharedKeyFile = null;
+    # networking.wg-quick.interfaces.<name>.peers.*.presharedKeyFile = null;
+    # networking.wireguard.interfaces.<name>.peers.*.presharedKey = null;
+    # networking.wg-quick.interfaces.<name>.peers.*.presharedKey = null;
+    # services.diod.exports = [];
+  };
+  # services.mailman = {
+  #   enable = true;
+  #   siteOwner = "mailman@example.org";
+  #   enablePostfix = false;
+  #   settings.mta = {
+  #     incoming = "mailman.mta.exim4.LMTP";
+  #     outgoing = "mailman.mta.deliver.deliver";
+  #     lmtp_host = "localhost";
+  #     lmtp_port = "8024";
+  #     smtp_host = "localhost";
+  #     smtp_port = "25";
+  #     configuration = "python:mailman.config.exim4";
+  #   };
+  # };
+  # services.exim = {
+  #   enable = true;
+  #   config = builtins.readFile ./exim/exim.conf;
+  # };
+
+  # Printing (1 of 2)
   services.printing = {
     enable = true;
     browsing = true;
