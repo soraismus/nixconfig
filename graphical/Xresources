@@ -1,6 +1,5 @@
-XTerm*faceName: fira:size=9:antialias=true
-URxvt.font:xft:Ubuntu Mono:size=10:antialias=true
 !XTERM
+XTerm*faceName: fira:size=9:antialias=true
 XTerm*metaSendsEscape: true
 XTerm*saveLines: 512
 XTerm*loginShell: true
@@ -8,25 +7,24 @@ XTerm*Background: black
 XTerm*Foreground: white
 
 !URXVT
-!URxvt.loginShell: true
+URxvt.font:xft:TsundokuMono:size=10
 URxvt.loginShell: false
-!URxvt.background: black
-!URxvt.foreground: white
 URxvt.scrollBar: false
 URxvt.underlineURLs: true
 URxvt*transparent: false
 URxvt.keysym.Control-Tab: \033[27;5;9~
 
-URxvt.keysym.M-C-1: command:\033]710;xft:Ubuntu Mono:size=3:antialias=true\007\033]711;xft:Ubuntu Mono:size=3:antialias=true\007
-URxvt.keysym.M-C-2: command:\033]710;xft:Ubuntu Mono:size=7:antialias=true\007\033]711;xft:Ubuntu Mono:size=7:antialias=true\007
-URxvt.keysym.M-C-3: command:\033]710;xft:Ubuntu Mono:size=8:antialias=true\007\033]711;xft:Ubuntu Mono:size=8:antialias=true\007
-URxvt.keysym.M-C-4: command:\033]710;xft:Ubuntu Mono:size=8:antialias=true\007\033]711;xft:Ubuntu Mono:size=8:antialias=true\007
-URxvt.keysym.M-C-5: command:\033]710;xft:Ubuntu Mono:size=10:antialias=true\007\033]711;xft:Ubuntu Mono:size=10:antialias=true\007
-URxvt.keysym.M-C-6: command:\033]710;xft:Ubuntu Mono:size=10:antialias=true\007\033]711;xft:Ubuntu Mono:size=10:antialias=true\007
-URxvt.keysym.M-C-7: command:\033]710;xft:Ubuntu Mono:size=10:antialias=true\007\033]711;xft:Ubuntu Mono:size=10:antialias=true\007
-URxvt.keysym.M-C-8: command:\033]710;xft:Ubuntu Mono:size=30:antialias=true\007\033]711;xft:Ubuntu Mono:size=30:antialias=true\007
-!urxvt*foreground: white
-!urxvt*background: black
+URxvt.keysym.M-C-1: command:\033]710;xft:TsundokuMono:size=3:antialias=true\007\033]711;xft:Ubuntu Mono:size=3:antialias=true\007
+URxvt.keysym.M-C-2: command:\033]710;xft:TsundokuMono:size=8:antialias=true\007\033]711;xft:Ubuntu Mono:size=7:antialias=true\007
+URxvt.keysym.M-C-3: command:\033]710;xft:TsundokuMono:size=10:antialias=true\007\033]711;xft:Ubuntu Mono:size=8:antialias=true\007
+URxvt.keysym.M-C-5: command:\033]710;xft:TsundokuMono:size=14:antialias=true\007\033]711;xft:Ubuntu Mono:size=12:antialias=true\007
+URxvt.keysym.M-C-8: command:\033]710;xft:TsundokuMono:size=18:antialias=true\007\033]711;xft:Ubuntu Mono:size=20:antialias=true\007
+URxvt.keysym.M-C-9: command:\033]710;xft:TsundokuMono:size=25:antialias=true\007\033]711;xft:Ubuntu Mono:size=30:antialias=true\007
+
+! For some unknown reason, the following don't work:
+!URxvt.keysym.M-C-4: command:\033]710;xft:TsundokuMono:size=14:antialias=true\007\033]711;xft:Ubuntu Mono:size=10:antialias=true\007
+!URxvt.keysym.M-C-6: command:\033]710;xft:TsundokuMono:size=16:antialias=true\007\033]711;xft:Ubuntu Mono:size=15:antialias=true\007
+!URxvt.keysym.M-C-7: command:\033]710;xft:TsundokuMono:size=19:antialias=true\007\033]711;xft:Ubuntu Mono:size=18:antialias=true\007
 
 !!BLUE
 !! URxvt - Colors

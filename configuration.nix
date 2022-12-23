@@ -301,6 +301,7 @@
         rstudio
         # rtv # reddit terminal client # Consider using 'tuir'.
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
+        # rxvt-unicode-plugins.font-size # New name for 'urxvt_font_size'
         sc-im # ncurses spreadsheet for terminal
         scrot # command-line screen-capture utility [cf. maim]
 
@@ -405,19 +406,23 @@
     fontDir.enable = true;
     enableGhostscriptFonts = true;
     fonts =
-      [ pkgs.powerline-fonts
-        pkgs.font-awesome-ttf
-        pkgs.hasklig
-        pkgs.inconsolata
-        pkgs.ubuntu_font_family
-        pkgs.liberation_ttf
-        pkgs.unifont
-        pkgs.fira-code
-        pkgs.iosevka
-        pkgs.fira-mono
-        pkgs.terminus_font
-        pkgs.fira
-      ];
+      let
+        callPackage = pkgs.lib.callPackageWith pkgs;
+      in
+        [ pkgs.powerline-fonts
+          pkgs.font-awesome-ttf
+          pkgs.hasklig
+          pkgs.inconsolata
+          pkgs.ubuntu_font_family
+          pkgs.liberation_ttf
+          pkgs.unifont
+          pkgs.fira-code
+          pkgs.iosevka
+          pkgs.fira-mono
+          pkgs.terminus_font
+          pkgs.fira
+          (callPackage ./tsundoku-font {})
+        ];
   };
 
   programs = {

@@ -33,6 +33,7 @@ in
               "tabular"
               "tagbar"
               "ultisnips"
+              "unicode-vim"
               "vim-capslock"
               "vim-commentary"
               "vim-crunch"
@@ -46,6 +47,7 @@ in
               "vim-surround"
               # !gh machakan/vim-swap
               "vim-tbone"
+              "vim-unicoder"
               "vim-vinegar"
               "vimtex"
             ];
