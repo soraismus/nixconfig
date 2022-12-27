@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "soraismus";
     repo = "tsundoku-font";
-    rev = "8a8c5d241faa406535a2f6fcfb708695ae636e70";
-    sha256 = "18azrzbicxjhd8445h32diwrsg859kmm5hjwmi242g10d1r50wrp";
+    rev = "551f7bba5b758ef77495298990accee9c5dae4c4";
+    sha256 = "1zkqv9z30f4b4533wqds4hyqa0byiy8ph7cz4ilmv5qd0k88irnx";
   };
 
   installPhase = ''
