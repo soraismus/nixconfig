@@ -5,6 +5,7 @@
 , isPy3k
 , cv2
 , numpy
+, openpyxl
 , pandas
 , pdfminer_six
 , pypdf2
@@ -32,6 +33,7 @@ buildPythonPackage rec {
       click
       cv2
       numpy
+      openpyxl
       pandas
       pdfminer_six
       pypdf2

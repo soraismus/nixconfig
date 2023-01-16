@@ -111,6 +111,7 @@
             isPy3k = python39.passthru.isPy3k;
             numpy = python39Pkgs.numpy;
             cv2 = python39Pkgs.opencv4;
+            openpyxl = python39Pkgs.openpyxl;
             pandas = python39Pkgs.pandas;
             pdfminer_six = python39Pkgs.pdfminer;
             pypdf2 = python39Pkgs.pypdf2;
@@ -390,6 +391,11 @@
       packageOverrides = pkgs: {
         myVim = import ./vim { pkgs = pkgs; };
       };
+      permittedInsecurePackages =
+        [
+          "python2.7-PyJWT-1.7.1"
+          "python2.7-urllib3-1.26.2"
+        ];
     };
     overlays =
       let
