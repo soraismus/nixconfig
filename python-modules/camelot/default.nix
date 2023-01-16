@@ -11,6 +11,8 @@
 , python-ghostscript
 , tabulate
 , tkinter
+
+, openpyxl
 }:
 
 buildPythonPackage rec {
@@ -38,6 +40,8 @@ buildPythonPackage rec {
       python-ghostscript
       tabulate
       tkinter
+
+      openpyxl
     ];
 
   doCheck = false;

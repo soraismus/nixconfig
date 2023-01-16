@@ -17,40 +17,39 @@ in
   pkgs.vim_configurable.customize {
     name = "vim";
     vimrcConfig.customRC = builtins.readFile ./vimrc;
-    vimrcConfig.vam.knownPlugins = pkgs.vimPlugins // mhVimPlugins;
-    vimrcConfig.vam.pluginDictionaries =
-      [ {
-          names =
-            [ "agda-vim"
-              # "ale"
-              "awesome-vim-colorschemes"
-              "fzf-vim"
-              "fzfWrapper"
-              "fugitive"
-              "gundo"
-              # "neoterm" # temporarily comment b/c of build issue
-              "syntastic"
-              "tabular"
-              "tagbar"
-              "ultisnips"
-              "unicode-vim"
-              "vim-capslock"
-              "vim-commentary"
-              "vim-crunch"
-              "vim-dadbod"
-              "vim-easymotion"
-              "vim-eunuch"
-              "vim-gitgutter"
-              "vim-unimpaired"
-              "vim-signature"
-              "vim-subversive"
-              "vim-surround"
-              # !gh machakan/vim-swap
-              "vim-tbone"
-              "vim-unicoder"
-              "vim-vinegar"
-              "vimtex"
-            ];
-        }
-      ];
+    # vimrcConfig.vam.knownPlugins = pkgs.vimPlugins // mhVimPlugins;
+    # vimrcConfig.vam.pluginDictionaries =
+    vimrcConfig.packages.mhVimPackage = with pkgs.vimPlugins; {
+      start =
+        # [ "agda-vim"
+        #   # "ale"
+        [ awesome-vim-colorschemes
+          fzf-vim
+          fzfWrapper
+          fugitive
+          gundo
+          # "neoterm" # temporarily comment b/c of build issue
+          syntastic
+          tabular
+          tagbar
+          ultisnips
+          unicode-vim
+          vim-capslock
+          vim-commentary
+          mhVimPlugins.vim-crunch
+          vim-dadbod
+          vim-easymotion
+          vim-eunuch
+          vim-gitgutter
+          vim-unimpaired
+          vim-signature
+          vim-subversive
+          vim-surround
+          # !gh machakan/vim-swap
+          vim-tbone
+          vim-unicoder
+          vim-vinegar
+          vimtex
+        ];
+      };
   }
