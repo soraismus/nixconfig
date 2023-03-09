@@ -212,6 +212,7 @@
         myVim # text editor
         neovim # text editor
         newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
+        niv # dependency manager for nix projects
         nix-bash-completions
         nix-diff # utility that compares nix derivations
         nixops # utility for provisioning NixOS machines
@@ -317,7 +318,7 @@
         termite # keyboard-centric VTE-based terminal
         termonad-with-packages # terminal emulator configurable in haskell
         texlive.combined.scheme-full # pdflatex, xcolor.sty for PDF conversion
-        # tig # text-mode interface for git
+        tig # text-mode interface for git
         # tinc # VPN daemon with full mesh routing
         tldr # community-managed man pages
         tmux # terminal multiplexer
