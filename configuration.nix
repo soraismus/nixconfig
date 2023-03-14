@@ -13,7 +13,6 @@
       ./git
       ./i3
       ./rofi
-      ./sall
     ];
 
   boot.loader.systemd-boot.enable = true;
@@ -356,7 +355,6 @@
       execute-namespace.enable = true;
       git.enable = true;
       rofi.enable = true;
-      sall.enable = true;
     };
     services = {
       automatic-mac-spoofing.enable = false;
@@ -452,6 +450,7 @@
         b3 = "cd ../../..";
         b4 = "cd ../../../..";
         b5 = "cd ../../../../..";
+        dsall = "sall2 --dry-run";
         dsall2 = "sall2 --dry-run";
         gco = "git co";
         gcob = "git cob";
@@ -483,6 +482,7 @@
         s13 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --summary";
         s14 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote-spec ../quote-notes/0.json";
         s15 = "estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --quote ../quote-notes/0.json";
+        sall = "sall2";
         stackBuild = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH stack build --nix --fast";
         startStackShell = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH nix-shell -p stack";
         touchpadToggle = "toggleTouchpad";
