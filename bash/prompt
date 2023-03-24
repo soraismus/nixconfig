@@ -206,6 +206,7 @@ _elevated_prompt && _titlebar_elevated_prompt
 # The variable 'PROMPT_COMMAND' is set to
 # the following function in 'configuration.nix'.
 _promptCommand () {
+  history -a # Append history lines from this session to the history file.
   _eb_prompt && _titlebar_prompt
   _elevated_prompt && _titlebar_elevated_prompt
 }
