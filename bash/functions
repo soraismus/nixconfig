@@ -399,21 +399,6 @@ print-eb () {
   done
 }
 
-s8 () {
-  if [ "${#}" -lt 1 ] || [ "${#}" -gt 2 ]; then
-    1>&2 echo "'s8' requires a local filepath."
-    return 1
-  elif [ "${1}" != "-o" ]; then
-    1>&2 echo "The -o option must be set."
-    return 2
-  else
-    local output="${2}"
-    local temporaryOutput="__temp.$(timestamp)"
-    estimate --ignore-pr -o ../orders/0 --start 6 ../stages/6.json -w ../overrides/0.yaml --override > "${temporaryOutput}"
-    mv "${temporaryOutput}" "${output}"
-  fi
-}
-
 summarize () {
   jq -C | sed 's/\\n/\n/g' | less -r
 }
