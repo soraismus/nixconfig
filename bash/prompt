@@ -11,7 +11,7 @@
 #   `set -x`
 
 _get_client () {
-  grep 'ebdisplay/assignments' | sed 's;.*assignments/\([-a-z0-9&]*\)/.*;\1;'
+  grep 'ebdisplay/assignments/clients' | sed 's;.*assignments/clients/\([-a-z0-9&]*\)/.*;\1;'
 }
 
 _get_job_prefix () {
