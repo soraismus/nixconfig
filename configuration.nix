@@ -122,116 +122,142 @@
     in
       with pkgs; [
         exim getmail mutt notmuch-mutt procmail spamassassin # email services
+        mailsend # CLI email-sending tool
+        mailutils # protocol-independent mail framework (includes mailx)
+
+        # cudatoolkit_11_4
+        # cudnn_cudatoolkit_11_4
+
+        # Reconsider:
+        # autossh # automatically restart SSH sessions and tunnels
+        # binutils # tools for manipulating binaries (linker, assembler)
+        # btrfs-progs # utilities for the btrfs filesystem
+        # conky # configurable X system monitor
+        # coq # interactive theorem prover
+        # darcs # version control system
+        # direnv # environment switcher for the shell
+        # docker # containerizer; OS-level virtualization: application container
+        # dotnet-sdk # .NET Core SDK 2.0.2 with .NET Core 2.0.0
+        # dotnetPackages.Nuget # .NET nuget
+        dragon-drop # Simple drag-and-drop source/sink for X
+        # ekiga # VOIP/video-conferencing app with full SIP and H.323 support
+        # elmPackages.elm # haskell-like frontend development platform
+        expect # tool for automating interactive applications
+        file # program that shows the type of files
+        # fossil # version control system
+        # gitless # version control system built on top of git [Its cli abbrev is 'gl'.]
+        # golly # game of life
+        # haskellPackages.hakyll # static website compiler library
+        # helix # post-modern modal text editor
+        # heroku
+        # hieroglyph # presentation editor
+        # hlint
+        # idris # haskell-like compiler with dependent types
+        # inkscape # vector-graphics editor # See https://castel.dev/post/lecture-notes-2/
+        # irssi # terminal-based IRC client
+        # jitsi # open-source video calls and chat
+        # kakoune # vim-inspired text editor
+        # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
+        # magma_cudatoolkit_11_4 # matrix algebra on GPU and multicore architecture
+        # mcfly # bash-history-management tool
+        # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
+        # mopidy # extensible music server that plays music from local, Spotify, etc.
+        # mongodb # nosql database
+        # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
+        niv # dependency manager for nix projects
+        # nnn # ncurses-based file manager/browser
+        # opencv2 # Open Computer Vision library
+        parallel # shell tool fro executing jobs in parallel [cf. xargs ?]
+        pass # password-store manages passwords securely
+        # pijul # distributed version control system inspired by categorical patches
+        # privoxy # non-caching web proxy with advanced filtering capabilities
+        # prover9 # automated theorem prover for first-order and eq logic
+        # qpdfview # tabbed (PDF) document viewer
+        # qtox # Qt tox client
+        # ranger # file manager
+        renameutils # a set of programs to make renaming of files faster
+        # rstudio
+        # rtv # reddit terminal client # Consider using 'tuir'.
+        # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
+        # rxvt-unicode-plugins.font-size # New name for 'urxvt_font_size'
+        # sc-im # ncurses spreadsheet for terminal
+        # sqldiff # SQLite-db differ
+        # sqlite # self-contained ZQL database engine
+        # sqlite-analyzer # stats tool for SQLite databases
+        # stack2nix # nix utility that transforms stack specs into nix specs
+        # tinc # VPN daemon with full mesh routing
+        # tomb # file encryption
+        # tor-browser-bundle-bin # tor browser
+        utox # (mu-tox) lightweight tox client
+        virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
+        # wordgrinder # terminal-based word processor
+        # yi # yi text editor (written in haskell)
+        # zeal # offline API documentation browser
+        # zim # desktop wiki
 
         # xorg.xmodmap # https://wiki.xfce.org/faq
         # xorg.xev     # https://wiki.xfce.org/faq
 
         ag # silver-searcher
         atop # console system performance monitor
-        # autossh # automatically restart SSH sessions and tunnels
         bat # a 'cat' clone with syntax highlighting and git integration
+        bat-extras.batdiff # integration of bat and diff
+        bat-extras.batgrep # integration of bat and ripgrep
+        bat-extras.batman # integration of bat and man
+        bat-extras.prettybat
         bc # calculator
-        # binutils # tools for manipulating binaries (linker, assembler
         broot # interactive tree view, fuzzy search, balanced BFS descent
         browsh # text-based browser that can render css and js (cf. links2, lynx, w3m)
-        # btrfs-progs # utilities for the btrfs filesystem
         cabal-install # haskell packaging and build system
         cabal2nix # nix utility that transforms cabal specs into nix specs
         chromium # browser
         cifs-utils # tools for managing CIFS client filesystems (CIFS is Microsoft's version of SMB)
-        # conky # configurable X system monitor
-        coq # interactive theorem prover
         ctags # utility for fast source-code browsing (exuberant ctags)
-
-        # cudatoolkit_11_4
-        # cudnn_cudatoolkit_11_4
-
-        darcs # version control system
-        dragon-drop # Simple drag-and-drop source/sink for X
-        # direnv # environment switcher for the shell
-        docker # containerizer; OS-level virtualization: application container
-        dotnet-sdk # .NET Core SDK 2.0.2 with .NET Core 2.0.0
-        dotnetPackages.Nuget # .NET nuget
         dstat # monitor to replace vmstat, iostat, ifstat, netstat
-        # ekiga # VOIP/video-conferencing app with full SIP and H.323 support
-        elmPackages.elm # haskell-like frontend development platform
         exa # replacement for 'ls'
-        expect # tool for automating interactive applications
         fd # alternative to 'find'
         feh # light-weight image viewer
         ffmpeg # manager and converter of audio/video files
-        file # program that shows the type of files
-
         # firefox-wrapper # browser
         latest.firefox-nightly-bin
-
         fontforge-gtk # font editor with GTK UI
         fonttools
-        fossil # version control system
         fzf # command-line fuzzy finder
         gimp # GNU image-manipulation program
-        gitless # version control system built on top of git [Its cli abbrev is 'gl'.]
         gdrive # command-line utility for interacting with google drive
-
         ghostscript # PostScript interpreter
-
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
-        golly # game of life
-        haskellPackages.hakyll # static website compiler library
-        helix # post-modern modal text editor
-        heroku
-        # hieroglyph # presentation editor
-        # hlint
         htop # interactive process viewer
         hound # fast code searching (react frontend; go backend; regex w/ trigram index)
-        idris # haskell-like compiler with dependent types
-        # inkscape # vector-graphics editor # See https://castel.dev/post/lecture-notes-2/
         iotop
-        irssi # terminal-based IRC client
-        jitsi # open-source video calls and chat
         jq # command-line json processor
-        kakoune # vim-inspired text editor
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
         librsvg # library to assist pandoc in rendering SVG images to Cairo surfaces
-        # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         links2 # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
         lsof # utility to list open files
         lynx # terminal web-browser (cf. browsh, links2, w3m)
         macchanger # utility for manipulating MAC addresses
-        # magma_cudatoolkit_11_4 # matrix algebra on GPU and multicore architecture
         maim # cli screenshot utility [cf. scrot]
-        mcfly # bash-history-management tool
-        # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
-        # mopidy # extensible music server that plays music from local, Spotify, etc.
-        mongodb # nosql database
         mtr # network-diagnostics tool
         mupdf # parsing engine for PDF, XPS, and EPUB
         myVim # text editor
         neovim # text editor
-        newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
-        niv # dependency manager for nix projects
         nix-bash-completions
         nix-diff # utility that compares nix derivations
         nixops # utility for provisioning NixOS machines
         nix-prefetch-git # nix utility that aids in pinning github revisions
-        nnn # ncurses-based file manager/browser
         nodejs-17_x # javascript engine
         okular # unlike zathura, it has pdf-annotating and -highlighting features
-        # opencv2 # Open Computer Vision library
         openssl # cryptographic library that implements TSL protocol
         openvpn # tunneling application
         pandoc # utility that translates between markup formats
-        pass # password-store manages passwords securely
         patchelf
         pavucontrol # PulseAudio volume control
         pciutils # programs (like 'lspci') for managing PCI devices
-        pijul # distributed version control system inspired by categorical patches
         poppler_utils # PDF tools like pdfunite and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
-        # privoxy # non-caching web proxy with advanced filtering capabilities
-        # prover9 # automated theorem prover for first-order and eq logic
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
         purs-utils.dhall-simple
         purs-utils.dhall-json-simple
@@ -262,6 +288,8 @@
             # pkgs.gensim # topic-modelling library
             # pkgs.huggingface-hub # interface with huggingface.co hub
             # pkgs.imbalanced-learn # manage imbalanced data
+            pkgs.ipdb # web-based notebook environment for interactive computing
+            pkgs.ipython # web-based notebook environment for interactive computing
             pkgs.jupyter # web-based notebook environment for interactive computing
             # pkgs.jupyter_core # web-based notebook environment for interactive computing
             # pkgs.Keras # deep-learning library for Theano and TensorFlow
@@ -273,11 +301,13 @@
             pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
             pkgs.pandas # python data-analysis library
             pkgs.pdfminer # PDF parser and analyzer
+            pkgs.pikepdf # qpdf-utility to create/manipulate/repair PDFs
             pkgs.pilkit # utilities for python imaging library
             pkgs.pillow # fork of PIL (python imaging library)
             #pkgs.pytorchWithCuda # deep-learning platform
             python-ghostscript
             pytorch # deep-learning platform
+            pkgs.requests_toolbelt
             # pkgs.spacy # natural-language processing
             pkgs.scikit-learn # machine learning & data mining
             pkgs.scipy # science/engineering library
@@ -292,61 +322,37 @@
             # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
           ]
         )) # Cf nixos.wiki/wiki/Python
-        qtox # Qt tox client
+        qpdf # C++ programs that inspect/manipulate PDF files
         qutebrowser # keyboard-focused browser with minimal GUI
-        ranger # file manager
-        renameutils # a set of programs to make renaming of files faster
         ripgrep # regex utility that's faster than the silver searcher ['rg']
         rofi # window switcher, run dialog and dmenu replacement
         rofi-pass # script to make rofi work with password-store
-        rstudio
-        # rtv # reddit terminal client # Consider using 'tuir'.
-        # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
-        # rxvt-unicode-plugins.font-size # New name for 'urxvt_font_size'
-        sc-im # ncurses spreadsheet for terminal
         scrot # command-line screen-capture utility [cf. maim]
-
-        sqldiff # SQLite-db differ
-        sqlite # self-contained ZQL database engine
-        sqlite-analyzer # stats tool for SQLite databases
-
         stack # haskell tool stack
-        # stack2nix # nix utility that transforms stack specs into nix specs
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
         tcpdump # network sniffer
         termite # keyboard-centric VTE-based terminal
         termonad-with-packages # terminal emulator configurable in haskell
         texlive.combined.scheme-full # pdflatex, xcolor.sty for PDF conversion
         tig # text-mode interface for git
-        # tinc # VPN daemon with full mesh routing
         tldr # community-managed man pages
         tmux # terminal multiplexer
         tmuxp # manage tmux workspaces from JSON and YAML
-        # tomb # file encryption
-        # tor-browser-bundle-bin # tor browser
         translate-shell # command-line translator
         tree # commandline directory visualizer
         units # unit-conversion tool
         usbutils # tools (e.g., lsusb) for working with USB devices
-        utox # (mu-tox) lightweight tox client
-
         # Currently, see ~/.vintrc.yaml for theo-wide vint configuration.
         vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
-
-        virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
         vlc # cross-platform media player and streaming server
         w3m # text-based web browser (cf. browsh, links2, lynx)
-        # wordgrinder # terminal-based word processor
         xclip # clipboard utility
         xdotool # fake keyboard/mouse input, window management
         yarn # variant to npm
-        # yi # yi text editor (written in haskell)
         youtube-dl # command-line tool to download videos from video platforms
         yq-go # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
-        zeal # offline API documentation browser
-        zim # desktop wiki
       ];
 
   environment.theo = {
@@ -537,7 +543,22 @@
       '';
     };
     layout = "us";
+
+    # # https://old.reddit.com/r/NixOS/comments/5pz17o/getting_a_touchpad_working_on_a_laptop/
+    # libinput = {
+    #   enable = true;
+    #   touchpad = {
+    #     middleEmulation = true;
+    #     naturalScrolling = false;
+    #     tapping = true;
+    #   };
+    # };
+    # # libinput.enable = true; # !gh NixOS nixpkgs issue 170489
+    # # NOTE: `libinput` and `synaptics` are incompatible.
+    # # synaptics.enable = true; # touchpad
+    # ----
     synaptics.enable = true; # touchpad
+
     # videoDrivers = [ "nvidia" ];
     xkbModel = "pc104";
     xkbOptions = "ctrl:nocaps";
