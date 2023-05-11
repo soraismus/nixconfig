@@ -43,33 +43,40 @@
         (builtins.readFile ./bash/tmux-completion)
       ];
 
-    variables = rec {
-      BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
-      CONFIG_ROOT = "${VOLATILE_CONFIG}/$USER";
-      EDITOR = "vim";
-      FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
-      HISTCONTROL = "ignoredups:erasedups";
-      HISTFILE = "${CONFIG_ROOT}/bash/history/.history";
-      HISTFILESIZE = "10000000";
-      HISTIGNORE =
-        "b:b1:b2:b3:b4:b5:bg:exit:fg:hist:history:ixclip:l:l1:ls:lsm"
-          + ":oxclip:promptToggle:pwd:quit"
-          + ":startStackShell:togglePrompt:toggleTouchpad"
-          + ":touchpadToggle:worto";
-      HISTSIZE = "100000";
-      MARKPATH = "${CONFIG_ROOT}/.marks";
-      NAMESPACES = "/etc/nixos/namespaces";
-      NIXOS_UNSTABLE_NIX_PATH =
-        "nixpkgs="
-          + "https://github.com/NixOS/nixpkgs-channels/archive/"
-          + "nixos-unstable.tar.gz";
-      PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
-      PROMPT_COMMAND = "_promptCommand";
-      TAGPATH = "${CONFIG_ROOT}/.tags";
-      TAGSOURCES = "${CONFIG_ROOT}/.tag_sources";
-      VOLATILE_CONFIG = "/etc/nixos/volatile_config";
-      VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";
-    };
+    variables =
+      let
+        eb-smtp-config = (import /etc/nixos/volatile_config/eb_display {}).smtp;
+      in rec {
+        BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
+        CONFIG_ROOT = "${VOLATILE_CONFIG}/$USER";
+        EB_SMTP_PASSWORD = eb-smtp-config.password;
+        EB_SMTP_PORT = eb-smtp-config.port;
+        EB_SMTP_URL = eb-smtp-config.url;
+        EB_SMTP_USER = eb-smtp-config.user;
+        EDITOR = "vim";
+        FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
+        HISTCONTROL = "ignoredups:erasedups";
+        HISTFILE = "${CONFIG_ROOT}/bash/history/.history";
+        HISTFILESIZE = "10000000";
+        HISTIGNORE =
+          "b:b1:b2:b3:b4:b5:bg:exit:fg:hist:history:ixclip:l:l1:ls:lsm"
+            + ":oxclip:promptToggle:pwd:quit"
+            + ":startStackShell:togglePrompt:toggleTouchpad"
+            + ":touchpadToggle:worto";
+        HISTSIZE = "100000";
+        MARKPATH = "${CONFIG_ROOT}/.marks";
+        NAMESPACES = "/etc/nixos/namespaces";
+        NIXOS_UNSTABLE_NIX_PATH =
+          "nixpkgs="
+            + "https://github.com/NixOS/nixpkgs-channels/archive/"
+            + "nixos-unstable.tar.gz";
+        PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
+        PROMPT_COMMAND = "_promptCommand";
+        TAGPATH = "${CONFIG_ROOT}/.tags";
+        TAGSOURCES = "${CONFIG_ROOT}/.tag_sources";
+        VOLATILE_CONFIG = "/etc/nixos/volatile_config";
+        VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";
+      };
   };
 
   environment.systemPackages =
