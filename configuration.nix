@@ -240,6 +240,7 @@
         jq # command-line json processor
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
+        # libreswan # open-source IPSec-based VPN implementation
         librsvg # library to assist pandoc in rendering SVG images to Cairo surfaces
         links2 # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
         lsof # utility to list open files
@@ -251,6 +252,7 @@
         mupdf # parsing engine for PDF, XPS, and EPUB
         myVim # text editor
         neovim # text editor
+        # networkmanager_strongswan # Network Manager's strongswan plugin
         nix-bash-completions
         nix-diff # utility that compares nix derivations
         nixops # utility for provisioning NixOS machines
@@ -336,6 +338,7 @@
         rofi-pass # script to make rofi work with password-store
         scrot # command-line screen-capture utility [cf. maim]
         stack # haskell tool stack
+        # strongswan # open-source IPsec-based VPN solution
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
         tcpdump # network sniffer
         termite # keyboard-centric VTE-based terminal
@@ -360,6 +363,7 @@
         yq-go # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
+        zip # compressor/achiver for creating and modifyig zipfiles
       ];
 
   environment.theo = {
@@ -514,62 +518,99 @@
     };
   };
 
-  # Printing
-  services.avahi = {
-    enable = true;
-    publish.enable = true;
-    publish.userServices = true;
-    nssmdns = true;
-  };
-  services.printing = {
-    enable = true;
-    browsing = true;
-    drivers =
-      with pkgs; [
-        gutenprint
-        hplip
-        postscript-lexmark
-        brlaser
-      ];
-    # Note: With this present configuration, CUPS doesn't recognized IPv4,
-    # so a 'Bad Request' response is given to any request to http://localhost:631/.
-    # IPv6, however, is acceptable, so Navigate to http://[::1]:631/.
-    listenAddresses = [ "*:631" ];
-    defaultShared = true;
-  };
+  services = {
 
-  services.mongodb.enable = true;
-  services.openssh.enable = true;
-
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      defaultSession = "none+i3";
-      sessionCommands = ''
-        ${pkgs.xlibs.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
-      '';
+    # Printing
+    avahi = {
+      enable = true;
+      publish.enable = true;
+      publish.userServices = true;
+      nssmdns = true;
     };
-    layout = "us";
+    printing = {
+      enable = true;
+      browsing = true;
+      drivers =
+        with pkgs; [
+          gutenprint
+          hplip
+          postscript-lexmark
+          brlaser
+        ];
+      # Note: With this present configuration, CUPS doesn't recognized IPv4,
+      # so a 'Bad Request' response is given to any request to http://localhost:631/.
+      # IPv6, however, is acceptable, so Navigate to http://[::1]:631/.
+      listenAddresses = [ "*:631" ];
+      defaultShared = true;
+    };
 
-    # # https://old.reddit.com/r/NixOS/comments/5pz17o/getting_a_touchpad_working_on_a_laptop/
-    # libinput = {
+    mongodb.enable = true;
+    openssh.enable = true;
+
+    # strongswan = {
     #   enable = true;
-    #   touchpad = {
-    #     middleEmulation = true;
-    #     naturalScrolling = false;
-    #     tapping = true;
+    #   secrets = {
+    #     "user" = {
+    #       secret = "/run/keys/vpn-password";
+    #       id = "%any";
+    #       ip = "%any";
+    #     };
+    #   };
+    #   connections = {
+    #     myvpn = {
+    #       keyExchange = "ikev2";
+    #       localAddress = "192.0.2.100";
+    #       remoteAddress = "203.0.113.0";
+    #       localId = "alice@strongswan.org";
+    #       remoteId = "bob@strongswan.org";
+    #       autoStart = "start";
+    #       ipsec = {
+    #         esp = "aes128gcm16-modp2048";
+    #         ike = "aes128gcm16-modp2048";
+    #         rekey = "no";
+    #         reqid = "1";
+    #         keyingtries = "3";
+    #       };
+    #       ikev2 = {
+    #         dpdaction = "clear";
+    #         proposals = "aes128-sha256-ecp256,aes256-sha384-ecp384,aes128-sha256-modp2048,aes128-sha1-modp2048,aes256-sha384-modp4096,aes256-sha256-modp4096,aes256-sha1-modp4096,aes128-sha256-modp1536,aes128-sha1-modp1536,aes256-sha384-modp2048,aes256-sha256-modp2048,aes256-sha1-modp2048,3des-sha1-modp1024";
+    #         reauth = "no";
+    #       };
+    #     };
     #   };
     # };
-    # # libinput.enable = true; # !gh NixOS nixpkgs issue 170489
-    # # NOTE: `libinput` and `synaptics` are incompatible.
-    # # synaptics.enable = true; # touchpad
-    # ----
-    synaptics.enable = true; # touchpad
 
-    # videoDrivers = [ "nvidia" ];
-    xkbModel = "pc104";
-    xkbOptions = "ctrl:nocaps";
-    xkbVariant = "";
+    xserver = {
+      enable = true;
+      displayManager = {
+        defaultSession = "none+i3";
+        sessionCommands = ''
+          ${pkgs.xlibs.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
+        '';
+      };
+      layout = "us";
+
+      # # https://old.reddit.com/r/NixOS/comments/5pz17o/getting_a_touchpad_working_on_a_laptop/
+      # libinput = {
+      #   enable = true;
+      #   touchpad = {
+      #     middleEmulation = true;
+      #     naturalScrolling = false;
+      #     tapping = true;
+      #   };
+      # };
+      # # libinput.enable = true; # !gh NixOS nixpkgs issue 170489
+      # # NOTE: `libinput` and `synaptics` are incompatible.
+      # # synaptics.enable = true; # touchpad
+      # ----
+      synaptics.enable = true; # touchpad
+
+      # videoDrivers = [ "nvidia" ];
+      xkbModel = "pc104";
+      xkbOptions = "ctrl:nocaps";
+      xkbVariant = "";
+    };
+
   };
 
   # Enable sound.
