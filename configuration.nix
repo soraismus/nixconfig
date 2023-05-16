@@ -351,6 +351,7 @@
         translate-shell # command-line translator
         tree # commandline directory visualizer
         units # unit-conversion tool
+        unzip # extraction utility for archives cmopressed in .zip format
         usbutils # tools (e.g., lsusb) for working with USB devices
         # Currently, see ~/.vintrc.yaml for theo-wide vint configuration.
         vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
