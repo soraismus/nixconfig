@@ -269,13 +269,19 @@
         poppler_utils # PDF tools like pdfunite and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-        purs-utils.dhall-simple
         purs-utils.dhall-json-simple
+        purs-utils.dhall-simple
+        purs-utils.psa
         purs-utils.psc-package
         purs-utils.psc-package2nix
+        purs-utils.psid
+        purs-utils.pulp-16_0_2
+        purs-utils.purescript-language-server
         purs-utils.purp
-        purs-utils.purs
-        # purs-utils.purty
+        purs-utils.purs-0_15_8
+        purs-utils.purs-backend-es-1_1_0
+        purs-utils.purs-tidy
+        purs-utils.purty
         purs-utils.spago
         purs-utils.spago2nix
         purs-utils.zephyr # purescript tree-shaker
