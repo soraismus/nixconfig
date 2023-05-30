@@ -6,7 +6,37 @@ let
   };
 
   inputs = rec {
+    purs-0_15_8 = import ./purs/0.15.8.nix {
+      inherit pkgs;
+    };
+    purs-0_15_7 = import ./purs/0.15.7.nix {
+      inherit pkgs;
+    };
+
+    purs-0_15_6 = import ./purs/0.15.6.nix {
+      inherit pkgs;
+    };
+
+    purs-0_15_4 = import ./purs/0.15.4.nix {
+      inherit pkgs;
+    };
+
+    purs-0_15_3 = import ./purs/0.15.3.nix {
+      inherit pkgs;
+    };
+    purs-0_15_2 = import ./purs/0.15.2.nix {
+      inherit pkgs;
+    };
+
+    purs-0_15_0 = import ./purs/0.15.0.nix {
+      inherit pkgs;
+    };
+
     purs-0_15_0-alpha-02 = import ./purs/0.15.0-alpha-02.nix {
+      inherit pkgs;
+    };
+
+    purs-0_14_9 = import ./purs/0.14.9.nix {
       inherit pkgs;
     };
 
@@ -70,7 +100,7 @@ let
       inherit pkgs;
     };
 
-    purs = purs-0_14_7;
+    purs = purs-0_15_8;
 
     purs-simple = purs;
 
@@ -116,9 +146,15 @@ let
       inherit pkgs;
     };
 
-    pulp = import ./pulp {
-      inherit pkgs;
-    };
+    pulp-15_0_0 = import ./pulp/15.0.0 { inherit pkgs; };
+
+    pulp-16_0_0-0 = import ./pulp/16.0.0-0 { inherit pkgs; };
+
+    pulp-16_0_2 = import ./pulp/16.0.2 { inherit pkgs; };
+
+    pulp = pulp-16_0_2;
+
+    pulp-latest = import ./pulp/latest { inherit pkgs; };
 
     purescript-language-server = import ./purescript-language-server {
       inherit pkgs;
@@ -127,6 +163,10 @@ let
     purty = import ./purty.nix {
       inherit pkgs;
     };
+
+    purs-backend-es-1_1_0 = import ./purs-backend-es/1.1.0 { inherit pkgs; };
+
+    purs-backend-es = purs-backend-es-1_1_0;
   };
 
   buildInputs = builtins.attrValues inputs;
