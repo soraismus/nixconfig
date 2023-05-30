@@ -258,6 +258,7 @@
         nixops # utility for provisioning NixOS machines
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nodejs-17_x # javascript engine
+        oil # unix shell
         okular # unlike zathura, it has pdf-annotating and -highlighting features
         openssl # cryptographic library that implements TSL protocol
         openvpn # tunneling application
@@ -604,7 +605,11 @@
       # # NOTE: `libinput` and `synaptics` are incompatible.
       # # synaptics.enable = true; # touchpad
       # ----
-      synaptics.enable = true; # touchpad
+      # ----
+      # synaptics.enable = true; # touchpad
+      # ----
+      # ----
+      libinput.enable = true;
 
       # videoDrivers = [ "nvidia" ];
       xkbModel = "pc104";

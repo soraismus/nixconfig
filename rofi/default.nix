@@ -307,6 +307,6 @@ in
 
       environment.etc."rofi.conf".text = rofi-config;
 
-      environment.etc."rofi-pass.conf".text= rofi-password-store-config;
+      environment.etc."rofi-pass.conf".text = rofi-password-store-config;
     };
   }
