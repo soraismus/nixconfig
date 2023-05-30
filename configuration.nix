@@ -277,7 +277,7 @@
         purs-utils.pscid
         purs-utils.pulp-16_0_2
         purs-utils.purescript-language-server
-        purs-utils.purp
+        # purs-utils.purp
         purs-utils.purs-0_15_8
         purs-utils.purs-backend-es-1_1_0
         purs-utils.purs-tidy
