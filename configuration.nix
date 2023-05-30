@@ -274,7 +274,7 @@
         purs-utils.psa
         purs-utils.psc-package
         purs-utils.psc-package2nix
-        purs-utils.psid
+        purs-utils.pscid
         purs-utils.pulp-16_0_2
         purs-utils.purescript-language-server
         purs-utils.purp
