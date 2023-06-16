@@ -509,7 +509,7 @@
         sb = "spago-build-json";
         sbp = "spago-build-json-pretty";
         spago-build-json = "spago -q build --purs-args --no-prefix --purs-args --json-errors";
-        spago-build-json-pretty = "spago -q build --purs-args --no-prefix --purs-args --json-errors 2>&1 | format-purs-json-errors-output";
+        spago-build-json-pretty = "spago -q build --purs-args --no-prefix --purs-args --json-errors 2>&1 | grep -v Compiling | format-purs-json-errors-output";
         stackBuild = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH stack build --nix --fast";
         startStackShell = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH nix-shell -p stack";
         touchpadToggle = "toggleTouchpad";
