@@ -58,12 +58,7 @@ let &spellfile = mySpellDir . '/mh.utf-8.add'
   let &spellfile .= ',' . mySpellDir . '/purs.utf-8.add'
 set spelllang=en_us
 set statusline=[%n]\ [%t]
-  set statusline+=%h%m%r%y
   set statusline+=%=            " separation point btw left- and right-aligned
-  set statusline+=%{fugitive#statusline()}
-  set statusline+=%#warningmsg# " Set highlight group 'warningmsg'.
-  set statusline+=%{SyntasticStatuslineFlag()}
-  set statusline+=%*            " Restore highlight group User{N}.
   set statusline+=[%l\/%L,\ %c%V]
 set swapfile
 set suffixesadd=.c,.cs,.hs,.java,.js,.json,.md,.py,.purs,.txt
@@ -172,6 +167,14 @@ function! ToggleStatusLineMode()
       \   . "%="
       \   . "[%l\/%L,\ %c%V]"
   else
+  " set statusline=[%n]\ [%t]
+  " set statusline+=%h%m%r%y
+  " set statusline+=%=            " separation point btw left- and right-aligned
+  " set statusline+=%{fugitive#statusline()}
+  " set statusline+=%#warningmsg# " Set highlight group 'warningmsg'.
+  " set statusline+=%{SyntasticStatuslineFlag()}
+  " set statusline+=%*            " Restore highlight group User{N}.
+  " set statusline+=[%l\/%L,\ %c%V]
     let myStatusLine =
       \ "[%n] [" . myPathFormat . "]"
       \   . "%h%m%r%y"

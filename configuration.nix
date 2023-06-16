@@ -142,6 +142,7 @@
         # conky # configurable X system monitor
         # coq # interactive theorem prover
         # darcs # version control system
+        deno # secure runtime for javascript and typescript
         # direnv # environment switcher for the shell
         # docker # containerizer; OS-level virtualization: application container
         # dotnet-sdk # .NET Core SDK 2.0.2 with .NET Core 2.0.0
@@ -164,15 +165,19 @@
         # irssi # terminal-based IRC client
         # jitsi # open-source video calls and chat
         # kakoune # vim-inspired text editor
+        # libgnome_keyring # framework for managing passwords and other secrets
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         # magma_cudatoolkit_11_4 # matrix algebra on GPU and multicore architecture
         # mcfly # bash-history-management tool
         # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
         # mopidy # extensible music server that plays music from local, Spotify, etc.
         # mongodb # nosql database
+        # networkmanager_openconnect # NetworkManager's OpenConnect plugin
         # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
         niv # dependency manager for nix projects
         # nnn # ncurses-based file manager/browser
+        nushell # shell inspired by powershell written in rust
+        # openconnect # VPN client for Cisco's AnyConnect SSL VPN
         # opencv2 # Open Computer Vision library
         parallel # shell tool fro executing jobs in parallel [cf. xargs ?]
         pass # password-store manages passwords securely
@@ -201,6 +206,7 @@
         # yi # yi text editor (written in haskell)
         # zeal # offline API documentation browser
         # zim # desktop wiki
+
 
         # xorg.xmodmap # https://wiki.xfce.org/faq
         # xorg.xev     # https://wiki.xfce.org/faq
@@ -497,6 +503,8 @@
         quit = "exit";
         rm = "rm -I";
         sall = "sall2";
+        sb = "spago-build-json";
+        spago-build-json = "spago -q build --purs-args --no-prefix --purs-args --json-errors";
         stackBuild = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH stack build --nix --fast";
         startStackShell = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH nix-shell -p stack";
         touchpadToggle = "toggleTouchpad";
@@ -552,6 +560,7 @@
       defaultShared = true;
     };
 
+    # gnome.gnome-keyring.enable = true;
     mongodb.enable = true;
     openssh.enable = true;
 
