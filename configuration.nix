@@ -9,6 +9,7 @@
       ./automatic-mac-spoofing
       ./bookmark
       ./execute-namespace
+      ./format-purs-json-errors-output
       ./hardware-configuration.nix
       ./git
       ./i3
@@ -384,6 +385,7 @@
     programs = {
       bookmark.enable = true;
       execute-namespace.enable = true;
+      format-purs-json-errors-output.enable = true;
       git.enable = true;
       rofi.enable = true;
     };
@@ -483,6 +485,7 @@
         b5 = "cd ../../../../..";
         dsall = "sall2 --dry-run";
         dsall2 = "sall2 --dry-run";
+        format-purs = "format-purs-json-errors-output";
         gco = "git co";
         gcob = "git cob";
         gd = "git diff";
@@ -504,7 +507,9 @@
         rm = "rm -I";
         sall = "sall2";
         sb = "spago-build-json";
+        sbp = "spago-build-json-pretty";
         spago-build-json = "spago -q build --purs-args --no-prefix --purs-args --json-errors";
+        spago-build-json-pretty = "spago -q build --purs-args --no-prefix --purs-args --json-errors 2>&1 | format-purs-json-errors-output";
         stackBuild = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH stack build --nix --fast";
         startStackShell = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH nix-shell -p stack";
         touchpadToggle = "toggleTouchpad";

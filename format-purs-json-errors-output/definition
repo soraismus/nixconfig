@@ -1,0 +1,29 @@
+# 2023.06.16.08.11.
+# This file is meant to format the json output of the purescript compiler.
+#
+# Usage:
+# ```
+# spago --quiet build --purs-args --json-errors --purs-args --no-prefix \
+#   | format-purs-json-errors-output
+# ```
+
+sed --unbuffered 's/\\n/ /g; s/\s\+/ /g' \
+  | jq --unbuffered \
+  ' { warnings:
+        .warnings
+        | [.[]
+            | { warningCode: .errorCode
+              , loc: "start: \(.position.startLine), end: \(.position.endLine), file: \(.filename)"
+              , msg: .message
+              }
+          ]
+    , errors:
+        .errors
+        | [.[]
+            | { errorCode: .errorCode
+              , loc: "start: \(.position.startLine), end: \(.position.endLine), file: \(.filename)"
+              , msg: .message
+              }
+          ]
+    }
+  '
