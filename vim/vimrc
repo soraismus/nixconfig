@@ -142,6 +142,12 @@ let g:crunch_result_type_append = 0
 " let g:syntastic_vim_checkers = ['vint']
 
 " Toggle between full path and relative path of current file.
+function! RestoreDeleteNextEmptyLineToRegisterQ()
+  call setreg("q", "/^\s*$dd1k", ""v")
+endfunction
+command! RestoreDeleteNextEmptyLineToRegisterQ call RestoreDeleteNextEmptyLineToRegisterQ()
+
+" Toggle between full path and relative path of current file.
 function! ToggleStatusLine()
   let myStatusLine = &statusline
   if myStatusLine =~ "%t"

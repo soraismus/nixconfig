@@ -14,6 +14,7 @@ let
     };
   };
 in
+  # commentstring / b:commentary_format
   pkgs.vim_configurable.customize {
     name = "vim";
     vimrcConfig.customRC = builtins.readFile ./vimrc;
@@ -29,6 +30,7 @@ in
               "fugitive"
               "gundo"
               # "neoterm" # temporarily comment b/c of build issue
+              "latex-live-preview"
               "syntastic"
               "tabular"
               "tagbar"
