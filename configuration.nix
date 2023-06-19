@@ -122,7 +122,7 @@
             openpyxl = python39Pkgs.openpyxl;
             pandas = python39Pkgs.pandas;
             pdfminer_six = python39Pkgs.pdfminer;
-            pypdf2 = python39Pkgs.pypdf2;
+            pypdf = python39Pkgs.pypdf;
             python-ghostscript = python-ghostscript;
             tabulate = python39Pkgs.tabulate;
             tkinter = python39Pkgs.tkinter;
@@ -329,7 +329,7 @@
 
             # pkgs.jupyter_core # web-based notebook environment for interactive computing
             # pkgs.Keras # deep-learning library for Theano and TensorFlow
-            # pkgs.matplotlib # plotting library
+            pkgs.matplotlib # plotting library
             pkgs.networkx # network-management library
             # pkgs.nltk # natural-language processing toolkit
             pkgs.numpy # scientific (num-processing) tools
@@ -340,6 +340,9 @@
             pkgs.pikepdf # qpdf-utility to create/manipulate/repair PDFs
             pkgs.pilkit # utilities for python imaging library
             pkgs.pillow # fork of PIL (python imaging library)
+            pkgs.pypdf
+            pkgs.pypdf2
+            pkgs.pypdf3
             #pkgs.pytorchWithCuda # deep-learning platform
             python-ghostscript
             # pytorch # deep-learning platform
