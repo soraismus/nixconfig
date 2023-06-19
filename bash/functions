@@ -10,7 +10,7 @@ bmget () {
   # The backslash escapes aliases.
   # See https://stackoverflow.com/questions/6162903/why-do-backslashes-prevent-alias-expansion.
   local filename="$(
-      \ls -l $TAGPATH/$searchterm
+      \ls -l $TAGPATH/$searchterm    \
         | awk '!/total/ {print $11}' \
         | awk -v fileIndex="$2"      \
             'BEGIN { count = 0 } {count++; if (count == fileIndex) print}'
