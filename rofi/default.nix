@@ -156,19 +156,6 @@ let
     exit 0
   '';
 
-  rofi-show-window = pkgs.writeScriptBin "rofi-win" ''
-    ${pkgs.rofi}/bin/rofi -show window -theme ${./flat-orange.rasi}
-  '';
-
-  rofi-ssh = pkgs.writeScriptBin "rofi-ssh" ''
-    ${pkgs.rofi}/bin/rofi \
-      -show ssh \
-      -theme ${./flat-orange.rasi} \
-      --ssh-command "${pkgs.rxvt_unicode}/bin/urxvt \
-      -e '{ssh-client} {host}'"
-    '';
-
-
   rofi-touchpad = pkgs.writeScriptBin "rofi-touchpad" ''
     #!${pkgs.stdenv.shell}
 
@@ -284,7 +271,7 @@ let
 
   rofi-theme = pkgs.writeScriptBin "rofi-theme" ''
     #!${pkgs.bash}/bin/bash
-    ${pkgs.pass}/bin/rofi -theme ${./flat-orange.rasi}
+    ${pkgs.rofi}/bin/rofi -theme ${./flat-orange.rasi}
   '';
 in
   {
@@ -294,15 +281,14 @@ in
 
     config = lib.mkIf config.environment.theo.programs.rofi.enable {
       environment.systemPackages =
-        [ pkgs.rofi-pass
-          pkgs.rofi
+        [ pkgs.rofi-pass # script to make rofi work with password-store
+          pkgs.rofi # window switcher, run dialog, and dmenu replacement
           rofi-dme
           rofi-search
-          rofi-show-window
-          rofi-ssh
           rofi-system-power
           rofi-touchpad
           rofi-theme
+          pkgs.rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
       ];
 
       environment.etc."rofi.conf".text = rofi-config;

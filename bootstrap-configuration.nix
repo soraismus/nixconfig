@@ -92,20 +92,19 @@
   environment.systemPackages = with pkgs; [
     chromium
     firefox-wrapper # or 'firefox'?
-    links2
-    lynx
-    maim
-    scrot
-    tmux
-    tree
+    links2 # small browser with some graphics support
+    lynx # text-mode web browser
+    maim # command-line screenshot utility
+    scrot # command-line screenshot utility
+    tmux # terminal multiplexer
+    tree # command to produce a depth indented directory listing
     vim
-    wget
-    w3m
-    xclip
-    zathura
-    dmenu
-    i3blocks
-    i3status
+    wget # tool for retrieving files using HTTP, HTTPS, and FTP (`curl` substitute)
+    w3m # text-mode web browser
+    xclip # tool to access the X clipboard from a console application
+    zathura # PDF viewer
+    i3blocks # flexible scheduler for i3bar blocks
+    i3status # status line for i3bar, dzen2, xmobar, or lemonbar
     rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
   ];
 
