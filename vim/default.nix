@@ -14,45 +14,42 @@ let
     };
   };
 in
-  # commentstring / b:commentary_format
-  pkgs.vim_configurable.customize {
+  (pkgs.vim_configurable.override {}).customize {
     name = "vim";
     vimrcConfig.customRC = builtins.readFile ./vimrc;
-    vimrcConfig.vam.knownPlugins = pkgs.vimPlugins // mhVimPlugins;
-    vimrcConfig.vam.pluginDictionaries =
-      [ {
-          names =
-            [ "agda-vim"
-              # "ale"
-              "awesome-vim-colorschemes"
-              "fzf-vim"
-              "fzfWrapper"
-              "fugitive"
-              "gundo"
-              # "neoterm" # temporarily comment b/c of build issue
-              "latex-live-preview"
-              "syntastic"
-              "tabular"
-              "tagbar"
-              "ultisnips"
-              "unicode-vim"
-              "vim-capslock"
-              "vim-commentary"
-              "vim-crunch"
-              "vim-dadbod"
-              "vim-easymotion"
-              "vim-eunuch"
-              "vim-gitgutter"
-              "vim-unimpaired"
-              "vim-signature"
-              "vim-subversive"
-              "vim-surround"
-              # !gh machakan/vim-swap
-              "vim-tbone"
-              "vim-unicoder"
-              "vim-vinegar"
-              "vimtex"
-            ];
-        }
-      ];
-  }
+    vimrcConfig.packages.myplugins = with pkgs.vimPlugins; {
+      opt = [];
+      start =
+        [ agda-vim
+          # ale
+          awesome-vim-colorschemes
+          fzf-vim
+          fzfWrapper
+          fugitive
+          gundo
+          # neoterm # temporarily comment b/c of build issue
+          latex-live-preview
+          syntastic
+          tabular
+          tagbar
+          ultisnips
+          unicode-vim
+          vim-capslock
+          vim-commentary
+          mhVimPlugins.vim-crunch
+          vim-dadbod
+          vim-easymotion
+          vim-eunuch
+          vim-gitgutter
+          vim-unimpaired
+          vim-signature
+          vim-subversive
+          vim-surround
+          # !gh machakan/vim-swap
+          vim-tbone
+          vim-unicoder
+          vim-vinegar
+          vimtex
+        ];
+  };
+}

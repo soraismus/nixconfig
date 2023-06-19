@@ -1,5 +1,6 @@
 { lib
 , buildPythonPackage
+, chardet
 , click
 , ghostscript
 , isPy3k
@@ -30,6 +31,7 @@ buildPythonPackage rec {
 
   propagatedBuildInputs =
     [
+      chardet
       click
       cv2
       numpy

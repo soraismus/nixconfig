@@ -113,6 +113,7 @@
         in
           callPackage (import ./python-modules/camelot) {
             buildPythonPackage = python39Pkgs.buildPythonPackage;
+            chardet = python39Pkgs.chardet;
             click = python39Pkgs.click;
             ghostscript = pkgs.ghostscript;
             isPy3k = python39.passthru.isPy3k;
@@ -129,7 +130,14 @@
 
     in
       with pkgs; [
-        exim getmail mutt notmuch-mutt procmail spamassassin # email services
+        # email services
+        exim
+        getmail6 # getmail -> getmail6
+        mutt
+        notmuch-mutt
+        procmail
+        spamassassin
+
         mailsend # CLI email-sending tool
         mailutils # protocol-independent mail framework (includes mailx)
 
@@ -148,7 +156,7 @@
         # docker # containerizer; OS-level virtualization: application container
         # dotnet-sdk # .NET Core SDK 2.0.2 with .NET Core 2.0.0
         # dotnetPackages.Nuget # .NET nuget
-        dragon-drop # Simple drag-and-drop source/sink for X
+        xdragon # dragon-drop -> xdragon # Simple drag-and-drop source/sink for X
         # ekiga # VOIP/video-conferencing app with full SIP and H.323 support
         # elmPackages.elm # haskell-like frontend development platform
         expect # tool for automating interactive applications
@@ -180,6 +188,7 @@
         nushell # shell inspired by powershell written in rust
         # openconnect # VPN client for Cisco's AnyConnect SSL VPN
         # opencv2 # Open Computer Vision library
+        openssh # implementation of the SSH protocol
         parallel # shell tool fro executing jobs in parallel [cf. xargs ?]
         pass # password-store manages passwords securely
         # pijul # distributed version control system inspired by categorical patches
@@ -212,7 +221,7 @@
         # xorg.xmodmap # https://wiki.xfce.org/faq
         # xorg.xev     # https://wiki.xfce.org/faq
 
-        ag # silver-searcher
+        silver-searcher # ag -> silver-searcher # silver-searcher
         atop # console system performance monitor
         bat # a 'cat' clone with syntax highlighting and git integration
         bat-extras.batdiff # integration of bat and diff
@@ -264,7 +273,7 @@
         nix-diff # utility that compares nix derivations
         nixops # utility for provisioning NixOS machines
         nix-prefetch-git # nix utility that aids in pinning github revisions
-        nodejs-17_x # javascript engine
+        nodejs_20 # nodejs-17_x -> ?? # javascript engine
         oil # unix shell
         okular # unlike zathura, it has pdf-annotating and -highlighting features
         openssl # cryptographic library that implements TSL protocol
@@ -292,19 +301,21 @@
         purs-utils.spago
         purs-utils.spago2nix
         purs-utils.zephyr # purescript tree-shaker
+
         (python39.withPackages (pkgs:
-          let
-            pytorch = pkgs.pytorch.override {
-              # cudaSupport = true;
-              cudaSupport = false;
-              # cudatoolkit = cudatoolkit_11_4;
-              # cudnn = cudnn_cudatoolkit_11_4;
-              # magma = magma_cudatoolkit_11_4;
-            };
-            torchvision = pkgs.torchvision.override { pytorch = pytorch; };
-          in [
+          # let
+          #   pytorch = pkgs.pytorch.override {
+          #     # cudaSupport = true;
+          #     cudaSupport = false;
+          #     # cudatoolkit = cudatoolkit_11_4;
+          #     # cudnn = cudnn_cudatoolkit_11_4;
+          #     # magma = magma_cudatoolkit_11_4;
+          #   };
+          #   torchvision = pkgs.torchvision.override { pytorch = pytorch; };
+          # in [
+          [
             pkgs.beautifulsoup4 # html- and xml-parser
-            pkgs.bokeh # statistical and interactive HTML plots
+            # pkgs.bokeh # statistical and interactive HTML plots
             camelot
             # pkgs.fastapi # web/api framework
             # pkgs.flask # web/api microframework
@@ -313,12 +324,14 @@
             # pkgs.imbalanced-learn # manage imbalanced data
             pkgs.ipdb # web-based notebook environment for interactive computing
             pkgs.ipython # web-based notebook environment for interactive computing
-            pkgs.jupyter # web-based notebook environment for interactive computing
+
+            # 23.05 can't build. # pkgs.jupyter # web-based notebook environment for interactive computing
+
             # pkgs.jupyter_core # web-based notebook environment for interactive computing
             # pkgs.Keras # deep-learning library for Theano and TensorFlow
-            pkgs.matplotlib # plotting library
+            # pkgs.matplotlib # plotting library
             pkgs.networkx # network-management library
-            pkgs.nltk # natural-language processing toolkit
+            # pkgs.nltk # natural-language processing toolkit
             pkgs.numpy # scientific (num-processing) tools
             pkgs.opencv4 # Open Computer Vision library
             pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
@@ -329,19 +342,19 @@
             pkgs.pillow # fork of PIL (python imaging library)
             #pkgs.pytorchWithCuda # deep-learning platform
             python-ghostscript
-            pytorch # deep-learning platform
+            # pytorch # deep-learning platform
             pkgs.requests_toolbelt
             # pkgs.spacy # natural-language processing
-            pkgs.scikit-learn # machine learning & data mining
-            pkgs.scipy # science/engineering library
+            # pkgs.scikit-learn # machine learning & data mining
+            # pkgs.scipy # science/engineering library
             pkgs.scrapy # web crawler and scraper
-            pkgs.seaborn # statistical data visualization
+            # pkgs.seaborn # statistical data visualization
             # pkgs.statsmodel # statistical modeling
             # pkgs.streamlit # build custom machine-learning tools
-            pkgs.tensorflow # machine learning
-            torchvision # deep-learning platform
-            pkgs.unittest2 # backport of unittest testing framework
-            pkgs.xgboost # gradient boosting library (e.g., GBDTs)
+            # pkgs.tensorflow # machine learning
+            # torchvision # deep-learning platform
+            # pkgs.unittest2 # backport of unittest testing framework
+            # pkgs.xgboost # gradient boosting library (e.g., GBDTs)
             # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
           ]
         )) # Cf nixos.wiki/wiki/Python
@@ -356,7 +369,7 @@
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
         tcpdump # network sniffer
         termite # keyboard-centric VTE-based terminal
-        termonad-with-packages # terminal emulator configurable in haskell
+        termonad # termonad-with-packages -> termonad # terminal emulator configurable in haskell
         texlive.combined.scheme-full # pdflatex, xcolor.sty for PDF conversion
         tig # text-mode interface for git
         tldr # community-managed man pages
@@ -425,8 +438,13 @@
       };
       permittedInsecurePackages =
         [
-          "python2.7-PyJWT-1.7.1"
-          "python2.7-urllib3-1.26.2"
+          "nodejs-14.21.3"
+          "openssl-1.1.1u"
+          "python-2.7.18.6"
+          "python2.7-certifi-2021.10.8"
+          "python2.7-pyjwt-1.7.1"
+          # "python2.7-PyJWT-1.7.1"
+          # "python2.7-urllib3-1.26.2"
         ];
     };
     overlays =
@@ -448,7 +466,7 @@
         callPackage = pkgs.lib.callPackageWith pkgs;
       in
         [ pkgs.powerline-fonts
-          pkgs.font-awesome-ttf
+          pkgs.font-awesome # font-awesome-ttf -> font-awesome
           pkgs.hasklig
           pkgs.inconsolata
           pkgs.ubuntu_font_family
@@ -566,7 +584,7 @@
     };
 
     # gnome.gnome-keyring.enable = true;
-    mongodb.enable = true;
+    # mongodb.enable = true;
     openssh.enable = true;
 
     # strongswan = {
@@ -602,12 +620,13 @@
     #   };
     # };
 
+    # xlibs -> xorg
     xserver = {
       enable = true;
       displayManager = {
         defaultSession = "none+i3";
         sessionCommands = ''
-          ${pkgs.xlibs.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
+          ${pkgs.xorg.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
         '';
       };
       layout = "us";
