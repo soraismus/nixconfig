@@ -148,6 +148,7 @@
         # autossh # automatically restart SSH sessions and tunnels
         # binutils # tools for manipulating binaries (linker, assembler)
         # btrfs-progs # utilities for the btrfs filesystem
+        burpsuite # integrated platform for performing security testing
         # conky # configurable X system monitor
         # coq # interactive theorem prover
         # darcs # version control system
@@ -160,6 +161,7 @@
         # ekiga # VOIP/video-conferencing app with full SIP and H.323 support
         # elmPackages.elm # haskell-like frontend development platform
         expect # tool for automating interactive applications
+        ffuf # fast web fuzzer
         file # program that shows the type of files
         # fossil # version control system
         # gitless # version control system built on top of git [Its cli abbrev is 'gl'.]
@@ -173,7 +175,21 @@
         # inkscape # vector-graphics editor # See https://castel.dev/post/lecture-notes-2/
         # irssi # terminal-based IRC client
         # jitsi # open-source video calls and chat
-        # kakoune # vim-inspired text editor
+
+        kakoune # vim-inspired text editor
+        kakounePlugins.active-window-kak
+        # kakounePlugins.active-pairs-kak
+        kakounePlugins.case-kak
+        kakounePlugins.fzf-kak
+        kakounePlugins.kak-lsp
+        kakounePlugins.kakoune-easymotion
+        kakounePlugins.kakoune-rainbow
+        kakounePlugins.kakoune-registers
+        kakounePlugins.kakoune-vertical-selection
+        kakounePlugins.pandoc-kak
+        kakounePlugins.smarttab-kak
+        kakounePlugins.tabs-kak
+
         # libgnome_keyring # framework for managing passwords and other secrets
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         # magma_cudatoolkit_11_4 # matrix algebra on GPU and multicore architecture

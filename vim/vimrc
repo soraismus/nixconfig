@@ -1,4 +1,5 @@
-" vim-utils.nix sets 'filetype indent plugin on | syn on'.
+filetype indent plugin on
+" syntax on " This is related to `syntax enable`, but it overrules my color/highlight settings.
 syntax enable " Equivalent to ':source $VIMRUNTIME/syntax/syntax.vim'
 
 let mapleader = ","
@@ -79,10 +80,15 @@ nmap = <Plug>VinegarSplitUp
 " The pipe character must be escaped.
 nmap \| <Plug>VinegarVerticalSplitUp
 
+imap <C-C> <Esc>g=iW
+nmap <C-C> g=iW
+vmap <C-C> g=iW
+
  noremap <C-H> <C-W>h
  noremap <C-J> <C-W>j
  noremap <C-K> <C-W>k
  noremap <C-L> <C-W>l
+ noremap <leader>/ :Commentary<cr>
 cnoremap w!! %!sudo tee > /dev/null %
 inoremap <C-A> <Esc>I
 inoremap <C-E> <Esc>A
@@ -136,6 +142,9 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
 " vim-crunch
 let g:crunch_result_type_append = 0
+
+" vim-latex-live-preview
+" let g:livepreview_previewer = 'zathura'
 
 " Per !gh/kuniwak/vint
 " Vint seems to require configuration to work without throwing errors.

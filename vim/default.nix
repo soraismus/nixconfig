@@ -20,7 +20,7 @@ in
     vimrcConfig.packages.myplugins = with pkgs.vimPlugins; {
       opt = [];
       start =
-        [ agda-vim
+        [ # agda-vim
           # ale
           awesome-vim-colorschemes
           fzf-vim
