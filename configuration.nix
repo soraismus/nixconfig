@@ -443,9 +443,15 @@
     networkmanager.enable = true;
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "Sun 03:15";
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "Sun 03:15";
+    };
+    # package = pkgs.nixUnstable;
+    extraOptions = ''
+        experimental-features = nix-command flakes
+      '';
   };
 
   nixpkgs = {
