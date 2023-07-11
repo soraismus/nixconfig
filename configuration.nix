@@ -94,38 +94,38 @@
       python-ghostscript =
         let
           callPackage = pkgs.lib.callPackageWith pkgs;
-          python39 = pkgs.python39;
-          python39Pkgs = python39.pkgs;
+          python311 = pkgs.python311;
+          python311Pkgs = python311.pkgs;
           substituteAll = pkgs.substituteAll;
         in
           callPackage (import ./python-modules/python-ghostscript) {
-            buildPythonPackage = python39Pkgs.buildPythonPackage;
+            buildPythonPackage = python311Pkgs.buildPythonPackage;
             ghostscript = pkgs.ghostscript;
-            isPy3k = python39.passthru.isPy3k;
+            isPy3k = python311.passthru.isPy3k;
             substituteAll = substituteAll;
           };
 
       camelot =
         let
           callPackage = pkgs.lib.callPackageWith pkgs;
-          python39 = pkgs.python39;
-          python39Pkgs = python39.pkgs;
+          python311 = pkgs.python311;
+          python311Pkgs = python311.pkgs;
         in
           callPackage (import ./python-modules/camelot) {
-            buildPythonPackage = python39Pkgs.buildPythonPackage;
-            chardet = python39Pkgs.chardet;
-            click = python39Pkgs.click;
+            buildPythonPackage = python311Pkgs.buildPythonPackage;
+            chardet = python311Pkgs.chardet;
+            click = python311Pkgs.click;
             ghostscript = pkgs.ghostscript;
-            isPy3k = python39.passthru.isPy3k;
-            numpy = python39Pkgs.numpy;
-            cv2 = python39Pkgs.opencv4;
-            openpyxl = python39Pkgs.openpyxl;
-            pandas = python39Pkgs.pandas;
-            pdfminer_six = python39Pkgs.pdfminer;
-            pypdf = python39Pkgs.pypdf;
+            isPy3k = python311.passthru.isPy3k;
+            numpy = python311Pkgs.numpy;
+            cv2 = python311Pkgs.opencv4;
+            openpyxl = python311Pkgs.openpyxl;
+            pandas = python311Pkgs.pandas;
+            pdfminer_six = python311Pkgs.pdfminer;
+            pypdf = python311Pkgs.pypdf;
             python-ghostscript = python-ghostscript;
-            tabulate = python39Pkgs.tabulate;
-            tkinter = python39Pkgs.tkinter;
+            tabulate = python311Pkgs.tabulate;
+            tkinter = python311Pkgs.tkinter;
           };
 
     in
@@ -318,7 +318,7 @@
         purs-utils.spago2nix
         purs-utils.zephyr # purescript tree-shaker
 
-        (python39.withPackages (pkgs:
+        (python311.withPackages (pkgs:
           # let
           #   pytorch = pkgs.pytorch.override {
           #     # cudaSupport = true;
@@ -349,6 +349,7 @@
             pkgs.networkx # network-management library
             # pkgs.nltk # natural-language processing toolkit
             pkgs.numpy # scientific (num-processing) tools
+            pkgs.openai # Open Computer Vision library
             pkgs.opencv4 # Open Computer Vision library
             pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
             pkgs.pandas # python data-analysis library
