@@ -483,10 +483,10 @@ tmuxto () {
   tmux rename-window "$1"
 }
 
-# Rename a file so that spaces become underscores.
-underscore-file-name () {
+# Rename a file so that spaces become hyphens.
+normalize-file-name () {
   local filename="${1}"
-  mv "${filename}" "$( echo "${filename}" | tr ' ' '_' )"
+  mv "${filename}" "$( echo "${filename}" | tr ' ' '-' | tr '[' '.' | tr -d ']' )"
 }
 
 # https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
