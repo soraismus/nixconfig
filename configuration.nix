@@ -145,12 +145,14 @@
         # cudnn_cudatoolkit_11_4
 
         # Reconsider:
+        agda # dependently typed functional language and proof assistant
         # autossh # automatically restart SSH sessions and tunnels
         # binutils # tools for manipulating binaries (linker, assembler)
         # btrfs-progs # utilities for the btrfs filesystem
         burpsuite # integrated platform for performing security testing
         # conky # configurable X system monitor
         # coq # interactive theorem prover
+        coq_8_9 # coq theorem assistant
         # darcs # version control system
         deno # secure runtime for javascript and typescript
         # direnv # environment switcher for the shell
@@ -171,28 +173,28 @@
         # heroku
         # hieroglyph # presentation editor
         # hlint
-        # idris # haskell-like compiler with dependent types
+        idris # haskell-like compiler with dependent types
         # inkscape # vector-graphics editor # See https://castel.dev/post/lecture-notes-2/
         # irssi # terminal-based IRC client
         # jitsi # open-source video calls and chat
-
-        kakoune # vim-inspired text editor
-        kakounePlugins.active-window-kak
-        # kakounePlugins.active-pairs-kak
-        kakounePlugins.case-kak
-        kakounePlugins.fzf-kak
-        kakounePlugins.kak-lsp
-        kakounePlugins.kakoune-easymotion
-        kakounePlugins.kakoune-rainbow
-        kakounePlugins.kakoune-registers
-        kakounePlugins.kakoune-vertical-selection
-        kakounePlugins.pandoc-kak
-        kakounePlugins.smarttab-kak
-        kakounePlugins.tabs-kak
-
+        # kakoune # vim-inspired text editor
+        # kakounePlugins.active-window-kak
+        # # kakounePlugins.active-pairs-kak
+        # kakounePlugins.case-kak
+        # kakounePlugins.fzf-kak
+        # kakounePlugins.kak-lsp
+        # kakounePlugins.kakoune-easymotion
+        # kakounePlugins.kakoune-rainbow
+        # kakounePlugins.kakoune-registers
+        # kakounePlugins.kakoune-vertical-selection
+        # kakounePlugins.pandoc-kak
+        # kakounePlugins.smarttab-kak
+        # kakounePlugins.tabs-kak
+        lean3 # automatic and interactive theorem prover
         # libgnome_keyring # framework for managing passwords and other secrets
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         # magma_cudatoolkit_11_4 # matrix algebra on GPU and multicore architecture
+        # manim # animation engine for explanatory mathematics videos
         # mcfly # bash-history-management tool
         # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
         # mopidy # extensible music server that plays music from local, Spotify, etc.
@@ -202,6 +204,7 @@
         niv # dependency manager for nix projects
         # nnn # ncurses-based file manager/browser
         nushell # shell inspired by powershell written in rust
+        # okular # unlike zathura, it has pdf-annotating and -highlighting features
         # openconnect # VPN client for Cisco's AnyConnect SSL VPN
         # opencv2 # Open Computer Vision library
         openssh # implementation of the SSH protocol
@@ -233,7 +236,6 @@
         # zeal # offline API documentation browser
         # zim # desktop wiki
 
-
         # xorg.xmodmap # https://wiki.xfce.org/faq
         # xorg.xev     # https://wiki.xfce.org/faq
 
@@ -245,6 +247,7 @@
         bat-extras.batman # integration of bat and man
         bat-extras.prettybat
         bc # calculator
+        bfs # breadth-first version of 'find'
         broot # interactive tree view, fuzzy search, balanced BFS descent
         browsh # text-based browser that can render css and js (cf. links2, lynx, w3m)
         cabal-install # haskell packaging and build system
@@ -270,6 +273,7 @@
         hound # fast code searching (react frontend; go backend; regex w/ trigram index)
         iotop
         jq # command-line json processor
+        lazygit # simple terminal UI for git commands
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
         # libreswan # open-source IPSec-based VPN implementation
@@ -291,7 +295,6 @@
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nodejs_20 # nodejs-17_x -> ?? # javascript engine
         oil # unix shell
-        okular # unlike zathura, it has pdf-annotating and -highlighting features
         openssl # cryptographic library that implements TSL protocol
         openvpn # tunneling application
         pandoc # utility that translates between markup formats

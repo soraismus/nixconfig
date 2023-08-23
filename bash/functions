@@ -544,24 +544,23 @@ workspace () {
   to "$path"
 }
 
-youtube-dl-ids () {
-  echo "Preparing to download youtube videos corresponding to the following IDs:"
-  local id_array=("$@")
-  echo "  --  " "${id_array[@]}"
-  local catalogDir="${HOME}/Downloads/videos/catalog"
-  local catalog="${catalogDir}/catalog"
-  if [ ! -d "${catalogDir}" ]; then
-    echo "making directory " "${catalogDir}"
-    mkdir -p "${catalogDir}"
+# Download YouTube playlist videos in separate directory
+# indexed by video order in a playlist.
+yt-dlp-playlist () {
+  local playlist_url="${1}"
+  if [ "${#}x" = "2x" ]; then
+    local playlist_items="${2}"
+    yt-dlp \
+      -o "%(playlist_id)s.%(playlist_title)s/%(playlist_index)s - %(title)s.%(id)s.%(ext)s" \
+      --yes-playlist \
+      -I "${playlist_items}" \
+      "${playlist_url}"
+  else
+    yt-dlp \
+      -o "%(playlist_id)s.%(playlist_title)s/%(playlist_index)s - %(title)s.%(id)s.%(ext)s" \
+      --yes-playlist \
+      "${playlist_url}"
   fi
-  for i in "${id_array[@]}"; do
-    local url="https://www.youtube.com/watch?v=${i} "
-    echo "  ------------------------------------ "
-    if youtube-dl "${url}" -o "$HOME/Downloads/videos/${i}-%(title)s.%(ext)s"
-      then echo "${url}" "$( date )" >> "${catalog}";
-      else echo "ERROR -- " "${url}" "$( date )" >> "${catalog}";
-    fi
-  done
 }
 
 zpdf-overrides () {
