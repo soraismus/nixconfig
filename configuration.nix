@@ -155,6 +155,7 @@
         coq_8_9 # coq theorem assistant
         # darcs # version control system
         deno # secure runtime for javascript and typescript
+        difftastic # syntax-aware diff
         # direnv # environment switcher for the shell
         # docker # containerizer; OS-level virtualization: application container
         # dotnet-sdk # .NET Core SDK 2.0.2 with .NET Core 2.0.0
@@ -352,7 +353,7 @@
             pkgs.networkx # network-management library
             # pkgs.nltk # natural-language processing toolkit
             pkgs.numpy # scientific (num-processing) tools
-            pkgs.openai # Open Computer Vision library
+            # pkgs.openai # client library for the OpenAI API
             pkgs.opencv4 # Open Computer Vision library
             pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
             pkgs.pandas # python data-analysis library
