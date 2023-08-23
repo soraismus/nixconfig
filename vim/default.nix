@@ -21,12 +21,18 @@ in
       opt = [];
       start =
         [ # agda-vim
-          # ale
+          # ale # Cf. coc.nvim. [Cf. https://www.vimfromscratch.com/articles/vim-and-language-server-protocol]
           awesome-vim-colorschemes
+          coc-denite
+          coc-fzf
+          coc-nvim # Cf. ale.
+          # comfortable-motion-vim
+          command-t
           fzf-vim
           fzfWrapper
           fugitive
           gundo
+          indentLine
           # neoterm # temporarily comment b/c of build issue
           latex-live-preview
           syntastic
@@ -41,15 +47,19 @@ in
           vim-easymotion
           vim-eunuch
           vim-gitgutter
-          vim-unimpaired
+          vim-javascript
           vim-signature
           vim-subversive
           vim-surround
           # !gh machakan/vim-swap
           vim-tbone
-          vim-unicoder
-          vim-vinegar
+          vim-test
           vimtex
+          vim-unicoder
+          vim-unimpaired
+          vimux
+          vim-vinegar
+          vim-visual-multi
         ];
   };
 }
