@@ -131,6 +131,9 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 " vim-crunch
 let g:crunch_result_type_append = 0
 
+" latex-live-preview
+let g:livepreview_previewer = 'zathura'
+
 " Toggle between full path and relative path of current file.
 function! RestoreDeleteNextEmptyLineToRegisterQ()
   call setreg("q", "/^\s*$dd1k", ""v")
