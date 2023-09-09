@@ -486,7 +486,10 @@ tmuxto () {
 # Rename a file so that spaces become hyphens.
 normalize-file-name () {
   local filename="${1}"
-  mv "${filename}" "$( echo "${filename}" | tr ' ' '-' | tr '[' '.' | tr -d ']' )"
+  local new_filename_0="$( echo "${filename}" | tr ' ' '-' | tr '[' '.' | tr -d ']' )"
+  local new_filename_1="$( echo "${local_filename_0}" | sed 's/\*/-star/' | sed 's/\?//' )"
+  local new_filename_2="$( echo "${new_filename_1}" | tr ' ' '-' | tr '[' '.' | tr -d ']' )"
+  mv "${filename}" "${new_filename_2}"
 }
 
 # https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
