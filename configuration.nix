@@ -413,7 +413,7 @@
         vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
         vlc # cross-platform media player and streaming server
         w3m # text-based web browser (cf. browsh, links2, lynx)
-        wget # tool fro retrieving files using HTTP, HTTPS, and FTP
+        wget # tool for retrieving files using HTTP, HTTPS, and FTP
         xclip # clipboard utility
         xdotool # fake keyboard/mouse input, window management
         yarn # variant to npm
