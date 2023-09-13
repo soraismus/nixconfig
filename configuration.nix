@@ -91,42 +91,42 @@
       easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
       purs-utils = easy-purescript-nix.inputs;
 
-      python-ghostscript =
-        let
-          callPackage = pkgs.lib.callPackageWith pkgs;
-          python311 = pkgs.python311;
-          python311Pkgs = python311.pkgs;
-          substituteAll = pkgs.substituteAll;
-        in
-          callPackage (import ./python-modules/python-ghostscript) {
-            buildPythonPackage = python311Pkgs.buildPythonPackage;
-            ghostscript = pkgs.ghostscript;
-            isPy3k = python311.passthru.isPy3k;
-            substituteAll = substituteAll;
-          };
+      # python-ghostscript =
+      #   let
+      #     callPackage = pkgs.lib.callPackageWith pkgs;
+      #     python311 = pkgs.python311;
+      #     python311Pkgs = python311.pkgs;
+      #     substituteAll = pkgs.substituteAll;
+      #   in
+      #     callPackage (import ./python-modules/python-ghostscript) {
+      #       buildPythonPackage = python311Pkgs.buildPythonPackage;
+      #       ghostscript = pkgs.ghostscript;
+      #       isPy3k = python311.passthru.isPy3k;
+      #       substituteAll = substituteAll;
+      #     };
 
-      camelot =
-        let
-          callPackage = pkgs.lib.callPackageWith pkgs;
-          python311 = pkgs.python311;
-          python311Pkgs = python311.pkgs;
-        in
-          callPackage (import ./python-modules/camelot) {
-            buildPythonPackage = python311Pkgs.buildPythonPackage;
-            chardet = python311Pkgs.chardet;
-            click = python311Pkgs.click;
-            ghostscript = pkgs.ghostscript;
-            isPy3k = python311.passthru.isPy3k;
-            numpy = python311Pkgs.numpy;
-            cv2 = python311Pkgs.opencv4;
-            openpyxl = python311Pkgs.openpyxl;
-            pandas = python311Pkgs.pandas;
-            pdfminer_six = python311Pkgs.pdfminer;
-            pypdf = python311Pkgs.pypdf;
-            python-ghostscript = python-ghostscript;
-            tabulate = python311Pkgs.tabulate;
-            tkinter = python311Pkgs.tkinter;
-          };
+      # camelot =
+      #   let
+      #     callPackage = pkgs.lib.callPackageWith pkgs;
+      #     python311 = pkgs.python311;
+      #     python311Pkgs = python311.pkgs;
+      #   in
+      #     callPackage (import ./python-modules/camelot) {
+      #       buildPythonPackage = python311Pkgs.buildPythonPackage;
+      #       chardet = python311Pkgs.chardet;
+      #       click = python311Pkgs.click;
+      #       ghostscript = pkgs.ghostscript;
+      #       isPy3k = python311.passthru.isPy3k;
+      #       numpy = python311Pkgs.numpy;
+      #       cv2 = python311Pkgs.opencv4;
+      #       openpyxl = python311Pkgs.openpyxl;
+      #       pandas = python311Pkgs.pandas;
+      #       pdfminer_six = python311Pkgs.pdfminer;
+      #       pypdf = python311Pkgs.pypdf;
+      #       python-ghostscript = python-ghostscript;
+      #       tabulate = python311Pkgs.tabulate;
+      #       tkinter = python311Pkgs.tkinter;
+      #     };
 
     in
       with pkgs; [
@@ -147,6 +147,7 @@
         # Reconsider:
         agda # dependently typed functional language and proof assistant
         # autossh # automatically restart SSH sessions and tunnels
+        bun # javascript runtime, bundler, transpiler, and package manager
         # binutils # tools for manipulating binaries (linker, assembler)
         # btrfs-progs # utilities for the btrfs filesystem
         burpsuite # integrated platform for performing security testing
@@ -194,6 +195,7 @@
         lean3 # automatic and interactive theorem prover
         # libgnome_keyring # framework for managing passwords and other secrets
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
+        lorri # your project's nix-env
         # magma_cudatoolkit_11_4 # matrix algebra on GPU and multicore architecture
         # manim # animation engine for explanatory mathematics videos
         # mcfly # bash-history-management tool
@@ -240,7 +242,6 @@
         # xorg.xmodmap # https://wiki.xfce.org/faq
         # xorg.xev     # https://wiki.xfce.org/faq
 
-        silver-searcher # ag -> silver-searcher # silver-searcher
         atop # console system performance monitor
         bat # a 'cat' clone with syntax highlighting and git integration
         bat-extras.batdiff # integration of bat and diff
@@ -257,6 +258,9 @@
         cifs-utils # tools for managing CIFS client filesystems (CIFS is Microsoft's version of SMB)
         ctags # utility for fast source-code browsing (exuberant ctags)
         dstat # monitor to replace vmstat, iostat, ifstat, netstat
+        dua # tool to learn about directories' disk usage
+        du-dust # du + rust = dust; like du but more intuitive
+        duf # disk usage / free utility ('du' substitute)
         exa # replacement for 'ls'
         fd # alternative to 'find'
         feh # light-weight image viewer
@@ -321,7 +325,6 @@
         purs-utils.spago
         purs-utils.spago2nix
         purs-utils.zephyr # purescript tree-shaker
-
         (python311.withPackages (pkgs:
           # let
           #   pytorch = pkgs.pytorch.override {
@@ -334,9 +337,10 @@
           #   torchvision = pkgs.torchvision.override { pytorch = pytorch; };
           # in [
           [
+            pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
             pkgs.beautifulsoup4 # html- and xml-parser
             # pkgs.bokeh # statistical and interactive HTML plots
-            camelot
+            # camelot
             # pkgs.fastapi # web/api framework
             # pkgs.flask # web/api microframework
             # pkgs.gensim # topic-modelling library
@@ -344,9 +348,7 @@
             # pkgs.imbalanced-learn # manage imbalanced data
             pkgs.ipdb # web-based notebook environment for interactive computing
             pkgs.ipython # web-based notebook environment for interactive computing
-
             # 23.05 can't build. # pkgs.jupyter # web-based notebook environment for interactive computing
-
             # pkgs.jupyter_core # web-based notebook environment for interactive computing
             # pkgs.Keras # deep-learning library for Theano and TensorFlow
             pkgs.matplotlib # plotting library
@@ -365,7 +367,7 @@
             pkgs.pypdf2
             pkgs.pypdf3
             #pkgs.pytorchWithCuda # deep-learning platform
-            python-ghostscript
+            # python-ghostscript
             # pytorch # deep-learning platform
             pkgs.requests_toolbelt
             # pkgs.spacy # natural-language processing
@@ -376,7 +378,9 @@
             # pkgs.statsmodel # statistical modeling
             # pkgs.streamlit # build custom machine-learning tools
             # pkgs.tensorflow # machine learning
-            # torchvision # deep-learning platform
+            # pkgs.torch
+            # pkgs.torchaudio
+            # pkgs.torchvision # deep-learning platform
             # pkgs.unittest2 # backport of unittest testing framework
             # pkgs.xgboost # gradient boosting library (e.g., GBDTs)
             # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
@@ -388,6 +392,7 @@
         rofi # window switcher, run dialog and dmenu replacement
         rofi-pass # script to make rofi work with password-store
         scrot # command-line screen-capture utility [cf. maim]
+        silver-searcher # ag -> silver-searcher # silver-searcher
         stack # haskell tool stack
         # strongswan # open-source IPsec-based VPN solution
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
@@ -408,6 +413,7 @@
         vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
         vlc # cross-platform media player and streaming server
         w3m # text-based web browser (cf. browsh, links2, lynx)
+        wget # tool fro retrieving files using HTTP, HTTPS, and FTP
         xclip # clipboard utility
         xdotool # fake keyboard/mouse input, window management
         yarn # variant to npm
@@ -463,6 +469,7 @@
     config = {
       allowUnfree = true;
       # chromium.enableWideVine = true;
+      cudaSupport = true;
       packageOverrides = pkgs: {
         myVim = import ./vim { pkgs = pkgs; };
       };
