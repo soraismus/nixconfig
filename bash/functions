@@ -123,6 +123,13 @@ _disposeHistoryOrphans () {
   fi
 }
 
+download-from-arxiv () {
+  local filename="${1}";
+  local id="$(echo "${filename}" | sed "s/\([^0-9-]\+\)--/\1\//")";
+  wget --user-agent="Mozilla/5.0" --output-document="${filename}.pdf" "https://arxiv.org/pdf/${id}.pdf";
+  sleep 4
+}
+
 ducks () {
   du -cks "$1" | sort -rn | head -11
 }
@@ -152,6 +159,36 @@ gdrive_find_folder_ids_for_name () {
 # Id, Name, Type, Size, Created
 gdrive_list_folders () {
   gdrive list --query "mimeType = 'application/vnd.google-apps.folder'"
+}
+
+get-arxiv-title ()
+{
+  local filename0="${1}";
+  local id="${filename0%*.pdf}";
+  local new_dir="${2}";
+  local new_id;
+  local lookup;
+  if [[ "${id}" =~ "--" ]]; then
+    local class="${id%*--*}";
+    local classless_id="${id#*--*}";
+    lookup="${class}/${classless_id}";
+    new_id="${class}.${classless_id}";
+  else
+    lookup="${id}";
+    new_id="${id}";
+  fi;
+  local data;
+  if data="$(arxiv2bib "${lookup}" 2> /dev/null)"; then
+    local title="$(echo "${data}" | awk -F '[{}]+' '/Title\s*=\s*{/{print $2}')";
+    local year="$(echo "${data}" | awk -F '[{}]+' '/Year\s*=\s*{/{print $2}')";
+    local filename1="$( normalize-file-name "${new_id}--${title}.${year}.pdf" )";
+    local filename2="$( echo "${filename1}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' )"
+    echo "${filename2}"
+    return 0
+  else
+    echo "${filename0}"
+    return 1
+  fi;
 }
 
 githostclone () {
@@ -346,6 +383,14 @@ _mergeShellHistory () {
   fi
 }
 
+# Rename a file so that spaces become hyphens.
+normalize-file-name () {
+  local file_name="${1}"
+  local new_file_name_0="$( echo "${file_name}" | sed 's/\*/-star/g' | sed 's/: */--/g' | sed 's/\\mathbf-//g' | sed 's/\\infty/infinity/g' | sed "s/-&-/-and-/g" )"
+  local new_file_name_1="$( echo "${new_file_name_0}" | tr ' ' '-' | tr '[' '.' | tr -d "\"']()$?,\\\!;/^" | tr '[:upper:]' '[:lower:]' )"
+  echo "${new_file_name_1}"
+}
+
 note () {
   NAMESPACE=note execute-namespace "$@"
 }
@@ -481,15 +526,6 @@ tmuxto () {
   [ -z "$1" ] && { echoError 'This function requires an argument'; return 1; }
   to "$1"
   tmux rename-window "$1"
-}
-
-# Rename a file so that spaces become hyphens.
-normalize-file-name () {
-  local filename="${1}"
-  local new_filename_0="$( echo "${filename}" | tr ' ' '-' | tr '[' '.' | tr -d ']' )"
-  local new_filename_1="$( echo "${local_filename_0}" | sed 's/\*/-star/' | sed 's/\?//' )"
-  local new_filename_2="$( echo "${new_filename_1}" | tr ' ' '-' | tr '[' '.' | tr -d ']' )"
-  mv "${filename}" "${new_filename_2}"
 }
 
 # https://gist.github.com/jan-warchol/89f5a748f7e8a2c9e91c9bc1b358d3ec
