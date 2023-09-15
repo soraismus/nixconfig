@@ -315,11 +315,10 @@
         purs-utils.psc-package
         purs-utils.psc-package2nix
         purs-utils.pscid
-        purs-utils.pulp-16_0_2
+        purs-utils.pulp
         purs-utils.purescript-language-server
-        # purs-utils.purp
-        purs-utils.purs-0_15_8
-        purs-utils.purs-backend-es-1_1_0
+        purs-utils.purs-0_15_10
+        purs-utils.purs-backend-es
         purs-utils.purs-tidy
         purs-utils.purty
         purs-utils.spago
