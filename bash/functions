@@ -182,7 +182,7 @@ get-arxiv-title ()
     local title="$(echo "${data}" | awk -F '[{}]+' '/Title\s*=\s*{/{print $2}')";
     local year="$(echo "${data}" | awk -F '[{}]+' '/Year\s*=\s*{/{print $2}')";
     local filename1="$( normalize-file-name "${new_id}--${title}.${year}.pdf" )";
-    local filename2="$( echo "${filename1}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' )"
+    local filename2="$( echo "${filename1}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' | sed 's/---\+/--/g' )"
     echo "${filename2}"
     return 0
   else
