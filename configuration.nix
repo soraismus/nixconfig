@@ -7,6 +7,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./automatic-mac-spoofing
+      ./backup
       ./bookmark
       ./execute-namespace
       ./format-purs-json-errors-output
@@ -425,6 +426,7 @@
 
   environment.theo = {
     programs = {
+      backup.enable = true;
       bookmark.enable = true;
       execute-namespace.enable = true;
       format-purs-json-errors-output.enable = true;
@@ -537,8 +539,6 @@
         b3 = "cd ../../..";
         b4 = "cd ../../../..";
         b5 = "cd ../../../../..";
-        dsall = "sall2 --dry-run";
-        dsall2 = "sall2 --dry-run";
         format-purs = "format-purs-json-errors-output";
         gco = "git co";
         gcob = "git cob";
@@ -559,7 +559,6 @@
         promptToggle = "togglePrompt";
         quit = "exit";
         rm = "rm -I";
-        sall = "sall2";
         sb = "spago-build-json";
         sbp = "spago-build-json-pretty";
         spago-build-json = "spago -q build --purs-args --no-prefix --purs-args --json-errors";
