@@ -16,6 +16,7 @@ _backup () {
   rsync                                          -av /home/polytope/dl/fonts/              ${backupDir}/fonts/
   rsync                                          -av /home/polytope/dl/images/             ${backupDir}/images/
   rsync                                          -av /etc/nixos/                           ${backupDir}/nixos/
+  rsync                                          -av /home/polytope/dl/ocw/                ${backupDir}/ocw/
   rsync                                          -av /home/polytope/dl/omnibus-PDFs/       ${backupDir}/omnibus-PDFs/
   rsync                                          -av /home/polytope/dl/PDFs/               ${backupDir}/PDFs/
   rsync                                          -av /home/polytope/dl/PSs/                ${backupDir}/PSs/
