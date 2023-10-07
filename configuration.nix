@@ -221,7 +221,7 @@
         # qtox # Qt tox client
         # ranger # file manager
         renameutils # a set of programs to make renaming of files faster
-        # rstudio
+        rstudio
         # rtv # reddit terminal client # Consider using 'tuir'.
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
         # rxvt-unicode-plugins.font-size # New name for 'urxvt_font_size'
@@ -289,6 +289,7 @@
         lynx # terminal web-browser (cf. browsh, links2, w3m)
         macchanger # utility for manipulating MAC addresses
         maim # cli screenshot utility [cf. scrot]
+        mathematica # Wolfram computational software system
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
         mtr # network-diagnostics tool
         mupdf # parsing engine for PDF, XPS, and EPUB
@@ -391,6 +392,7 @@
         ripgrep # regex utility that's faster than the silver searcher ['rg']
         rofi # window switcher, run dialog and dmenu replacement
         rofi-pass # script to make rofi work with password-store
+        sageWithDoc # open-source alternative to magma maple, mathematica, and matlab
         scrot # command-line screen-capture utility [cf. maim]
         silver-searcher # ag -> silver-searcher # silver-searcher
         stack # haskell tool stack
