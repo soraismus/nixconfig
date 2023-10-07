@@ -126,7 +126,7 @@ _disposeHistoryOrphans () {
 download-from-arxiv () {
   local filename="${1}";
   local id="$(echo "${filename}" | sed "s/\([^0-9-]\+\)--/\1\//")";
-  wget --user-agent="Mozilla/5.0" --output-document="${filename}.pdf" "https://arxiv.org/pdf/${id}.pdf";
+  wget --user-agent="Mozilla/5.0" --output-document="${filename}.pdf" "https://browse.arxiv.org/pdf/${id}.pdf";
   sleep 4
 }
 
