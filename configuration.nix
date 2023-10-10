@@ -411,6 +411,7 @@
         units # unit-conversion tool
         unzip # extraction utility for archives cmopressed in .zip format
         usbutils # tools (e.g., lsusb) for working with USB devices
+        perl538Packages.vidir # file manager using vim itself
         # Currently, see ~/.vintrc.yaml for theo-wide vint configuration.
         vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
         vlc # cross-platform media player and streaming server
@@ -422,6 +423,7 @@
         youtube-dl # command-line tool to download videos from video platforms
         yq-go # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
+        # ytfzf # A posix script to find and watch youtube videos from the terminal
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
         zip # compressor/achiver for creating and modifyig zipfiles
       ];
