@@ -289,7 +289,6 @@
         lynx # terminal web-browser (cf. browsh, links2, w3m)
         macchanger # utility for manipulating MAC addresses
         maim # cli screenshot utility [cf. scrot]
-        mathematica # Wolfram computational software system
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
         mtr # network-diagnostics tool
         mupdf # parsing engine for PDF, XPS, and EPUB
@@ -308,6 +307,11 @@
         patchelf
         pavucontrol # PulseAudio volume control
         pciutils # programs (like 'lspci') for managing PCI devices
+        (perl.withPackages (pkgs:
+          [
+            pkgs.vidir # file manager using vim itself
+          ]
+        ))
         poppler_utils # PDF tools like pdfunite and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
@@ -411,7 +415,6 @@
         units # unit-conversion tool
         unzip # extraction utility for archives cmopressed in .zip format
         usbutils # tools (e.g., lsusb) for working with USB devices
-        perl538Packages.vidir # file manager using vim itself
         # Currently, see ~/.vintrc.yaml for theo-wide vint configuration.
         vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
         vlc # cross-platform media player and streaming server
