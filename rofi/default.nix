@@ -14,12 +14,7 @@ let
     delay=2
 
     ## Programs to be used
-    # Editor
-    # EDITOR='gvim -f'
     EDITOR='vim'
-
-    # Browser
-    # BROWSER='qtb'
     BROWSER='firefox'
 
     ## Misc settings
@@ -80,9 +75,7 @@ let
     USERNAME_field='user'
     AUTOTYPE_field='autotype'
     delay=2
-    # EDITOR='gvim -f'
     EDITOR='vim'
-    # BROWSER='qtb'
     BROWSER='firefox'
     default_do='typePass'
     auto_enter='false'
