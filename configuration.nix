@@ -76,6 +76,7 @@
         PROMPT_COMMAND = "_promptCommand";
         TAGPATH = "${CONFIG_ROOT}/.tags";
         TAGSOURCES = "${CONFIG_ROOT}/.tag_sources";
+        VISUAL = "vim";
         VOLATILE_CONFIG = "/etc/nixos/volatile_config";
         VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";
       };
@@ -258,6 +259,7 @@
         chromium # browser
         cifs-utils # tools for managing CIFS client filesystems (CIFS is Microsoft's version of SMB)
         ctags # utility for fast source-code browsing (exuberant ctags)
+        ddgr # search DuckDuckGo from the terminal
         dstat # monitor to replace vmstat, iostat, ifstat, netstat
         dua # tool to learn about directories' disk usage
         du-dust # du + rust = dust; like du but more intuitive
@@ -290,6 +292,7 @@
         macchanger # utility for manipulating MAC addresses
         maim # cli screenshot utility [cf. scrot]
         mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
+        mmv # utility for wildcard renaming, copying, etc
         mtr # network-diagnostics tool
         mupdf # parsing engine for PDF, XPS, and EPUB
         myVim # text editor
