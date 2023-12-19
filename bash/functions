@@ -181,8 +181,9 @@ get-arxiv-title ()
   if data="$(arxiv2bib "${lookup}" 2> /dev/null)"; then
     local title="$(echo "${data}" | awk -F '[{}]+' '/Title\s*=\s*{/{print $2}')";
     local year="$(echo "${data}" | awk -F '[{}]+' '/Year\s*=\s*{/{print $2}')";
-    local filename1="$( normalize-file-name "${new_id}--${title}.${year}.pdf" )";
-    local filename2="$( echo "${filename1}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' | sed 's/---\+/--/g' )"
+    local versioned_id="$(echo "${data}" | awk -F '[{}]+' '/Eprint\s*=\s*{/{print $2}')";
+    local filename1="$( normalize-file-name "${versioned_id}--${title}.${year}.pdf" )";
+    local filename2="$( echo "${filename1}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' | sed 's/---\+/--/g' | sed 's/\&/and/g' )"
     echo "${filename2}"
     return 0
   else
