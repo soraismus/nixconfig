@@ -1,8 +1,8 @@
 # Examples:
-#  0. `backup --output-target /usb-toshiba-backup`
-#  1. `backup --dry-run --output-target /usb-toshiba-backup`
-#  2. `backup --quiet-errors --output-target /usb-toshiba-backup`
-#  3. `backup --verbose 1 --output-target /usb-toshiba-backup`
+#  0. `backup-theo --output-target /usb-toshiba-backup`
+#  1. `backup-theo --dry-run --output-target /usb-toshiba-backup`
+#  2. `backup-theo --quiet-errors --output-target /usb-toshiba-backup`
+#  3. `backup-theo --verbose 1 --output-target /usb-toshiba-backup`
 
 set -o errexit
 set -o nounset
@@ -10,24 +10,75 @@ set -o pipefail
 
 _backup () {
   backupDir="${1}"
-  rsync                                          -av /home/polytope/dl/audio/              ${backupDir}/audio/
-  rsync --exclude ebdisplay --exclude scratchpad -av /home/polytope/d/                     ${backupDir}/Documents/
-  rsync                                          -av /home/polytope/d/ebdisplay/           ${backupDir}/ebdisplay/
-  rsync                                          -av /home/polytope/dl/fonts/              ${backupDir}/fonts/
-  rsync                                          -av /home/polytope/dl/images/             ${backupDir}/images/
-  rsync                                          -av /etc/nixos/                           ${backupDir}/nixos/
-  rsync                                          -av /home/polytope/dl/ocw/                ${backupDir}/ocw/
-  rsync                                          -av /home/polytope/dl/omnibus-PDFs/       ${backupDir}/omnibus-PDFs/
-  rsync                                          -av /home/polytope/dl/PDFs/               ${backupDir}/PDFs/
-  rsync                                          -av /home/polytope/dl/PSs/                ${backupDir}/PSs/
-  rsync                                          -av /home/polytope/source-control/        ${backupDir}/source-control/
-  rsync                                          -av /home/polytope/.ssh/                  ${backupDir}/.ssh/
-  rsync                                          -av /home/polytope/dl/untitled-pdfs/      ${backupDir}/untitled-pdfs/
-  rsync                                          -av /home/polytope/dl/videos/             ${backupDir}/videos/
-  # --
-  rsync                                          -av /home/polytope/dl/ams-history/        ${backupDir}/ams-history/
-  rsync                                          -av /home/polytope/dl/TDA-PDFs/           ${backupDir}/TDA-PDFs/
-  rsync                                          -av /home/polytope/dl/sign-language-PDFs/ ${backupDir}/sign-language-PDFs/
+  dl="${HOME}/dl"
+
+  rsync \
+    --exclude ebdisplay \
+    --exclude scratchpad \
+    -av ${HOME}/d/ \
+    ${backupDir}/Documents/
+
+  rsync -av ${dl}/audio/            ${backupDir}/audio/
+  rsync -av ${dl}/DVIs/             ${backupDir}/DVIs/
+  rsync -av ${dl}/EPUBs/            ${backupDir}/EPUBs/
+  rsync -av ${dl}/fonts/            ${backupDir}/fonts/
+  rsync -av ${dl}/images/           ${backupDir}/images/
+  rsync -av /etc/nixos/             ${backupDir}/nixos/
+  rsync -av ${dl}/ocw/              ${backupDir}/ocw/
+  rsync -av ${dl}/omnibus-PDFs/     ${backupDir}/omnibus-PDFs/
+  rsync -av ${dl}/PDFs/             ${backupDir}/PDFs/
+  rsync -av ${dl}/PSs/              ${backupDir}/PSs/
+  rsync -av ${HOME}/source-control/ ${backupDir}/source-control/
+  rsync -av ${HOME}/.ssh/           ${backupDir}/.ssh/
+
+  rsync \
+    --exclude beautiful-soup \
+    -av ${dl}/untitled-pdfs/ \
+    ${backupDir}/untitled-pdfs/
+
+  rsync -av ${dl}/videos/           ${backupDir}/videos/
+
+  rsync \
+    -av ${dl}/learning-resources-and-exemplars/ \
+    ${backupDir}/learning-resources-and-exemplars/
+}
+
+_backup_dry_run () {
+  backupDir="${1}"
+  dl="${HOME}/dl"
+
+  rsync
+    --dry-run \
+    --exclude ebdisplay \
+    --exclude scratchpad \
+    -av ${HOME}/d/ \
+    ${backupDir}/Documents/
+
+  rsync --dry-run -av ${dl}/audio/            ${backupDir}/audio/
+  rsync --dry-run -av ${dl}/DVIs/             ${backupDir}/DVIs/
+  rsync --dry-run -av ${dl}/EPUBs/            ${backupDir}/EPUBs/
+  rsync --dry-run -av ${dl}/fonts/            ${backupDir}/fonts/
+  rsync --dry-run -av ${dl}/images/           ${backupDir}/images/
+  rsync --dry-run -av /etc/nixos/             ${backupDir}/nixos/
+  rsync --dry-run -av ${dl}/ocw/              ${backupDir}/ocw/
+  rsync --dry-run -av ${dl}/omnibus-PDFs/     ${backupDir}/omnibus-PDFs/
+  rsync --dry-run -av ${dl}/PDFs/             ${backupDir}/PDFs/
+  rsync --dry-run -av ${dl}/PSs/              ${backupDir}/PSs/
+  rsync --dry-run -av ${HOME}/source-control/ ${backupDir}/source-control/
+  rsync --dry-run -av ${HOME}/.ssh/           ${backupDir}/.ssh/
+
+  rsync \
+    --dry-run \
+    --exclude beautiful-soup \
+    -av ${dl}/untitled-pdfs/ \
+    ${backupDir}/untitled-pdfs/
+
+  rsync --dry-run -av ${dl}/videos/           ${backupDir}/videos/
+
+  rsync \
+    --dry-run \
+    -av ${dl}/learning-resources-and-exemplars/ \
+    ${backupDir}/learning-resources-and-exemplars/
 }
 
 die () {
@@ -53,10 +104,10 @@ General Options:
 
 Examples of usage:
 ------------------
-0. backup --output-target /usb-toshiba-backup
-1. backup --dry-run --output-target /usb-toshiba-backup
-2. backup --quiet-errors --output-target /usb-toshiba-backup
-3. backup --verbose 1 --output-target /usb-toshiba-backup
+0. backup-theo --output-target /usb-toshiba-backup
+1. backup-theo --dry-run --output-target /usb-toshiba-backup
+2. backup-theo --quiet-errors --output-target /usb-toshiba-backup
+3. backup-theo --verbose 1 --output-target /usb-toshiba-backup
 
 Direct Dependencies:
 -------------------
@@ -101,6 +152,7 @@ while true; do
         die 8 "${verboseErrors}" "The --dry-run flag has already been set."
       fi
       shouldExecute=0
+      _command="_backup_dry_run"
       shift 1
       ;;
     -h | -\? | --help )
@@ -154,7 +206,11 @@ if [ ! -v verboseInfo ]; then
   verboseInfo=1
 fi
 
-_command="_backup"
+if [ "${shouldExecute}" -eq 1 ]; then
+  _command="_backup"
+else
+  _command="_backup_dry_run"
+fi
 
 if [ ! -v _command ]; then
   die "${invalidCommandError}" "${verboseErrors}" "No valid command has been set."
@@ -171,7 +227,7 @@ if [ "${_command}x" = "_backupx" ]; then # {
   fi # }
 fi # }
 
-if [ "${_command}x" = "_backupx" ]; then # {
+if [ "${_command}x" = "_backupx" ] || [ "${_command}x" = "_backup_dry_runx" ] ; then # {
   backupArgs=()
   backupArgs+=( "${outputPath}" )
 fi # }
@@ -190,6 +246,9 @@ elif [ "${verboseInfo}x" = "1x" ]; then # {
   if [ "${_command}x" = "_backupx" ]; then # {
     echo "Steps:"
     echo "  (0)" _backup "${outputPath}"
+  elif [ "${_command}x" = "_backup_dry_runx" ]; then # {
+    echo "Steps:"
+    echo "  (0)" _backup_dry_run "${outputPath}"
   else # } {
     die 69 "${verboseErrors}" "'${_command}' is not a recognized valid command."
   fi # }
@@ -206,6 +265,20 @@ if [ "${shouldExecute}x" = "1x" ]; then # {
       _backup "${backupArgs[@]}"
     else # } {
       die 70 "${verboseErrors}" "The variable 'backupArgs' has not been set."
+    fi # }
+  elif [ "${_command}x" = "_backup_dry_runx" ]; then # {
+    if [ -v backupArgs ]; then # {
+      _backup_dry_run "${backupArgs[@]}"
+    else # } {
+      die 71 "${verboseErrors}" "The variable 'backupArgs' has not been set."
+    fi # }
+  fi # }
+elif [ "${shouldExecute}x" = "0x" ]; then # {
+  if [ "${_command}x" = "_backup_dry_runx" ]; then # {
+    if [ -v backupArgs ]; then # {
+      _backup_dry_run "${backupArgs[@]}"
+    else # } {
+      die 72 "${verboseErrors}" "The variable 'backupArgs' has not been set."
     fi # }
   fi # }
 fi # }
