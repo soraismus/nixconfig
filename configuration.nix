@@ -442,6 +442,7 @@
       execute-namespace.enable = true;
       format-purs-json-errors-output.enable = true;
       git.enable = true;
+      mdb-to-sql.enable = true;
       rofi.enable = true;
     };
     services = {
