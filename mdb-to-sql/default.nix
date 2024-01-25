@@ -10,14 +10,11 @@ let
     '';
 in
 {
-  options.environment.theo.programs.bookmark = {
+  options.environment.theo.programs.mdb-to-sql = {
     enable = lib.mkEnableOption "mdb-to-sql";
   };
 
-  config = lib.mkIf config.environment.theo.programs.bookmark.enable {
-    environment.systemPackages =
-      [ bookmark
-        pkgs.pandoc
-      ];
+  config = lib.mkIf config.environment.theo.programs.mdb-to-sql.enable {
+    environment.systemPackages = [ mdb-to-sql ];
   };
 }
