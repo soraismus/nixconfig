@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  bookmark = pkgs.writeScriptBin "mdb-to-sql" ''
+  mdb-to-sql = pkgs.writeScriptBin "mdb-to-sql" ''
       #!${pkgs.bash}/bin/bash
       set -o errexit
       set -o nounset
