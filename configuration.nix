@@ -14,6 +14,7 @@
       ./hardware-configuration.nix
       ./git
       ./i3
+      ./mdb-to-sql
       ./rofi
     ];
 
