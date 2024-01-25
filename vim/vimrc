@@ -100,9 +100,14 @@ inoremap <C-W> <C-G>u<C-W>
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap Q @q
+nnoremap <leader>p "+
+nnoremap <leader>y "+y
+nnoremap <leader>Y "+y$
 nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 nnoremap ## :set relativenumber!<CR>
 vnoremap Q :norm @q<CR>
+xnoremap <leader>p "+
+xnoremap <leader>y "+y
 
 if has("patch-8.1.0251")
   let myBackupDir = myConfigDir . '/backupDir'
