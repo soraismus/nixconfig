@@ -166,14 +166,18 @@ get-arxiv-title ()
   local filename0="${1}";
   local id="${filename0%*.pdf}";
   local new_dir="${2}";
-  local new_id;
+  local class;
+  local classless_id;
   local lookup;
+  local new_id;
   if [[ "${id}" =~ "--" ]]; then
-    local class="${id%*--*}";
-    local classless_id="${id#*--*}";
+    class="${id%*--*}";
+    classless_id="${id#*--*}";
     lookup="${class}/${classless_id}";
     new_id="${class}.${classless_id}";
   else
+    class=""
+    classless_id=""
     lookup="${id}";
     new_id="${id}";
   fi;
@@ -181,8 +185,14 @@ get-arxiv-title ()
   if data="$(arxiv2bib "${lookup}" 2> /dev/null)"; then
     local title="$(echo "${data}" | awk -F '[{}]+' '/Title\s*=\s*{/{print $2}')";
     local year="$(echo "${data}" | awk -F '[{}]+' '/Year\s*=\s*{/{print $2}')";
-    local versioned_id="$(echo "${data}" | awk -F '[{}]+' '/Eprint\s*=\s*{/{print $2}')";
-    local filename1="$( normalize-file-name "${versioned_id}--${title}.${year}.pdf" )";
+    local versioned_id0="$(echo "${data}" | awk -F '[{}]+' '/Eprint\s*=\s*{/{print $2}')";
+    local versioned_id1
+    if [ "${class}" = "" ]; then
+      versioned_id1="${versioned_id0}"
+    else
+      versioned_id1="${class}.${versioned_id0##*[a-z]}"
+    fi
+    local filename1="$( normalize-file-name "${versioned_id1}--${title}.${year}.pdf" )";
     local filename2="$( echo "${filename1}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' | sed 's/---\+/--/g' | sed 's/\&/and/g' )"
     echo "${filename2}"
     return 0
