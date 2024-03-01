@@ -191,12 +191,12 @@ get-arxiv-title ()
     # Wrapped title continuations are indicated by an initial space.
     # --
     local title0="$(echo "${data}" | awk -F '[{}]' '/Title\s*=\s*/ {print $2}')";
-    local title1_0="$(echo "${data}" | awk -F '[{}]' 'isFound && /^\s+/ {print $1; isFound = 1} /Title\s*=\s*/ {isFound = 1}')";
+    local title1_0="$(echo "${data}" | awk -F '[{}]' 'isFound && /^\s+/ {print $1; isFound = 0} /Title\s*=\s*/ {isFound = 1}')";
     local title1_1="$(echo "${title1_0}" | sed 's/\s\+/ /g')"
     local title="${title0}${title1_1}"
     # --
     local year="$(echo "${data}" | awk -F '[{}]' '/Year\s*=\s*/ {print $2}')";
-    local versioned_id0="$(echo "${data}" | awk -F '{}' '/Eprint\s*=\s*/ {print $2}')";
+    local versioned_id0="$(echo "${data}" | awk -F '[{}]' '/Eprint\s*=\s*/ {print $2}')";
     local versioned_id1
     if [ "${class}" = "" ]; then
       versioned_id1="${versioned_id0}"
