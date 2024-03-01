@@ -1,6 +1,7 @@
 example                     effect
 -------                     ------
 "+yy                        copy the current line into the windowing system's clipboard
+"0p                         past from register 0, which contains the last yanked item (useful for pasting into a visual block)
 "*p                         paste the contents of the clipboard
 @:                          repeat the most recent cmdmode command.
 0w                          go to the first word
