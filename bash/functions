@@ -183,8 +183,18 @@ get-arxiv-title ()
   fi;
   local data;
   if data="$(arxiv2bib "${lookup}" 2> /dev/null)"; then
-    local title="$(echo "${data}" | awk -F '{}' '/Title\s*=\s*/ {print $2}')";
-    local year="$(echo "${data}" | awk -F '{}' '/Year\s*=\s*/ {print $2}')";
+    --
+    # Note: Brackets in the argument to awk's '-F' option
+    # indicate that any element within them should be a field separator.
+    --
+    # Note: Titles returned by 'arxiv2bib' are sometimes wrapped to the next line.
+    # Wrapped title continuations are indicated by an initial space.
+    --
+    local title0="$(echo "${data}" | awk -F '[{}]' '/Title\s*=\s*/ {print $2}')";
+    local title1="$(echo "${data}" | awk -F '[{}]' 'isFound && /^\s+/ {print $1; isFound = 1} /Title\s*=\s*/ {isFound = 1}')";
+    local title="${title0}${title1}"
+    --
+    local year="$(echo "${data}" | awk -F '[{}]' '/Year\s*=\s*/ {print $2}')";
     local versioned_id0="$(echo "${data}" | awk -F '{}' '/Eprint\s*=\s*/ {print $2}')";
     local versioned_id1
     if [ "${class}" = "" ]; then
