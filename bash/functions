@@ -405,12 +405,96 @@ _mergeShellHistory () {
   fi
 }
 
-# Rename a file so that spaces become hyphens.
 normalize-file-name () {
   local file_name="${1}"
-  local new_file_name_0="$( echo "${file_name}" | sed 's/\*/-star/g' | sed 's/: */--/g' | sed 's/\\mathbf-//g' | sed 's/\\infty/infinity/g' | sed "s/-&-/-and-/g" )"
-  local new_file_name_1="$( echo "${new_file_name_0}" | tr ' ' '-' | tr '[' '.' | tr -d "\"']()\$?,\\\!;/^\`" | tr '[:upper:]' '[:lower:]' )"
-  echo "${new_file_name_1}"
+  # --
+  local file_name="$( echo "${file_name}" | sed 's/: */--/g' | sed 's/\\mathbf-//g' | sed 's/\\infty/infinity/g' )"
+  local file_name="$( echo "${file_name}" | tr ' ' '-' | tr '[' '.' | tr -d "\"']()\$?,\\\!;/^\`" | tr '[:upper:]' '[:lower:]' )"
+  local file_name="$( echo "${file_name}" | sed 's/_/-/g' )"
+  # --
+  # Common math symbols or punctuation-like glyphs:
+  local file_name="$( echo "${file_name}" | sed 's/%/-percent/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/=/equals/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/</less-than/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/>/greater-than/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/≤/less-than-or-equal-to/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/≥/greater-than-or-equal-to/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/≠/not-equal-to/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/+/plus/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/×/times/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/\*/-star/g' )"
+  # --
+  local file_name="$( echo "${file_name}" | sed 's/-&-/-and-/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/&/-and-/g' )"
+  # --
+  # Diacritics:
+  local file_name="$( echo "${file_name}" | sed 's/à/a/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/á/a/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ä/a/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/è/e/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/é/e/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/í/i/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ó/o/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ö/o/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ú/u/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ü/u/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ý/y/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ç/c/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/À/A/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Á/A/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ä/A/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/È/E/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/É/E/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Í/I/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ó/O/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ö/O/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ú/U/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ü/U/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ý/Y/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ç/C/g' )"
+  # --
+  # Greek letters:
+  local file_name="$( echo "${file_name}" | sed 's/α/alpha/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/β/beta/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/γ/gamma/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Γ/gamma/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/δ/delta/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Δ/delta/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ε/epsilon/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ζ/zeta/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/η/eta/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/θ/theta/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Θ/theta/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ι/iota/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/κ/kappa/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/λ/lambda/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Λ/lambda/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/μ/mu/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ν/nu/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ξ/chi/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ξ/chi/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/π/pi/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Π/pi/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ρ/rho/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/σ/sigma/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ς/sigma/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Σ/sigma/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/τ/tau/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/φ/phi/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Φ/phi/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/χ/a/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Χ/a/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ψ/psi/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ψ/psi/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/ω/omega/g' )"
+  local file_name="$( echo "${file_name}" | sed 's/Ω/omega/g' )"
+  # --
+  # mathbb
+  # mathbf
+  # varphi
+  # widetilde
+  # --
+  echo "${file_name}"
 }
 
 note () {
