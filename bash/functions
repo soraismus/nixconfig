@@ -183,14 +183,14 @@ get-arxiv-title ()
   fi;
   local data;
   if data="$(arxiv2bib "${lookup}" 2> /dev/null)"; then
-    local title="$(echo "${data}" | awk -F '[{}]+' '/Title\s*=\s*{/{print $2}')";
-    local year="$(echo "${data}" | awk -F '[{}]+' '/Year\s*=\s*{/{print $2}')";
-    local versioned_id0="$(echo "${data}" | awk -F '[{}]+' '/Eprint\s*=\s*{/{print $2}')";
+    local title="$(echo "${data}" | awk -F '{}' '/Title\s*=\s*/ {print $2}')";
+    local year="$(echo "${data}" | awk -F '{}' '/Year\s*=\s*/ {print $2}')";
+    local versioned_id0="$(echo "${data}" | awk -F '{}' '/Eprint\s*=\s*/ {print $2}')";
     local versioned_id1
     if [ "${class}" = "" ]; then
       versioned_id1="${versioned_id0}"
     else
-      versioned_id1="${class}.${versioned_id0##*[a-z]}"
+      versioned_id1="${class}.${versioned_id0##*/}"
     fi
     local filename1="$( normalize-file-name "${versioned_id1}--${title}.${year}.pdf" )";
     local filename2="$( echo "${filename1}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' | sed 's/---\+/--/g' | sed 's/\&/and/g' )"
