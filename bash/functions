@@ -191,7 +191,7 @@ get-arxiv-title ()
     # Wrapped title continuations are indicated by an initial space.
     # --
     local title0="$(echo "${data}" | awk -F '[{}]' '/Title\s*=\s*/ {print $2}')";
-    local title1_0="$(echo "${data}" | awk -F '[{}]' 'isFound && /^\s+/ {print $1; isFound = 0} /Title\s*=\s*/ {isFound = 1}')";
+    local title1_0="$(echo "${data}" | awk -F '[{}]' 'BEGIN {isFound = 0}; isFound && /^\s+/ {print $1}; isFound {isFound = 0}; /Title\s*=\s*/ {isFound = 1}')";
     local title1_1="$(echo "${title1_0}" | sed 's/\s\+/ /g')"
     local title="${title0}${title1_1}"
     # --
