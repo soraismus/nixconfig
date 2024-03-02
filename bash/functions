@@ -181,6 +181,13 @@ get-arxiv-title ()
     lookup="${id}";
     new_id="${id}";
   fi;
+  local page_count="$(pdfinfo "${filename0}" | awk '/Pages:/ {print $2}')"
+  local is_book
+  if [ "${page_count}" -ge "100" ]; then
+    is_book="1"
+  else
+    is_book="0"
+  fi
   local data;
   if data="$(arxiv2bib "${lookup}" 2> /dev/null)"; then
     # --
@@ -203,12 +210,24 @@ get-arxiv-title ()
     else
       versioned_id1="${class}.${versioned_id0##*/}"
     fi
-    local filename1="$( normalize-file-name "${versioned_id1}--${title}.${year}.pdf" )";
-    local filename2="$( echo "${filename1}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' | sed 's/---\+/--/g' | sed 's/\&/and/g' )"
+    local filename1
+    if [ "${is_book}" = "1" ]; then
+      local filename1="${versioned_id1}--book--${title}.${year}.pdf"
+    else
+      local filename1="${versioned_id1}--${title}.${year}.pdf"
+    fi
+    local filename2="$( normalize-file-name "${filename1}" )"
+    local filename3="$( echo "${filename2}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' | sed 's/---\+/--/g' | sed 's/\&/and/g' )"
     echo "${filename2}"
     return 0
   else
-    echo "${filename0}"
+    local filename4
+    if [ "${is_book}" = "1" ]; then
+      filename4="book--${filename0}"
+    else
+      filename4="${filename0}"
+    fi
+    echo "${filename4}"
     return 1
   fi;
 }
