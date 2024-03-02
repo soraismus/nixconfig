@@ -163,24 +163,24 @@ gdrive_list_folders () {
 
 get-arxiv-title ()
 {
-  local filename0="${1}";
-  local id="${filename0%*.pdf}";
-  local new_dir="${2}";
-  local class;
-  local classless_id;
-  local lookup;
-  local new_id;
+  local filename0="${1}"
+  local id="${filename0%*.pdf}"
+  local new_dir="${2}"
+  local class
+  local classless_id
+  local lookup
+  local new_id
   if [[ "${id}" =~ "--" ]]; then
-    class="${id%*--*}";
-    classless_id="${id#*--*}";
-    lookup="${class}/${classless_id}";
-    new_id="${class}.${classless_id}";
+    class="${id%*--*}"
+    classless_id="${id#*--*}"
+    lookup="${class}/${classless_id}"
+    new_id="${class}.${classless_id}"
   else
     class=""
     classless_id=""
-    lookup="${id}";
-    new_id="${id}";
-  fi;
+    lookup="${id}"
+    new_id="${id}"
+  fi
   local page_count="$(pdfinfo "${filename0}" | awk '/Pages:/ {print $2}')"
   local is_book
   if [ "${page_count}" -ge "100" ]; then
@@ -188,7 +188,7 @@ get-arxiv-title ()
   else
     is_book="0"
   fi
-  local data;
+  local data
   if data="$(arxiv2bib "${lookup}" 2> /dev/null)"; then
     # --
     # Note: Brackets in the argument to awk's '-F' option
@@ -197,13 +197,13 @@ get-arxiv-title ()
     # Note: Titles returned by 'arxiv2bib' are sometimes wrapped to the next line.
     # Wrapped title continuations are indicated by an initial space.
     # --
-    local title0="$(echo "${data}" | awk -F '[{}]' '/Title\s*=\s*/ {print $2}')";
-    local title1_0="$(echo "${data}" | awk -F '[{}]' 'BEGIN {isFound = 0}; isFound && /^\s+/ {print $1}; isFound {isFound = 0}; /Title\s*=\s*/ {isFound = 1}')";
+    local title0="$(echo "${data}" | awk -F '[{}]' '/Title\s*=\s*/ {print $2}')"
+    local title1_0="$(echo "${data}" | awk -F '[{}]' 'BEGIN {isFound = 0}; isFound && /^\s+/ {print $1}; isFound {isFound = 0}; /Title\s*=\s*/ {isFound = 1}')"
     local title1_1="$(echo "${title1_0}" | sed 's/\s\+/ /g')"
     local title="${title0}${title1_1}"
     # --
-    local year="$(echo "${data}" | awk -F '[{}]' '/Year\s*=\s*/ {print $2}')";
-    local versioned_id0="$(echo "${data}" | awk -F '[{}]' '/Eprint\s*=\s*/ {print $2}')";
+    local year="$(echo "${data}" | awk -F '[{}]' '/Year\s*=\s*/ {print $2}')"
+    local versioned_id0="$(echo "${data}" | awk -F '[{}]' '/Eprint\s*=\s*/ {print $2}')"
     local versioned_id1
     if [ "${class}" = "" ]; then
       versioned_id1="${versioned_id0}"
@@ -229,7 +229,7 @@ get-arxiv-title ()
     fi
     echo "${filename4}"
     return 1
-  fi;
+  fi
 }
 
 githostclone () {
