@@ -217,8 +217,8 @@ get-arxiv-title ()
       local filename1="${versioned_id1}--${title}.${year}.pdf"
     fi
     local filename2="$( normalize-file-name "${filename1}" )"
-    local filename3="$( echo "${filename2}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' | sed 's/---\+/--/g' | sed 's/\&/and/g' )"
-    echo "${filename2}"
+    local filename3="$( echo "${filename2}" | sed 's/\(.*[0-9]--\)\(the\|an\|a\)-/\1/' | sed 's/---\+/--/g' )"
+    echo "${filename3}"
     return 0
   else
     local filename4
