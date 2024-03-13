@@ -303,3 +303,13 @@ this process can interfere with any programs that use 'inotify' (e.g., spago).
 To toggle locally:          `setlocal writebackup!`.
 To turn off locally:        `setlocal nowritebackup`.
 To check activation status: `set writebackup?`.
+
+
+/<Ctrl-R>0 # To put contents of register 0 (yank register) into register / (search register).
+More generally:
+/^R{register} # To put contents of register {register} into the / register.
+
+Multi-line regex:
+`\_.` means "match any single character including newline".
+Here's an example of searching for 'This' and 'text', possibly separated by multiple lines:
+      /This\_.*text/
