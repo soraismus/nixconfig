@@ -195,7 +195,7 @@
         # kakounePlugins.pandoc-kak
         # kakounePlugins.smarttab-kak
         # kakounePlugins.tabs-kak
-        lean3 # automatic and interactive theorem prover
+        lean4 # automatic and interactive theorem prover
         # libgnome_keyring # framework for managing passwords and other secrets
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         lorri # your project's nix-env
@@ -228,8 +228,9 @@
         # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
         # rxvt-unicode-plugins.font-size # New name for 'urxvt_font_size'
         # sc-im # ncurses spreadsheet for terminal
-        # sqldiff # SQLite-db differ
-        # sqlite # self-contained ZQL database engine
+        sqldiff # SQLite-db differ
+        sqlite # self-contained ZQL database engine
+        sqlite-utils # CLI utility and library for manipulating SQLite databases
         # sqlite-analyzer # stats tool for SQLite databases
         # stack2nix # nix utility that transforms stack specs into nix specs
         # tinc # VPN daemon with full mesh routing
@@ -406,6 +407,9 @@
         stack # haskell tool stack
         # strongswan # open-source IPsec-based VPN solution
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
+        texmaker # Tex and LaTex editor
+        tex-match # desktop version of detexify: search by sketching
+        texstudio # Tex and LaTex editor
         tcpdump # network sniffer
         termite # keyboard-centric VTE-based terminal
         termonad # termonad-with-packages -> termonad # terminal emulator configurable in haskell
