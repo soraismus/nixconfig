@@ -195,7 +195,7 @@
         # kakounePlugins.pandoc-kak
         # kakounePlugins.smarttab-kak
         # kakounePlugins.tabs-kak
-        lean4 # automatic and interactive theorem prover
+        lean3 # automatic and interactive theorem prover
         # libgnome_keyring # framework for managing passwords and other secrets
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         lorri # your project's nix-env
