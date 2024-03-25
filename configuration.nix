@@ -229,7 +229,7 @@
         # rxvt-unicode-plugins.font-size # New name for 'urxvt_font_size'
         # sc-im # ncurses spreadsheet for terminal
         sqldiff # SQLite-db differ
-        sqlite # self-contained ZQL database engine
+        sqlite # self-contained SQL database engine
         sqlite-utils # CLI utility and library for manipulating SQLite databases
         # sqlite-analyzer # stats tool for SQLite databases
         # stack2nix # nix utility that transforms stack specs into nix specs
@@ -555,6 +555,7 @@
         b3 = "cd ../../..";
         b4 = "cd ../../../..";
         b5 = "cd ../../../../..";
+        date = "date +%Y.%m.%d.%H.%M";
         duf = "duf -hide special -hide-mp /boot,/nix/store";
         format-purs = "format-purs-json-errors-output";
         gco = "git co";
