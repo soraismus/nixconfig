@@ -122,6 +122,9 @@ if has('persistent_undo')
   set undofile
 endif
 
+" latex-live-preview
+let g:livepreview_previewer = 'zathura'
+
 " Syntastic
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -136,8 +139,9 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 " vim-crunch
 let g:crunch_result_type_append = 0
 
-" latex-live-preview
-let g:livepreview_previewer = 'zathura'
+" vim-unicoder
+let g:unicoder_command_abbreviations = 0 " Disable abbrevs in command and search lines
+let g:unicoder_exclude_filetypes = ['tex', 'latex', 'plaintex']
 
 " Toggle between full path and relative path of current file.
 function! RestoreDeleteNextEmptyLineToRegisterQ()
