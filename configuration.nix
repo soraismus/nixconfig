@@ -278,6 +278,7 @@
         gimp # GNU image-manipulation program
         gdrive # command-line utility for interacting with google drive
         ghostscript # PostScript interpreter
+        glances # curses-bases monitoring tool (cf. htop)
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
         htop # interactive process viewer
         hound # fast code searching (react frontend; go backend; regex w/ trigram index)
