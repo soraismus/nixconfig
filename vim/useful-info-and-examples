@@ -13,6 +13,7 @@ example                     effect
 `adiw`bviwp`aP              swap words at marks `a and `b
 "Ayw                        yank a word & append it into register "A
 /<C-R>A                     put the contents of register "A into the search string
+/\%U2061                    search for the unicode character with the long hex code '<2061>'
 {normal mode} "+y{motion}   yank motion into the "+ register
 {cmd mode}    :y%+          yank full file into the "+ register
 :[line]put {register}       paste from register onto specified line
@@ -313,3 +314,16 @@ Multi-line regex:
 `\_.` means "match any single character including newline".
 Here's an example of searching for 'This' and 'text', possibly separated by multiple lines:
       /This\_.*text/
+
+
+
+https://superuser.com/questions/330343/how-can-i-execute-a-vim-selection-or-range-in-bash-without-replacing-it
+--
+--
+:w !command
+:'<,'>w !command
+:help :w_c
+--
+--
+In vim 8.0, you can select a range of lines and run :terminal bash. This will open a terminal running bash with your selection as stdin.
+:terminal node, :terminal ruby, :terminal python seem to work nicely as well.
