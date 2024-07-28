@@ -195,6 +195,7 @@
         # kakounePlugins.pandoc-kak
         # kakounePlugins.smarttab-kak
         # kakounePlugins.tabs-kak
+        koreader # ebook-reader application
         lean3 # automatic and interactive theorem prover
         # libgnome_keyring # framework for managing passwords and other secrets
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
@@ -270,8 +271,9 @@
         fd # alternative to 'find'
         feh # light-weight image viewer
         ffmpeg # manager and converter of audio/video files
+        firefox
         # firefox-wrapper # browser
-        latest.firefox-nightly-bin
+        # latest.firefox-nightly-bin
         fontforge-gtk # font editor with GTK UI
         fonttools
         fzf # command-line fuzzy finder
@@ -336,7 +338,7 @@
         purs-utils.spago
         purs-utils.spago2nix
         purs-utils.zephyr # purescript tree-shaker
-        (python311.withPackages (pkgs:
+        (python310.withPackages (pkgs:
           # let
           #   pytorch = pkgs.pytorch.override {
           #     # cudaSupport = true;
@@ -350,7 +352,7 @@
           [
             pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
             pkgs.beautifulsoup4 # html- and xml-parser
-            # pkgs.bokeh # statistical and interactive HTML plots
+            pkgs.bokeh # statistical and interactive HTML plots
             # camelot
             # pkgs.fastapi # web/api framework
             # pkgs.flask # web/api microframework
@@ -360,11 +362,11 @@
             pkgs.ipdb # web-based notebook environment for interactive computing
             pkgs.ipython # web-based notebook environment for interactive computing
             # 23.05 can't build. # pkgs.jupyter # web-based notebook environment for interactive computing
+            pkgs.jupyter # web-based notebook environment for interactive computing
             # pkgs.jupyter_core # web-based notebook environment for interactive computing
-            # pkgs.Keras # deep-learning library for Theano and TensorFlow
+            pkgs.keras # deep-learning library for Theano and TensorFlow
             pkgs.matplotlib # plotting library
             pkgs.networkx # network-management library
-            # pkgs.nltk # natural-language processing toolkit
             pkgs.numpy # scientific (num-processing) tools
             # pkgs.openai # client library for the OpenAI API
             pkgs.opencv4 # Open Computer Vision library
@@ -379,24 +381,35 @@
             pkgs.pypdf3
             #pkgs.pytorchWithCuda # deep-learning platform
             # python-ghostscript
-            # pytorch # deep-learning platform
             pkgs.requests_toolbelt
             # pkgs.spacy # natural-language processing
-            # pkgs.scikit-learn # machine learning & data mining
             # pkgs.scipy # science/engineering library
             pkgs.scrapy # web crawler and scraper
-            # pkgs.seaborn # statistical data visualization
+            pkgs.seaborn # statistical data visualization
+            # broken # pkgs.sklearn-deap # scikit-learn with evolutionary algorithms
             # pkgs.statsmodel # statistical modeling
             # pkgs.streamlit # build custom machine-learning tools
-            # pkgs.tensorflow # machine learning
+            pkgs.nltk # natural-language processing toolkit
+            pkgs.pytorch # deep-learning platform
+            # pkgs.tensorboard # TensorFlow's visualization toolkit
+            pkgs.tkinter
             # pkgs.torch
             # pkgs.torchaudio
-            # pkgs.torchvision # deep-learning platform
             # pkgs.unittest2 # backport of unittest testing framework
             # pkgs.xgboost # gradient boosting library (e.g., GBDTs)
-            # pkgs.sklearn-deep # scikit-learn with evolutionary algorithms
+
+            pkgs.scikit-learn # machine learning & data mining
+            # pkgs.scikit-tda
+            # pkgs.sklearn-deap # scikit-learn with evolutionary algorithms
+
+            # pkgs.tensorflow # machine learning
+            pkgs.tensorflow-bin # machine learning
+            pkgs.torchvision # deep-learning platform                             # *
           ]
         )) # Cf nixos.wiki/wiki/Python
+        # boost
+        # xgboost
+
         qpdf # C++ programs that inspect/manipulate PDF files
         qutebrowser # keyboard-focused browser with minimal GUI
         ripgrep # regex utility that's faster than the silver searcher ['rg']
@@ -435,8 +448,9 @@
         youtube-dl # command-line tool to download videos from video platforms
         yq-go # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
-        # ytfzf # A posix script to find and watch youtube videos from the terminal
+        # ytfzf # posix script to find and watch youtube videos from the terminal
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
+        # zed-editor # code editor
         zip # compressor/achiver for creating and modifyig zipfiles
       ];
 
