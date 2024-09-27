@@ -413,6 +413,7 @@
         qpdf # C++ programs that inspect/manipulate PDF files
         qutebrowser # keyboard-focused browser with minimal GUI
         ripgrep # regex utility that's faster than the silver searcher ['rg']
+        ripgrep-all # search utility for PDFs, e-books, office docs, zip, targ.gz, etc.
         rofi # window switcher, run dialog and dmenu replacement
         rofi-pass # script to make rofi work with password-store
         sageWithDoc # open-source alternative to magma maple, mathematica, and matlab
