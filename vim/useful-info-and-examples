@@ -29,12 +29,12 @@ example                     effect
 #                           like * but backward
 g*                          like * but don't put "\<", "\>" around word in "/ register.
                             ... this allows matches on partial words
-:tabnew	                    opens tabpage after the current one
-:.tabnew	                  same as above
-:+tabnew	                  opens tabpage after the next tab page
-:-tabnew	                  opens tabpage before the current one
-:0tabnew	                  opens tabpage before the first one
-:$tabnew	                  opens tabpage after the last one
+:tabnew                     opens tabpage after the current one
+:.tabnew                    same as above
+:+tabnew                    opens tabpage after the next tab page
+:-tabnew                    opens tabpage before the current one
+:0tabnew                    opens tabpage before the first one
+:$tabnew                    opens tabpage after the last one
 :!mv % ${new_filename}      rename the current file
 <C-V>                       blockwise visual mode (i.e., vertical highlighting)
 [N]<C-A>                    jump to next number and increment it N times
@@ -95,6 +95,16 @@ scrolljump
                               %     -> current file's name
                               %:p   -> current file's full path
                               %:p:h -> head of current file's full path (i.e., dir)
+
+
+regexp
+------
+\{-n,m}     n to m but as few as possible
+\{-n}       n exactly
+\{-n,}      at least n but as few as possible
+\{-,m}      0 to m but as few as possible
+\{-}        0 or more but as few as possible
+
 
 digraphs
 --------
@@ -173,9 +183,9 @@ q
 :function Allargs(command)
 :   let i = 0
 :   while i < argc()
-:	  if filereadable(argv(i))
-:	     execute "e " . argv(i)
-:	     execute a:command
+:     if filereadable(argv(i))
+:       execute "e " . argv(i)
+:       execute a:command
 :      endif
 :      let i = i + 1
 :   endwhile
