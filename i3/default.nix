@@ -5,7 +5,7 @@ let
     #
     # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-    exec ${pkgs.feh}/bin/feh --bg-max '${./wallpapers/zurich-notebook.26.jpeg}'
+    exec ${pkgs.feh}/bin/feh --bg-max '${./wallpapers/odin-on-sleipnir.jpg}'
 
     exec ${pkgs.rxvt_unicode}/bin/urxvt
 
