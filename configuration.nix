@@ -210,6 +210,7 @@
         # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
         niv # dependency manager for nix projects
         # nnn # ncurses-based file manager/browser
+        nmap # utitlity for network discovery and security auditing
         nushell # shell inspired by powershell written in rust
         # okular # unlike zathura, it has pdf-annotating and -highlighting features
         # openconnect # VPN client for Cisco's AnyConnect SSL VPN
