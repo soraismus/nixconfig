@@ -708,6 +708,23 @@ workspace () {
   to "$path"
 }
 
+# Download YouTube video,
+# while adding metadata,
+# including English subtitles
+# and formatting/normalizing the video's filename.
+yt-dlp-normalized ()
+{
+    local url="${1}";
+    yt-dlp \
+    --add-metadata \
+    --restrict-filenames \
+    --write-subs --write-auto-subs --sub-langs "en" \
+    --replace-in-metadata "channel,title" "[ _.]" "-" \
+    -o "%(channel)s.%(title)s.%(upload_date>%Y-%m-%d)s.%(duration>%H-%M-%S)s.%(id)s.%(ext)s" \
+    --no-playlist \
+    "${url}";
+}
+
 # Download YouTube playlist videos in separate directory
 # indexed by video order in a playlist.
 yt-dlp-playlist () {
@@ -715,15 +732,25 @@ yt-dlp-playlist () {
   if [ "${#}x" = "2x" ]; then
     local playlist_items="${2}"
     yt-dlp \
-      -o "%(playlist_id)s.%(playlist_title)s/%(playlist_index)s - %(title)s.%(id)s.%(ext)s" \
+      "${playlist_url}" \
+      --add-metadata \
+      --restrict-filenames \
+      --replace-in-metadata "channel,title" "[ _.,'\"]" "-" \
+      --sub-langs "en" --write-subs --write-auto-subs --sub-langs "en" \
+      --sponsorblock-remove all \
       --yes-playlist \
       -I "${playlist_items}" \
-      "${playlist_url}"
+      -o "%(channel)s.%(playlist_id)s.%(playlist_title)s.%(playlist_index)s.%(title)s.%(upload_date>%Y-%m-%d)s.%(duration>%H-%M-%S)s.%(id)s.%(ext)s";
   else
     yt-dlp \
-      -o "%(playlist_id)s.%(playlist_title)s/%(playlist_index)s - %(title)s.%(id)s.%(ext)s" \
+      "${playlist_url}" \
+      --add-metadata \
+      --restrict-filenames \
+      --replace-in-metadata "channel,title" "[ _.,'\"]" "-" \
+      --sub-langs "en" --write-subs --write-auto-subs --sub-langs "en" \
+      --sponsorblock-remove all \
       --yes-playlist \
-      "${playlist_url}"
+      -o "%(channel)s.%(playlist_id)s.%(playlist_title)s.%(playlist_index)s.%(title)s.%(upload_date>%Y-%m-%d)s.%(duration>%H-%M-%S)s.%(id)s.%(ext)s";
   fi
 }
 
