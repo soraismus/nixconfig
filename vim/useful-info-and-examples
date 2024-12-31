@@ -339,4 +339,7 @@ In vim 8.0, you can select a range of lines and run :terminal bash. This will op
 :terminal node, :terminal ruby, :terminal python seem to work nicely as well.
 
 
-/\v(\.|;|\?|!|—|\))\zs\s+(\=)@!\ze
+/\v(;|!|—|\)|\.|\?)\zs\s+(\=)@!\ze
+\v(;|!|—|\)|\.|\?)\zs\s+(\=)@!\ze
+:let @/=@+
+:execute '/' . @+
