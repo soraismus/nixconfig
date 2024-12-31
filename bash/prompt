@@ -10,77 +10,37 @@
 #   `export PS4="$0.$LINENO+ "`
 #   `set -x`
 
-_get_client () {
-  grep 'ebdisplay/assignments/clients' | sed 's;.*assignments/clients/\([-a-z0-9&]*\)/.*;\1;'
-}
-
-_get_job_prefix () {
-  grep 'prefix-' - | sed 's;.*prefix-\(\w\+\).*;\1;'
-}
-
-_get_numeric_directory_name () {
-  grep '/[0-9]\+\/' - | sed 's;.*\/\([0-9]\+\)\(\/.*\|$\);\1;'
-}
-
-_get_run_and_pr_numbers_from_path () {
-  grep 'run' - | sed 's;.*run-\([0-9]\+\)\.pr-\([0-9]\+\).*;\1-\2;'
-}
-
 export PROMPT_TOGGLE=0
 
-_eb_prompt () {
+_prompt () {
   local colon=":"
   local space=" "
-
   local dark_blue="\[\033[1;34m\]"
   local dark_red="\[\033[1;31m\]"
   local green="\[\033[0;32m\]"
   local no_color="\[\033[0m\]"
-
-  local job_count="\j"
   local history_number="\!"
   local command_number="\#"
   local full_cwd="\w"
   local abbrev_cwd="\W"
   local user_type="\$" # If effective UID is 0 then '#' else '$'.
-
-  local _client="$( pwd | _get_client )"
-  local client
-  if [ "${_client}x" = "metx" ]; then
-    client=""
-  else
-    client="${_client}-"
-  fi
-  local job_prefix="$( pwd | _get_job_prefix )"
-  local job_number="$( pwd | _get_numeric_directory_name )"
-  local _run_and_pr_numbers="$( pwd | _get_run_and_pr_numbers_from_path )"
-  local run_and_pr_numbers=""
-  if [ "${_run_and_pr_numbers}x" != "x" ]; then
-    run_and_pr_numbers="-${_run_and_pr_numbers}"
-  fi
   local index="${command_number}${colon}"
-
-  local prefix="${green}${job_count}${colon}${dark_red}${index}"
-  local green_job_number="${green}${client}${job_prefix}${job_number}${run_and_pr_numbers}${colon}"
-
+  local prefix="${green}${colon}${dark_red}${index}"
   local suffix
+
   if [ "${PROMPT_TOGGLE}x" = "0x" ]; then
     suffix="${dark_blue}${abbrev_cwd}${dark_red}${user_type} ${no_color}"
   else
     suffix="${dark_blue}${full_cwd}${dark_red}${user_type} ${no_color}"
   fi
 
-  if [ "${job_number}x" = "x" ]; then
-    PS1="${prefix}${suffix}"
-  else
-    PS1="${prefix}${green_job_number}${suffix}"
-  fi
+  PS1="${prefix}${suffix}"
 }
 
 # Generate a message that indicates the branch and status
-# of a git-controlled directory. The '.bashrc' file uses this
-# function to determine the value of 'PS1'.
-git_prompt () {
+# of a git-controlled directory. The '.bashrc' file uses this function
+# to determine the value of 'PS1'.
+_git_prompt () {
   # `git rev-parse` interprets a <rev> (i.e., a revision parameter).
   # 'HEAD' refers to the content of '.git/HEAD', which is a pointer
   # to the current <ref> (i.e., the file contains a specific path
@@ -136,7 +96,7 @@ _titlebar_prompt () {
   local titlebar_start="\[\033]0;"
   local titlebar_end="\007\]"
   local abbrev_cwd="\W"
-  local titlebar="${titlebar_start}${abbrev_cwd} \$(git_prompt)${titlebar_end}"
+  local titlebar="${titlebar_start}${abbrev_cwd} \$(_git_prompt)${titlebar_end}"
 
   case "$TERM" in
   # In the previous iteration of this code,
@@ -184,7 +144,7 @@ _titlebar_elevated_prompt () {
   local titlebar_start="\[\033]0;"
   local titlebar_end="\007\]"
   local abbrev_cwd="\W"
-  local titlebar="${titlebar_start}${abbrev_cwd} \$(git_prompt)${titlebar_end}"
+  local titlebar="${titlebar_start}${abbrev_cwd} \$(_git_prompt)${titlebar_end}"
 
   case "$TERM" in
   # In the previous iteration of this code,
@@ -200,14 +160,14 @@ _titlebar_elevated_prompt () {
   esac
 }
 
-_eb_prompt && _titlebar_prompt
+_prompt && _titlebar_prompt
 _elevated_prompt && _titlebar_elevated_prompt
 
 # The variable 'PROMPT_COMMAND' is set to
 # the following function in 'configuration.nix'.
 _promptCommand () {
   history -a # Append history lines from this session to the history file.
-  _eb_prompt && _titlebar_prompt
+  _prompt && _titlebar_prompt
   _elevated_prompt && _titlebar_elevated_prompt
 }
 

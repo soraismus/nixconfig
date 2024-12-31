@@ -47,15 +47,9 @@
       ];
 
     variables =
-      let
-        eb-smtp-config = (import /etc/nixos/volatile_config/eb_display {}).smtp;
-      in rec {
+      rec {
         BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
         CONFIG_ROOT = "${VOLATILE_CONFIG}/$USER";
-        EB_SMTP_PASSWORD = eb-smtp-config.password;
-        EB_SMTP_PORT = eb-smtp-config.port;
-        EB_SMTP_URL = eb-smtp-config.url;
-        EB_SMTP_USER = eb-smtp-config.user;
         EDITOR = "vim";
         FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
         HISTCONTROL = "ignoredups:erasedups";
@@ -593,7 +587,6 @@
         l = "ls -Alh --color=tty";
         l1 = "ls -1A --color=tty --group-directories-first";
         ls = "ls -A --color=tty --group-directories-first";
-        openen = "openeb";
         oxclip = "xclip -o -sel clip";
         promptToggle = "togglePrompt";
         quit = "exit";
@@ -607,7 +600,6 @@
         touchpadToggle = "toggleTouchpad";
         v = "vim";
         worto = "vim $MARKPATH/expl/wortolisto";
-        zpdf = "/home/polytope/eb-bin/zopen";
       };
       shellInit = "";
     };
