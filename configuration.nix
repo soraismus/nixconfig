@@ -150,7 +150,7 @@
         # Reconsider:
         agda # dependently typed functional language and proof assistant
         # autossh # automatically restart SSH sessions and tunnels
-        bun # javascript runtime, bundler, transpiler, and package manager
+        # bun # javascript runtime, bundler, transpiler, and package manager
         # binutils # tools for manipulating binaries (linker, assembler)
         # btrfs-progs # utilities for the btrfs filesystem
         burpsuite # integrated platform for performing security testing
@@ -287,6 +287,7 @@
         hound # fast code searching (react frontend; go backend; regex w/ trigram index)
         iotop
         jq # command-line json processor
+        jqp # TUI playground for experimenting with jq
         lazygit # simple terminal UI for git commands
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite

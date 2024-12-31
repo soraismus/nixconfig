@@ -337,3 +337,6 @@ https://superuser.com/questions/330343/how-can-i-execute-a-vim-selection-or-rang
 --
 In vim 8.0, you can select a range of lines and run :terminal bash. This will open a terminal running bash with your selection as stdin.
 :terminal node, :terminal ruby, :terminal python seem to work nicely as well.
+
+
+/\v(\.|;|\?|!|—|\))\zs\s+(\=)@!\ze
