@@ -201,7 +201,8 @@
         # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
         lorri # your project's nix-env
         # magma_cudatoolkit_11_4 # matrix algebra on GPU and multicore architecture
-        # manim # animation engine for explanatory mathematics videos
+        manim # animation engine for explanatory mathematics videos
+        manim-slides # tool for live presenations using manim
         # mcfly # bash-history-management tool
         # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
         # mopidy # extensible music server that plays music from local, Spotify, etc.
@@ -437,6 +438,7 @@
         tmuxp # manage tmux workspaces from JSON and YAML
         translate-shell # command-line translator
         tree # commandline directory visualizer
+        typst # markup-based typesetting system
         units # unit-conversion tool
         unzip # extraction utility for archives cmopressed in .zip format
         usbutils # tools (e.g., lsusb) for working with USB devices
@@ -519,15 +521,16 @@
           # "python2.7-urllib3-1.26.2"
         ];
     };
-    overlays =
-      let
-        # Change the following to a rev/sha to pin.
-        mozRev = "master";
-        mozUrl = builtins.fetchTarball {
-          url = "https://github.com/mozilla/nixpkgs-mozilla/archive/${mozRev}.tar.gz";
-        };
-        nightlyOverlay = (import "${mozUrl}/firefox-overlay.nix");
-      in [ nightlyOverlay ];
+    # overlays =
+    #   let
+    #     # Change the following to a rev/sha to pin.
+    #     mozRev = "master";
+    #     mozUrl = builtins.fetchTarball {
+    #       url = "https://github.com/mozilla/nixpkgs-mozilla/archive/${mozRev}.tar.gz";
+    #     };
+    #     nightlyOverlay = (import "${mozUrl}/firefox-overlay.nix");
+    #   in [ nightlyOverlay ];
+    overlays = [ (import ./nixpkgs-mozilla/firefox-overlay.nix) ];
   };
 
   fonts = {
