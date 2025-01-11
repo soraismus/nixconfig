@@ -28,11 +28,7 @@
     in {
       font = "Lat2-Terminus16";
       keyMap = "us";
-      packages =
-        [ # pkgs.kbdKeymaps.dvp
-          # pkgs.kbdKeymaps.neo
-          workman # workman-p keyboard layout; see `services.xserver`
-        ];
+      packages = [ workman ];
     };
 
   # bash and inputrc # see also `programs.bash`
@@ -79,169 +75,42 @@
 
   environment.systemPackages =
     let
-      # magma_cudatoolkit_11_4 = pkgs.magma.override { cudatoolkit = pkgs.cudatoolkit_11_4; };
-
       # http://fontforge.github.io/en-US/documentation/utilities/
       # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
       fonttools = pkgs.fontforge-fonttools;
 
-      easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
-      purs-utils = easy-purescript-nix.inputs;
-
-      # python-ghostscript =
-      #   let
-      #     callPackage = pkgs.lib.callPackageWith pkgs;
-      #     python311 = pkgs.python311;
-      #     python311Pkgs = python311.pkgs;
-      #     substituteAll = pkgs.substituteAll;
-      #   in
-      #     callPackage (import ./python-modules/python-ghostscript) {
-      #       buildPythonPackage = python311Pkgs.buildPythonPackage;
-      #       ghostscript = pkgs.ghostscript;
-      #       isPy3k = python311.passthru.isPy3k;
-      #       substituteAll = substituteAll;
-      #     };
-
-      # camelot =
-      #   let
-      #     callPackage = pkgs.lib.callPackageWith pkgs;
-      #     python311 = pkgs.python311;
-      #     python311Pkgs = python311.pkgs;
-      #   in
-      #     callPackage (import ./python-modules/camelot) {
-      #       buildPythonPackage = python311Pkgs.buildPythonPackage;
-      #       chardet = python311Pkgs.chardet;
-      #       click = python311Pkgs.click;
-      #       ghostscript = pkgs.ghostscript;
-      #       isPy3k = python311.passthru.isPy3k;
-      #       numpy = python311Pkgs.numpy;
-      #       cv2 = python311Pkgs.opencv4;
-      #       openpyxl = python311Pkgs.openpyxl;
-      #       pandas = python311Pkgs.pandas;
-      #       pdfminer_six = python311Pkgs.pdfminer;
-      #       pypdf = python311Pkgs.pypdf;
-      #       python-ghostscript = python-ghostscript;
-      #       tabulate = python311Pkgs.tabulate;
-      #       tkinter = python311Pkgs.tkinter;
-      #     };
-
+      # easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
+      # purs-utils = easy-purescript-nix.inputs;
     in
       with pkgs; [
-        # email services
-        exim
-        getmail6 # getmail -> getmail6
-        mutt
-        notmuch-mutt
-        procmail
-        spamassassin
-
-        mailsend # CLI email-sending tool
-        mailutils # protocol-independent mail framework (includes mailx)
-
-        # cudatoolkit_11_4
-        # cudnn_cudatoolkit_11_4
-
         # Reconsider:
         agda # dependently typed functional language and proof assistant
-        # autossh # automatically restart SSH sessions and tunnels
-        # bun # javascript runtime, bundler, transpiler, and package manager
-        # binutils # tools for manipulating binaries (linker, assembler)
-        # btrfs-progs # utilities for the btrfs filesystem
         burpsuite # integrated platform for performing security testing
         # conky # configurable X system monitor
         # coq # interactive theorem prover
         coq_8_9 # coq theorem assistant
-        # darcs # version control system
-        deno # secure runtime for javascript and typescript
         difftastic # syntax-aware diff
-        # direnv # environment switcher for the shell
-        # docker # containerizer; OS-level virtualization: application container
-        # dotnet-sdk # .NET Core SDK 2.0.2 with .NET Core 2.0.0
-        # dotnetPackages.Nuget # .NET nuget
         xdragon # dragon-drop -> xdragon # Simple drag-and-drop source/sink for X
-        # ekiga # VOIP/video-conferencing app with full SIP and H.323 support
-        # elmPackages.elm # haskell-like frontend development platform
         expect # tool for automating interactive applications
         ffuf # fast web fuzzer
         file # program that shows the type of files
-        # fossil # version control system
-        # gitless # version control system built on top of git [Its cli abbrev is 'gl'.]
-        # golly # game of life
-        # haskellPackages.hakyll # static website compiler library
-        # helix # post-modern modal text editor
-        # heroku
-        # hieroglyph # presentation editor
-        # hlint
-        idris # haskell-like compiler with dependent types
-        # inkscape # vector-graphics editor # See https://castel.dev/post/lecture-notes-2/
-        # irssi # terminal-based IRC client
-        # jitsi # open-source video calls and chat
-        # kakoune # vim-inspired text editor
-        # kakounePlugins.active-window-kak
-        # # kakounePlugins.active-pairs-kak
-        # kakounePlugins.case-kak
-        # kakounePlugins.fzf-kak
-        # kakounePlugins.kak-lsp
-        # kakounePlugins.kakoune-easymotion
-        # kakounePlugins.kakoune-rainbow
-        # kakounePlugins.kakoune-registers
-        # kakounePlugins.kakoune-vertical-selection
-        # kakounePlugins.pandoc-kak
-        # kakounePlugins.smarttab-kak
-        # kakounePlugins.tabs-kak
         koreader # ebook-reader application
-        lean3 # automatic and interactive theorem prover
-        # libgnome_keyring # framework for managing passwords and other secrets
-        # libtoxcore_0_2 # P2P FOSS instant-messaging application to replace Skype
+        lean4 # automatic and interactive theorem prover
         lorri # your project's nix-env
-        # magma_cudatoolkit_11_4 # matrix algebra on GPU and multicore architecture
         manim # animation engine for explanatory mathematics videos
-        manim-slides # tool for live presenations using manim
-        # mcfly # bash-history-management tool
-        # mitmproxy # man-in-the-middle proxy (recommended unix analogue for fiddler)
-        # mopidy # extensible music server that plays music from local, Spotify, etc.
-        # mongodb # nosql database
-        # networkmanager_openconnect # NetworkManager's OpenConnect plugin
-        # newsboat # fork of Newsbeuter, an RSS/Atom feed reader for the text console
+        # manim-slides # tool for live presenations using manim
         niv # dependency manager for nix projects
-        # nnn # ncurses-based file manager/browser
         nmap # utitlity for network discovery and security auditing
         nushell # shell inspired by powershell written in rust
-        # okular # unlike zathura, it has pdf-annotating and -highlighting features
-        # openconnect # VPN client for Cisco's AnyConnect SSL VPN
-        # opencv2 # Open Computer Vision library
         openssh # implementation of the SSH protocol
         parallel # shell tool fro executing jobs in parallel [cf. xargs ?]
         pass # password-store manages passwords securely
-        # pijul # distributed version control system inspired by categorical patches
-        # privoxy # non-caching web proxy with advanced filtering capabilities
-        # prover9 # automated theorem prover for first-order and eq logic
-        # qpdfview # tabbed (PDF) document viewer
-        # qtox # Qt tox client
-        # ranger # file manager
         renameutils # a set of programs to make renaming of files faster
         rstudio
-        # rtv # reddit terminal client # Consider using 'tuir'.
-        # rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
-        # rxvt-unicode-plugins.font-size # New name for 'urxvt_font_size'
-        # sc-im # ncurses spreadsheet for terminal
         sqldiff # SQLite-db differ
         sqlite # self-contained SQL database engine
         sqlite-utils # CLI utility and library for manipulating SQLite databases
-        # sqlite-analyzer # stats tool for SQLite databases
-        # stack2nix # nix utility that transforms stack specs into nix specs
-        # tinc # VPN daemon with full mesh routing
-        # tomb # file encryption
-        # tor-browser-bundle-bin # tor browser
         utox # (mu-tox) lightweight tox client
-        virtualbox # hosted hypervisor (hardware virtualization); virtual-machine manager
-        # wordgrinder # terminal-based word processor
-        # yi # yi text editor (written in haskell)
-        # zeal # offline API documentation browser
-        # zim # desktop wiki
-
-        # xorg.xmodmap # https://wiki.xfce.org/faq
-        # xorg.xev     # https://wiki.xfce.org/faq
 
         atop # console system performance monitor
         bat # a 'cat' clone with syntax highlighting and git integration
@@ -286,7 +155,6 @@
         lazygit # simple terminal UI for git commands
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
-        # libreswan # open-source IPSec-based VPN implementation
         librsvg # library to assist pandoc in rendering SVG images to Cairo surfaces
         links2 # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
         lsof # utility to list open files
@@ -299,116 +167,73 @@
         mupdf # parsing engine for PDF, XPS, and EPUB
         myVim # text editor
         neovim # text editor
-        # networkmanager_strongswan # Network Manager's strongswan plugin
         nix-bash-completions
         nix-diff # utility that compares nix derivations
-        nixops # utility for provisioning NixOS machines
         nix-prefetch-git # nix utility that aids in pinning github revisions
         nodejs_20 # nodejs-17_x -> ?? # javascript engine
-        oil # unix shell
         openssl # cryptographic library that implements TSL protocol
         openvpn # tunneling application
         pandoc # utility that translates between markup formats
         patchelf
         pavucontrol # PulseAudio volume control
         pciutils # programs (like 'lspci') for managing PCI devices
-        (perl.withPackages (pkgs:
-          [
-            pkgs.vidir # file manager using vim itself
-          ]
-        ))
+        # (perl.withPackages (pkgs:
+        #   [
+        #     pkgs.vidir # file manager using vim itself
+        #   ]
+        # ))
         poppler_utils # PDF tools like pdfunite and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-        purs-utils.dhall-json-simple
-        purs-utils.dhall-simple
-        purs-utils.psa
-        purs-utils.psc-package
-        purs-utils.psc-package2nix
-        purs-utils.pscid
-        purs-utils.pulp
-        purs-utils.purescript-language-server
-        purs-utils.purs-0_15_10
-        purs-utils.purs-backend-es
-        purs-utils.purs-tidy
-        purs-utils.purty
-        purs-utils.spago
-        purs-utils.spago2nix
-        purs-utils.zephyr # purescript tree-shaker
-        (python310.withPackages (pkgs:
-          # let
-          #   pytorch = pkgs.pytorch.override {
-          #     # cudaSupport = true;
-          #     cudaSupport = false;
-          #     # cudatoolkit = cudatoolkit_11_4;
-          #     # cudnn = cudnn_cudatoolkit_11_4;
-          #     # magma = magma_cudatoolkit_11_4;
-          #   };
-          #   torchvision = pkgs.torchvision.override { pytorch = pytorch; };
-          # in [
-          [
-            pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
-            pkgs.beautifulsoup4 # html- and xml-parser
-            pkgs.bokeh # statistical and interactive HTML plots
-            # camelot
-            # pkgs.fastapi # web/api framework
-            # pkgs.flask # web/api microframework
-            # pkgs.gensim # topic-modelling library
-            # pkgs.huggingface-hub # interface with huggingface.co hub
-            # pkgs.imbalanced-learn # manage imbalanced data
-            pkgs.ipdb # web-based notebook environment for interactive computing
-            pkgs.ipython # web-based notebook environment for interactive computing
-            # 23.05 can't build. # pkgs.jupyter # web-based notebook environment for interactive computing
-            pkgs.jupyter # web-based notebook environment for interactive computing
-            # pkgs.jupyter_core # web-based notebook environment for interactive computing
-            pkgs.keras # deep-learning library for Theano and TensorFlow
-            pkgs.matplotlib # plotting library
-            pkgs.networkx # network-management library
-            pkgs.numpy # scientific (num-processing) tools
-            # pkgs.openai # client library for the OpenAI API
-            pkgs.opencv4 # Open Computer Vision library
-            pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
-            pkgs.pandas # python data-analysis library
-            pkgs.pdfminer # PDF parser and analyzer
-            pkgs.pikepdf # qpdf-utility to create/manipulate/repair PDFs
-            pkgs.pilkit # utilities for python imaging library
-            pkgs.pillow # fork of PIL (python imaging library)
-            pkgs.pypdf
-            pkgs.pypdf2
-            pkgs.pypdf3
-            #pkgs.pytorchWithCuda # deep-learning platform
-            # python-ghostscript
-            pkgs.requests_toolbelt
-            # pkgs.spacy # natural-language processing
-            # pkgs.scipy # science/engineering library
-            pkgs.scrapy # web crawler and scraper
-            pkgs.seaborn # statistical data visualization
-            # broken # pkgs.sklearn-deap # scikit-learn with evolutionary algorithms
-            # pkgs.statsmodel # statistical modeling
-            # pkgs.streamlit # build custom machine-learning tools
-            pkgs.nltk # natural-language processing toolkit
-            pkgs.pytorch # deep-learning platform
-            # pkgs.tensorboard # TensorFlow's visualization toolkit
-            pkgs.tkinter
-            # pkgs.torch
-            # pkgs.torchaudio
-            # pkgs.unittest2 # backport of unittest testing framework
-            # pkgs.xgboost # gradient boosting library (e.g., GBDTs)
-
-            pkgs.scikit-learn # machine learning & data mining
-            # pkgs.scikit-tda
-            # pkgs.sklearn-deap # scikit-learn with evolutionary algorithms
-
-            # pkgs.tensorflow # machine learning
-            pkgs.tensorflow-bin # machine learning
-            pkgs.torchvision # deep-learning platform                             # *
-          ]
-        )) # Cf nixos.wiki/wiki/Python
-        # boost
-        # xgboost
-
+        # purs-utils.dhall-json-simple
+        # purs-utils.dhall-simple
+        # purs-utils.psa
+        # purs-utils.psc-package
+        # purs-utils.psc-package2nix
+        # purs-utils.pscid
+        # purs-utils.pulp
+        # purs-utils.purescript-language-server
+        # purs-utils.purs-0_15_10
+        # purs-utils.purs-backend-es
+        # purs-utils.purs-tidy
+        # purs-utils.purty
+        # purs-utils.spago
+        # purs-utils.spago2nix
+        # purs-utils.zephyr # purescript tree-shaker
+        # (python310.withPackages (pkgs:
+        #   [
+        #     pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
+        #     pkgs.beautifulsoup4 # html- and xml-parser
+        #     pkgs.bokeh # statistical and interactive HTML plots
+        #     pkgs.ipdb # web-based notebook environment for interactive computing
+        #     pkgs.ipython # web-based notebook environment for interactive computing
+        #     pkgs.jupyter # web-based notebook environment for interactive computing
+        #     pkgs.keras # deep-learning library for Theano and TensorFlow
+        #     pkgs.matplotlib # plotting library
+        #     pkgs.networkx # network-management library
+        #     pkgs.nltk # natural-language processing toolkit
+        #     pkgs.numpy # scientific (num-processing) tools
+        #     pkgs.opencv4 # Open Computer Vision library
+        #     pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
+        #     pkgs.pandas # python data-analysis library
+        #     pkgs.pdfminer # PDF parser and analyzer
+        #     pkgs.pikepdf # qpdf-utility to create/manipulate/repair PDFs
+        #     pkgs.pilkit # utilities for python imaging library
+        #     pkgs.pillow # fork of PIL (python imaging library)
+        #     pkgs.pypdf
+        #     pkgs.pypdf2
+        #     pkgs.pypdf3
+        #     pkgs.pytorch # deep-learning platform
+        #     pkgs.requests_toolbelt
+        #     pkgs.scikit-learn # machine learning & data mining
+        #     pkgs.scrapy # web crawler and scraper
+        #     pkgs.seaborn # statistical data visualization
+        #     pkgs.tensorflow-bin # machine learning
+        #     pkgs.tkinter
+        #     pkgs.torchvision # deep-learning platform                             # *
+        #   ]
+        # ))
         qpdf # C++ programs that inspect/manipulate PDF files
-        qutebrowser # keyboard-focused browser with minimal GUI
         ripgrep # regex utility that's faster than the silver searcher ['rg']
         ripgrep-all # search utility for PDFs, e-books, office docs, zip, targ.gz, etc.
         rofi # window switcher, run dialog and dmenu replacement
@@ -417,7 +242,6 @@
         scrot # command-line screen-capture utility [cf. maim]
         silver-searcher # ag -> silver-searcher # silver-searcher
         stack # haskell tool stack
-        # strongswan # open-source IPsec-based VPN solution
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
         texmaker # Tex and LaTex editor
         tex-match # desktop version of detexify: search by sketching
@@ -436,20 +260,15 @@
         units # unit-conversion tool
         unzip # extraction utility for archives cmopressed in .zip format
         usbutils # tools (e.g., lsusb) for working with USB devices
-        # Currently, see ~/.vintrc.yaml for theo-wide vint configuration.
         vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
         vlc # cross-platform media player and streaming server
         w3m # text-based web browser (cf. browsh, links2, lynx)
         wget # tool for retrieving files using HTTP, HTTPS, and FTP
         xclip # clipboard utility
         xdotool # fake keyboard/mouse input, window management
-        yarn # variant to npm
-        youtube-dl # command-line tool to download videos from video platforms
         yq-go # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
-        # ytfzf # posix script to find and watch youtube videos from the terminal
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
-        # zed-editor # code editor
         zip # compressor/achiver for creating and modifyig zipfiles
       ];
 
@@ -648,45 +467,7 @@
       listenAddresses = [ "*:631" ];
       defaultShared = true;
     };
-
-    # gnome.gnome-keyring.enable = true;
-    # mongodb.enable = true;
     openssh.enable = true;
-
-    # strongswan = {
-    #   enable = true;
-    #   secrets = {
-    #     "user" = {
-    #       secret = "/run/keys/vpn-password";
-    #       id = "%any";
-    #       ip = "%any";
-    #     };
-    #   };
-    #   connections = {
-    #     myvpn = {
-    #       keyExchange = "ikev2";
-    #       localAddress = "192.0.2.100";
-    #       remoteAddress = "203.0.113.0";
-    #       localId = "alice@strongswan.org";
-    #       remoteId = "bob@strongswan.org";
-    #       autoStart = "start";
-    #       ipsec = {
-    #         esp = "aes128gcm16-modp2048";
-    #         ike = "aes128gcm16-modp2048";
-    #         rekey = "no";
-    #         reqid = "1";
-    #         keyingtries = "3";
-    #       };
-    #       ikev2 = {
-    #         dpdaction = "clear";
-    #         proposals = "aes128-sha256-ecp256,aes256-sha384-ecp384,aes128-sha256-modp2048,aes128-sha1-modp2048,aes256-sha384-modp4096,aes256-sha256-modp4096,aes256-sha1-modp4096,aes128-sha256-modp1536,aes128-sha1-modp1536,aes256-sha384-modp2048,aes256-sha256-modp2048,aes256-sha1-modp2048,3des-sha1-modp1024";
-    #         reauth = "no";
-    #       };
-    #     };
-    #   };
-    # };
-
-    # xlibs -> xorg
     xserver = {
       enable = true;
       displayManager = {
