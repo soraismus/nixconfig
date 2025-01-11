@@ -19,13 +19,14 @@ _prompt () {
   local dark_red="\[\033[1;31m\]"
   local green="\[\033[0;32m\]"
   local no_color="\[\033[0m\]"
+  local job_count="\j"
   local history_number="\!"
   local command_number="\#"
   local full_cwd="\w"
   local abbrev_cwd="\W"
   local user_type="\$" # If effective UID is 0 then '#' else '$'.
   local index="${command_number}${colon}"
-  local prefix="${green}${colon}${dark_red}${index}"
+  local prefix="${green}${job_count}${colon}${dark_red}${index}"
   local suffix
 
   if [ "${PROMPT_TOGGLE}x" = "0x" ]; then
