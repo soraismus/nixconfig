@@ -319,7 +319,8 @@
     config = {
       allowUnfree = true;
       # chromium.enableWideVine = true;
-      cudaSupport = true;
+      # cudaSupport = true;
+      cudaSupport = false;
       packageOverrides = pkgs: {
         myVim = import ./vim { pkgs = pkgs; };
       };
