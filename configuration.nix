@@ -349,7 +349,7 @@
   fonts = {
     fontDir.enable = true;
     enableGhostscriptFonts = true;
-    fonts =
+    packages =
       let
         callPackage = pkgs.lib.callPackageWith pkgs;
       in
@@ -443,14 +443,14 @@
   };
 
   services = {
-
-    # Printing
     avahi = {
       enable = true;
       publish.enable = true;
       publish.userServices = true;
-      nssmdns = true;
+      nssmdns4 = true;
     };
+    displayManager.defaultSession = "none+i3";
+    libinput.enable = true;
     printing = {
       enable = true;
       browsing = true;
@@ -471,38 +471,17 @@
     xserver = {
       enable = true;
       displayManager = {
-        defaultSession = "none+i3";
         sessionCommands = ''
           ${pkgs.xorg.xrdb}/bin/xrdb -load ${./graphical/Xresources} &
         '';
       };
-      layout = "us";
-
-      # # https://old.reddit.com/r/NixOS/comments/5pz17o/getting_a_touchpad_working_on_a_laptop/
-      # libinput = {
-      #   enable = true;
-      #   touchpad = {
-      #     middleEmulation = true;
-      #     naturalScrolling = false;
-      #     tapping = true;
-      #   };
-      # };
-      # # libinput.enable = true; # !gh NixOS nixpkgs issue 170489
-      # # NOTE: `libinput` and `synaptics` are incompatible.
-      # # synaptics.enable = true; # touchpad
-      # ----
-      # ----
-      # synaptics.enable = true; # touchpad
-      # ----
-      # ----
-      libinput.enable = true;
-
-      # videoDrivers = [ "nvidia" ];
-      xkbModel = "pc104";
-      xkbOptions = "ctrl:nocaps";
-      xkbVariant = "";
+      xkb = {
+        layout = "us";
+        model = "pc104";
+        options = "ctrl:nocaps";
+        variant = "";
+      };
     };
-
   };
 
   # Enable sound.

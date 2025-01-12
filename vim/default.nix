@@ -1,7 +1,7 @@
 { pkgs }:
 let
   mhVimPlugins = {
-    vim-crunch = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    vim-crunch = pkgs.vimUtils.buildVimPlugin {
       pname = "vim-crunch";
       version = "2021-09-07";
       src = pkgs.fetchFromGitHub {
