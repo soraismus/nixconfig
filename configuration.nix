@@ -86,8 +86,7 @@
         # Reconsider:
         agda # dependently typed functional language and proof assistant
         burpsuite # integrated platform for performing security testing
-        # conky # configurable X system monitor
-        # coq # interactive theorem prover
+        conky # system monitor based on torsmo
         coq_8_9 # coq theorem assistant
         difftastic # syntax-aware diff
         xdragon # dragon-drop -> xdragon # Simple drag-and-drop source/sink for X
@@ -132,7 +131,7 @@
         dua # tool to learn about directories' disk usage
         du-dust # du + rust = dust; like du but more intuitive
         duf # disk usage / free utility ('du' substitute)
-        exa # replacement for 'ls'
+        eza # replacement for 'ls'
         fd # alternative to 'find'
         feh # light-weight image viewer
         ffmpeg # manager and converter of audio/video files
@@ -264,6 +263,7 @@
         vlc # cross-platform media player and streaming server
         w3m # text-based web browser (cf. browsh, links2, lynx)
         wget # tool for retrieving files using HTTP, HTTPS, and FTP
+        wireshark-cli # network-protocol analyzer
         xclip # clipboard utility
         xdotool # fake keyboard/mouse input, window management
         yq-go # cli YAML processor
