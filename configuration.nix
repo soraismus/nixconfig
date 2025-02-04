@@ -170,39 +170,39 @@
         poppler_utils # PDF tools like pdfunite and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-        # (python310.withPackages (pkgs:
-        #   [
-        #     pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
-        #     pkgs.beautifulsoup4 # html- and xml-parser
-        #     pkgs.bokeh # statistical and interactive HTML plots
-        #     pkgs.ipdb # web-based notebook environment for interactive computing
-        #     pkgs.ipython # web-based notebook environment for interactive computing
-        #     pkgs.jupyter # web-based notebook environment for interactive computing
-        #     pkgs.keras # deep-learning library for Theano and TensorFlow
-        #     pkgs.matplotlib # plotting library
-        #     pkgs.networkx # network-management library
-        #     pkgs.nltk # natural-language processing toolkit
-        #     pkgs.numpy # scientific (num-processing) tools
-        #     pkgs.opencv4 # Open Computer Vision library
-        #     pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
-        #     pkgs.pandas # python data-analysis library
-        #     pkgs.pdfminer # PDF parser and analyzer
-        #     pkgs.pikepdf # qpdf-utility to create/manipulate/repair PDFs
-        #     pkgs.pilkit # utilities for python imaging library
-        #     pkgs.pillow # fork of PIL (python imaging library)
-        #     pkgs.pypdf
-        #     pkgs.pypdf2
-        #     pkgs.pypdf3
-        #     pkgs.pytorch # deep-learning platform
-        #     pkgs.requests_toolbelt
-        #     pkgs.scikit-learn # machine learning & data mining
-        #     pkgs.scrapy # web crawler and scraper
-        #     pkgs.seaborn # statistical data visualization
-        #     pkgs.tensorflow-bin # machine learning
-        #     pkgs.tkinter
-        #     pkgs.torchvision # deep-learning platform                             # *
-        #   ]
-        # ))
+        (python310.withPackages (pkgs:
+          [
+            pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
+            pkgs.beautifulsoup4 # html- and xml-parser
+            # pkgs.bokeh # statistical and interactive HTML plots
+            # pkgs.ipdb # web-based notebook environment for interactive computing
+            # pkgs.ipython # web-based notebook environment for interactive computing
+            # pkgs.jupyter # web-based notebook environment for interactive computing
+            # pkgs.keras # deep-learning library for Theano and TensorFlow
+            # pkgs.matplotlib # plotting library
+            # pkgs.networkx # network-management library
+            # pkgs.nltk # natural-language processing toolkit
+            # pkgs.numpy # scientific (num-processing) tools
+            # pkgs.opencv4 # Open Computer Vision library
+            # pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
+            # pkgs.pandas # python data-analysis library
+            # pkgs.pdfminer # PDF parser and analyzer
+            # pkgs.pikepdf # qpdf-utility to create/manipulate/repair PDFs
+            # pkgs.pilkit # utilities for python imaging library
+            # pkgs.pillow # fork of PIL (python imaging library)
+            # pkgs.pypdf
+            # pkgs.pypdf2
+            # pkgs.pypdf3
+            # pkgs.pytorch # deep-learning platform
+            # pkgs.requests_toolbelt
+            # pkgs.scikit-learn # machine learning & data mining
+            pkgs.scrapy # web crawler and scraper
+            # pkgs.seaborn # statistical data visualization
+            # pkgs.tensorflow-bin # machine learning
+            # pkgs.tkinter
+            # pkgs.torchvision # deep-learning platform                             # *
+          ]
+        ))
         qpdf # C++ programs that inspect/manipulate PDF files
         ripgrep # regex utility that's faster than the silver searcher ['rg']
         ripgrep-all # search utility for PDFs, e-books, office docs, zip, targ.gz, etc.
