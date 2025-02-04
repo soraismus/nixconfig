@@ -78,18 +78,10 @@
       # http://fontforge.github.io/en-US/documentation/utilities/
       # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
       fonttools = pkgs.fontforge-fonttools;
-
-      # easy-purescript-nix = import ./easy-purescript-nix { pkgs = pkgs; };
-      # purs-utils = easy-purescript-nix.inputs;
     in
       with pkgs; [
         # Reconsider:
-        agda # dependently typed functional language and proof assistant
-        burpsuite # integrated platform for performing security testing
-        conky # system monitor based on torsmo
-        coq_8_9 # coq theorem assistant
         difftastic # syntax-aware diff
-        xdragon # dragon-drop -> xdragon # Simple drag-and-drop source/sink for X
         expect # tool for automating interactive applications
         ffuf # fast web fuzzer
         file # program that shows the type of files
@@ -106,10 +98,6 @@
         pass # password-store manages passwords securely
         renameutils # a set of programs to make renaming of files faster
         rstudio
-        sqldiff # SQLite-db differ
-        sqlite # self-contained SQL database engine
-        sqlite-utils # CLI utility and library for manipulating SQLite databases
-        utox # (mu-tox) lightweight tox client
 
         atop # console system performance monitor
         bat # a 'cat' clone with syntax highlighting and git integration
@@ -121,10 +109,13 @@
         bfs # breadth-first version of 'find'
         broot # interactive tree view, fuzzy search, balanced BFS descent
         browsh # text-based browser that can render css and js (cf. links2, lynx, w3m)
+        burpsuite # integrated platform for performing security testing
         cabal-install # haskell packaging and build system
         cabal2nix # nix utility that transforms cabal specs into nix specs
         chromium # browser
         cifs-utils # tools for managing CIFS client filesystems (CIFS is Microsoft's version of SMB)
+        conky # system monitor based on torsmo
+        coq_8_9 # coq theorem assistant
         ctags # utility for fast source-code browsing (exuberant ctags)
         ddgr # search DuckDuckGo from the terminal
         dstat # monitor to replace vmstat, iostat, ifstat, netstat
@@ -176,29 +167,9 @@
         patchelf
         pavucontrol # PulseAudio volume control
         pciutils # programs (like 'lspci') for managing PCI devices
-        # (perl.withPackages (pkgs:
-        #   [
-        #     pkgs.vidir # file manager using vim itself
-        #   ]
-        # ))
         poppler_utils # PDF tools like pdfunite and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-        # purs-utils.dhall-json-simple
-        # purs-utils.dhall-simple
-        # purs-utils.psa
-        # purs-utils.psc-package
-        # purs-utils.psc-package2nix
-        # purs-utils.pscid
-        # purs-utils.pulp
-        # purs-utils.purescript-language-server
-        # purs-utils.purs-0_15_10
-        # purs-utils.purs-backend-es
-        # purs-utils.purs-tidy
-        # purs-utils.purty
-        # purs-utils.spago
-        # purs-utils.spago2nix
-        # purs-utils.zephyr # purescript tree-shaker
         # (python310.withPackages (pkgs:
         #   [
         #     pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
@@ -240,6 +211,9 @@
         sageWithDoc # open-source alternative to magma maple, mathematica, and matlab
         scrot # command-line screen-capture utility [cf. maim]
         silver-searcher # ag -> silver-searcher # silver-searcher
+        sqldiff # SQLite-db differ
+        sqlite # self-contained SQL database engine
+        sqlite-utils # CLI utility and library for manipulating SQLite databases
         stack # haskell tool stack
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
         texmaker # Tex and LaTex editor
@@ -268,6 +242,7 @@
         xdotool # fake keyboard/mouse input, window management
         yq-go # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
+        xdragon # Simple drag-and-drop source/sink for X
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
         zip # compressor/achiver for creating and modifyig zipfiles
       ];
@@ -296,11 +271,8 @@
     firewall = {
       allowedUDPPorts = [ 631 ];
       allowedTCPPorts = [ 631 3000 ];
-      # extraCommands = ''
-      #     iptables -A OUTPUT -o wlo1 -p tcp --sport 3000 -m state --state ESTABLISHED -j ACCEPT
-      #   '';
     };
-    hostName = "theo"; # Define your hostname.
+    hostName = "theo";
     networkmanager.enable = true;
   };
 
@@ -309,7 +281,6 @@
       automatic = true;
       dates = "Sun 03:15";
     };
-    # package = pkgs.nixUnstable;
     extraOptions = ''
         experimental-features = nix-command flakes
       '';
@@ -318,32 +289,19 @@
   nixpkgs = {
     config = {
       allowUnfree = true;
-      # chromium.enableWideVine = true;
-      # cudaSupport = true;
       cudaSupport = false;
       packageOverrides = pkgs: {
         myVim = import ./vim { pkgs = pkgs; };
       };
-      permittedInsecurePackages =
-        [
-          "nodejs-14.21.3"
-          "openssl-1.1.1u"
-          "python-2.7.18.6"
-          "python2.7-certifi-2021.10.8"
-          "python2.7-pyjwt-1.7.1"
-          # "python2.7-PyJWT-1.7.1"
-          # "python2.7-urllib3-1.26.2"
-        ];
+      # permittedInsecurePackages =
+      #   [
+      #     "nodejs-14.21.3"
+      #     "openssl-1.1.1u"
+      #     "python-2.7.18.6"
+      #     "python2.7-certifi-2021.10.8"
+      #     "python2.7-pyjwt-1.7.1"
+      #   ];
     };
-    # overlays =
-    #   let
-    #     # Change the following to a rev/sha to pin.
-    #     mozRev = "master";
-    #     mozUrl = builtins.fetchTarball {
-    #       url = "https://github.com/mozilla/nixpkgs-mozilla/archive/${mozRev}.tar.gz";
-    #     };
-    #     nightlyOverlay = (import "${mozUrl}/firefox-overlay.nix");
-    #   in [ nightlyOverlay ];
     overlays = [ (import ./nixpkgs-mozilla/firefox-overlay.nix) ];
   };
 
