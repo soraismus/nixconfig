@@ -15,6 +15,7 @@ set backupcopy=auto
 set breakindent
 set colorcolumn=80,115
 set complete=.,w,b,u,t
+set completeopt=menu,preview
 " `&directory` is the list of dir names for swap files.
 " The default value of `&directory` is '.,~/tmp,/var/tmp,/tmp'.
 " A double slash ensures swapfile-name uniqueness.
@@ -44,6 +45,7 @@ set nojoinspaces
 set novisualbell
 set nrformats=bin,hex
 set number
+set omnifunc=syntaxcomplete#Complete
 set relativenumber
 set ruler
 set scrolloff=0
@@ -72,7 +74,13 @@ set ttimeoutlen=100
 set viminfo=!,'100,<50,s10,h
 let &viminfofile = myConfigDir . '/info'
 set virtualedit=all
-set wildmenu
+
+set wildmenu " Enhanced commandline completion.
+set wildmode=longest:list,list:full " Commandline completion mode.
+" wildoptions
+"     `wildoptions=pum` doesn't work with `wildmode=list`.
+"     `wildoptions=fuzzy` doesn't work well with `wildmode=list`.
+
 set writebackup " Protect against crash-during-write. Might affect 'inotify'.
 set wrap
 
@@ -105,6 +113,7 @@ nnoremap <leader>y "+y
 nnoremap <leader>Y "+y$
 nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 nnoremap ## :set relativenumber!<CR>
+nnoremap <key> :ls<CR>:b<Space>
 vnoremap Q :norm @q<CR>
 xnoremap <leader>p "+
 xnoremap <leader>y "+y
@@ -135,6 +144,7 @@ let g:syntastic_check_on_close = 0
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+let g:UltiSnipsEditSplit="vertical"
 
 " vim-crunch
 let g:crunch_result_type_append = 0
@@ -142,6 +152,13 @@ let g:crunch_result_type_append = 0
 " vim-unicoder
 let g:unicoder_command_abbreviations = 0 " Disable abbrevs in command and search lines
 let g:unicoder_exclude_filetypes = ['tex', 'latex', 'plaintex']
+
+" vimtex
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
 
 " Toggle between full path and relative path of current file.
 function! RestoreDeleteNextEmptyLineToRegisterQ()
