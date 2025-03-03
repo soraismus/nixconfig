@@ -20,12 +20,56 @@ in
     vimrcConfig.packages.myplugins = with pkgs.vimPlugins; {
       opt = [];
       start =
-        [ # agda-vim
+        [
+          # agda-vim
           # ale # Cf. coc.nvim. [Cf. https://www.vimfromscratch.com/articles/vim-and-language-server-protocol]
+
           awesome-vim-colorschemes
-          coc-denite
-          coc-fzf
-          coc-nvim # Cf. ale.
+
+          # # COC (Conqueror of Code)
+          # # ---
+          # # ---
+          # # !gh/neoclide/coc-denite: List filtering and sorting.
+          # # !gh/Shougo/denite.nvim
+          # # Note: Active development on denite.nvim has stopped. The only future changes will be bug fixes.
+          # # Please see ddu.vim.
+          # # Denite is a plugin for Neovim/Vim to unite all interfaces.
+          # # It can replace many features or plugins with its interface.
+          # # It is like a fuzzy finder, but is more generic.
+          # # Features: opening files; switching buffers; inserting the value of a register; searching for a string
+          # # cf. !gh/Shougo/unite.vim
+          # # Note: Active development on denite.nvim has stopped. The only future changes will be bug fixes.
+          # # Please see ddu.vim.
+          # # The unite or unite.vim plug-in can search and display information from arbitrary sources
+          # # like files, buffers, recently used files or registers.
+          # # You can run several pre-defined actions on a target displayed in the unite window.
+          # # The difference between unite and similar plug-ins like
+          # # fuzzyfinder, ctrl-p or ku
+          # # is that unite provides an integration interface for several sources and you can create new interfaces using unite.
+          # coc-denite
+          # # --
+          # # --
+          # # Use FZF instead of coc.nvim built-in fuzzy finder.
+          # # It was inspired by Robert Buhren's functions and coc-denite.
+          # # Make sure to have the following plugins in your **vimrc**:
+          # #   junegunn/fzf
+          # #   junegunn/fzf.vim # Needed for previews.
+          # #   neoclide/coc.nvim
+          # #   antoinemadec/coc-fzf
+          # coc-fzf
+          # # --
+          # # --
+          # # !gh/neoclide/coc-nvim
+          # # Coc.nvim enhances your (Neo)Vim to match the user experience provided by VSCode
+          # # through a rich extension ecosystem and implemented the client features
+          # # specified by Language Server Protocol (3.17 for now), see |coc-lsp|.
+          # # Some key features:~
+          # #  • Typescript APIs compatible with both Vim8 and Neovim.
+          # #  • Loading VSCode-like extensions |coc-api-extension|.
+          # #  • Configuring coc.nvim and its extensions with JSON configuration |coc-configuration|.
+          # #  • Configuring Language Servers that using Language Server Protocol (LSP) |coc-config-languageserver|.
+          # coc-nvim # Cf. ale.
+
           # comfortable-motion-vim
           command-t
           fzf-vim
