@@ -81,8 +81,10 @@
     in
       with pkgs; [
         # Reconsider:
+        # borgmatic # configuration-driven backup software
         difftastic # syntax-aware diff
         expect # tool for automating interactive applications
+        # neofetch # fastfetch # neofetch-like system-information tool
         ffuf # fast web fuzzer
         file # program that shows the type of files
         koreader # ebook-reader application
@@ -100,6 +102,7 @@
         rstudio
 
         atop # console system performance monitor
+        # autofs5 # kernel-based automounter
         bat # a 'cat' clone with syntax highlighting and git integration
         bat-extras.batdiff # integration of bat and diff
         bat-extras.batgrep # integration of bat and ripgrep
@@ -112,8 +115,10 @@
         burpsuite # integrated platform for performing security testing
         cabal-install # haskell packaging and build system
         cabal2nix # nix utility that transforms cabal specs into nix specs
+        calibre # e-book software (calibredb, ebook-convert, ebook-viewer, etc.)
         chromium # browser
         cifs-utils # tools for managing CIFS client filesystems (CIFS is Microsoft's version of SMB)
+        cmatrix # simulates the falling characters theme from 'The Matrix' movie
         conky # system monitor based on torsmo
         coq_8_9 # coq theorem assistant
         ctags # utility for fast source-code browsing (exuberant ctags)
@@ -140,11 +145,13 @@
         htop # interactive process viewer
         hound # fast code searching (react frontend; go backend; regex w/ trigram index)
         iotop
+        iperf3 # tool to measure IP/UDP & IP/TCP bandwith
         jq # command-line json processor
         jqp # TUI playground for experimenting with jq
         lazygit # simple terminal UI for git commands
         libnotify # library that sends desktop notifications to a notification daemon
         libreoffice # open-source office suite
+        librewolf # fork of Firefox, focused on privacy and security
         librsvg # library to assist pandoc in rendering SVG images to Cairo surfaces
         links2 # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
         lsof # utility to list open files
@@ -157,6 +164,8 @@
         mupdf # parsing engine for PDF, XPS, and EPUB
         myVim # text editor
         neovim # text editor
+        # newsboat # terminal RSS/Atom-feed reader
+        # nom # terminal RSS-feed reader
         nix-bash-completions
         nix-diff # utility that compares nix derivations
         nix-prefetch-git # nix utility that aids in pinning github revisions
@@ -182,7 +191,7 @@
             # pkgs.matplotlib # plotting library
             # pkgs.networkx # network-management library
             # pkgs.nltk # natural-language processing toolkit
-            # pkgs.numpy # scientific (num-processing) tools
+            pkgs.numpy # scientific (num-processing) tools
             # pkgs.opencv4 # Open Computer Vision library
             # pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
             # pkgs.pandas # python data-analysis library
@@ -204,13 +213,16 @@
           ]
         ))
         qpdf # C++ programs that inspect/manipulate PDF files
+        qutebrowser # keyboard-focused browser
         ripgrep # regex utility that's faster than the silver searcher ['rg']
         ripgrep-all # search utility for PDFs, e-books, office docs, zip, targ.gz, etc.
         rofi # window switcher, run dialog and dmenu replacement
         rofi-pass # script to make rofi work with password-store
         sageWithDoc # open-source alternative to magma maple, mathematica, and matlab
         scrot # command-line screen-capture utility [cf. maim]
+        signal-desktop # signal messenger
         silver-searcher # ag -> silver-searcher # silver-searcher
+        sl # steam Locomotive runs across your terminal
         sqldiff # SQLite-db differ
         sqlite # self-contained SQL database engine
         sqlite-utils # CLI utility and library for manipulating SQLite databases
@@ -224,6 +236,7 @@
         termonad # termonad-with-packages -> termonad # terminal emulator configurable in haskell
         texlive.combined.scheme-full # pdflatex, xcolor.sty for PDF conversion
         tig # text-mode interface for git
+        # timeshift # system-restore tool [cf. snapper]
         tldr # community-managed man pages
         tmux # terminal multiplexer
         tmuxp # manage tmux workspaces from JSON and YAML
@@ -240,6 +253,7 @@
         wireshark-cli # network-protocol analyzer
         xclip # clipboard utility
         xdotool # fake keyboard/mouse input, window management
+        yazi # terminal file manager
         yq-go # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
         xdragon # Simple drag-and-drop source/sink for X
