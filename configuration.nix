@@ -137,6 +137,7 @@
         fontforge-gtk # font editor with GTK UI
         fonttools
         fzf # command-line fuzzy finder
+        geogebra # math software with graphics, algebra, and spreadsheets (version 5)
         gimp # GNU image-manipulation program
         gdrive # command-line utility for interacting with google drive
         ghostscript # PostScript interpreter
@@ -178,8 +179,9 @@
         pciutils # programs (like 'lspci') for managing PCI devices
         poppler_utils # PDF tools like pdfunite and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
+        privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-        (python310.withPackages (pkgs:
+        (python313.withPackages (pkgs:
           [
             pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
             pkgs.beautifulsoup4 # html- and xml-parser
@@ -210,6 +212,7 @@
             # pkgs.tensorflow-bin # machine learning
             # pkgs.tkinter
             # pkgs.torchvision # deep-learning platform                             # *
+            pkgs.yt-dlp
           ]
         ))
         qpdf # C++ programs that inspect/manipulate PDF files
