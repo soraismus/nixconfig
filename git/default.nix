@@ -25,6 +25,9 @@ let
       strestore = restore --staged
     [core]
       excludesFile = ${./ignore}
+    [grep]
+      lineNumber = true
+      patternType = perl
   '';
 in
   {
