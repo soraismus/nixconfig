@@ -68,20 +68,29 @@ connectWifi () {
   nmcli device wifi connect "$ssid" password "$pw"
 }
 
+countDirAndSubDirItems () {
+  local directory
+  if [[ "${#}" -gt 0 ]]; then
+    directory="${1}"
+  else
+    directory="${PWD}"
+  fi
+  # `tree -a` # Includes hidden files.
+  # `tail -n "${number}"` # Prints the last `${number}` of input entries.
+  tree -a "${directory}" | tail -n 1
+}
+
 countDirItems () {
   local directory
-  if [[ "$#" -gt 0 ]]; then
-    directory="$1"
+  if [[ "${#}" -gt 0 ]]; then
+    directory="${1}"
   else
-    directory="$PWD"
+    directory="${PWD}"
   fi
-  # `ls -1` # Lists one file per line.
-  # `ls -U` # Lists files in directory order (i.e., without sorting).
-  # `wc -l` # Counts the number of newline characters.
-  # `wc -m` # Counts the number of characters.
-  # `wc -w` # Counts the number of words.
-  # (The backslash escapes aliases.)
-  echo "$( \ls -1U "$directory" | wc -l )"
+  # `tree -a` # Includes hidden files.
+  # `tree -L 1` # Excludes files at any depth level past 1.
+  # `tail -n "${number}"` # Prints the last `${number}` of input entries.
+  tree -a -L 1 "${directory}" | tail -n 1
 }
 
 derefMark () {
@@ -124,9 +133,9 @@ _disposeHistoryOrphans () {
 }
 
 download-from-arxiv () {
-  local filename="${1}";
-  local id="$(echo "${filename}" | sed "s/\([^0-9-]\+\)--/\1\//")";
-  wget --user-agent="Mozilla/5.0" --output-document="${filename}.pdf" "https://browse.arxiv.org:443/pdf/${id}";
+  local filename="${1}"
+  local id="$( echo "${filename}" | sed "s/\([^0-9-]\+\)--/\1\//" )"
+  wget --user-agent="Mozilla/5.0" --output-document="${filename}.pdf" "https://arxiv.org:443/pdf/${id}"
   sleep 6
 }
 
@@ -161,8 +170,7 @@ gdrive_list_folders () {
   gdrive list --query "mimeType = 'application/vnd.google-apps.folder'"
 }
 
-get-arxiv-title ()
-{
+get-arxiv-title () {
   local filename0="${1}"
   local id="${filename0%*.pdf}"
   local new_dir="${2}"
