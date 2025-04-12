@@ -160,6 +160,8 @@ let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
 
+runtime ftplugin/man.vim
+
 " Toggle between full path and relative path of current file.
 function! RestoreDeleteNextEmptyLineToRegisterQ()
   call setreg("q", "/^\s*$dd1k", ""v")

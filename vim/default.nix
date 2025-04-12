@@ -56,7 +56,7 @@ in
           # #   junegunn/fzf.vim # Needed for previews.
           # #   neoclide/coc.nvim
           # #   antoinemadec/coc-fzf
-          # coc-fzf
+          coc-fzf
           # # --
           # # --
           # # !gh/neoclide/coc-nvim
@@ -68,7 +68,7 @@ in
           # #  • Loading VSCode-like extensions |coc-api-extension|.
           # #  • Configuring coc.nvim and its extensions with JSON configuration |coc-configuration|.
           # #  • Configuring Language Servers that using Language Server Protocol (LSP) |coc-config-languageserver|.
-          # coc-nvim # Cf. ale.
+          coc-nvim # Cf. ale.
 
           # comfortable-motion-vim
           command-t
@@ -77,7 +77,7 @@ in
           fugitive
           gundo
           indentLine
-          # neoterm # temporarily comment b/c of build issue
+          # neoterm # Temporarily comment b/c of build issue.
           latex-live-preview
           syntastic
           tabular
@@ -93,6 +93,7 @@ in
           vim-gitgutter
           vim-javascript
           vim-signature
+          vim-snippets # Complement to ultisnips.
           vim-subversive
           vim-surround
           # !gh machakan/vim-swap
@@ -104,6 +105,7 @@ in
           vimux
           vim-vinegar
           vim-visual-multi
+          YouCompleteMe
         ];
   };
 }
