@@ -80,6 +80,9 @@
       fonttools = pkgs.fontforge-fonttools;
     in
       with pkgs; [
+        # Consider:
+        # niri # scrollable-tiling wayland compositor
+
         # Reconsider:
         # borgmatic # configuration-driven backup software
         difftastic # syntax-aware diff
@@ -143,6 +146,8 @@
         ghostscript # PostScript interpreter
         glances # curses-bases monitoring tool (cf. htop)
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
+        hashcat # password cracker
+        hashcat-utils # utilities for advanced password cracking
         htop # interactive process viewer
         hound # fast code searching (react frontend; go backend; regex w/ trigram index)
         iotop
@@ -181,7 +186,7 @@
         powertop # utility to analyze power consumption on Intel-based laptops
         privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-        (python313.withPackages (pkgs:
+        (python310.withPackages (pkgs:
           [
             pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
             pkgs.beautifulsoup4 # html- and xml-parser
@@ -193,7 +198,10 @@
             # pkgs.matplotlib # plotting library
             # pkgs.networkx # network-management library
             # pkgs.nltk # natural-language processing toolkit
-            pkgs.numpy # scientific (num-processing) tools
+
+            #
+            # pkgs.numpy # scientific (num-processing) tools
+
             # pkgs.opencv4 # Open Computer Vision library
             # pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
             # pkgs.pandas # python data-analysis library
@@ -212,17 +220,21 @@
             # pkgs.tensorflow-bin # machine learning
             # pkgs.tkinter
             # pkgs.torchvision # deep-learning platform                             # *
+
+            #
             pkgs.yt-dlp
+
           ]
         ))
         qpdf # C++ programs that inspect/manipulate PDF files
         qutebrowser # keyboard-focused browser
-        ripgrep # regex utility that's faster than the silver searcher ['rg']
+        ripgrep # regex utility that's faster than the silver searcher [cf. rg]
         ripgrep-all # search utility for PDFs, e-books, office docs, zip, targ.gz, etc.
         rofi # window switcher, run dialog and dmenu replacement
         rofi-pass # script to make rofi work with password-store
         sageWithDoc # open-source alternative to magma maple, mathematica, and matlab
         scrot # command-line screen-capture utility [cf. maim]
+        shfmt # shell parser and formatter
         signal-desktop # signal messenger
         silver-searcher # ag -> silver-searcher # silver-searcher
         sl # steam Locomotive runs across your terminal
@@ -243,6 +255,7 @@
         tldr # community-managed man pages
         tmux # terminal multiplexer
         tmuxp # manage tmux workspaces from JSON and YAML
+        topiary # uniform formatter for simple languages by tree-sitter
         translate-shell # command-line translator
         tree # commandline directory visualizer
         typst # markup-based typesetting system
@@ -257,7 +270,6 @@
         xclip # clipboard utility
         xdotool # fake keyboard/mouse input, window management
         yazi # terminal file manager
-        yq-go # cli YAML processor
         yt-dlp # command-line tool to download videos from video platforms
         xdragon # Simple drag-and-drop source/sink for X
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
