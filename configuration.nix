@@ -102,7 +102,146 @@
         parallel # shell tool fro executing jobs in parallel [cf. xargs ?]
         pass # password-store manages passwords securely
         renameutils # a set of programs to make renaming of files faster
-        rstudio
+
+        (rstudioWrapper.override {
+          packages = with rPackages;
+            [ # Amelia
+              # arrow
+              # Bioconductor
+              box
+              bslib
+              # car # Type-II and -III ANOVA tables.
+              caret # Train regression and classification models.
+              # catdata
+              # CatDataAnalysis
+              # CatDyn
+              # Category
+              # CATkit
+              # catlearn
+              # clock
+              correlationfunnel
+              csv
+              data_table
+              # DBI # Manage relational database management systems.
+              # devtools # Create R packages.
+              # diffobj
+              dbplyr # dplyr backend.
+              dplyr # Data wrangling.
+              # DT # Wrapper of javascript 'Datatables'.
+              e1071
+              echarts4r
+              esquisse # Data visualization.
+              # faraway
+              flexdashboard # [cf. shiny]
+              # foreign # Manage SAS, SPSS, or other foreign datasets.
+              # frequency
+              fs
+              furrr
+              # ggmap # Google maps.
+              ggplot2
+              ggraph
+              # ggpubr
+              ggvis # Web-based graphics (grammar of graphics).
+              glmnet # Regression with regularization.
+              glue
+              golem
+              # googlenlp
+              # googleVis # Manage Google Chart tools. Cf. Gapminder.
+              gt
+              GWalkR
+              hablar
+              # haven # Manage SAS, SPSS, and Stata datasets.
+              htmlwidgets # leaflet, dygraphs, DT, diagrammeR, network3D, threeJS
+              # httr # Manage HTTP connections.
+              janitor
+              jsonlite # Manage JSON data.
+              # jsontools
+              # jsonvalidate
+              knitr # Generate reports.
+              leaflet # Interactive maps and geospatial analysis.
+              # lme4 # Linear mixed-effects models.
+              lubridate # Manage dates and times.
+              # magrittr
+              # mapgl # (Not yet available in nixpgs.)
+              # markdown # Convert R code and its results into various formats. [cf. rmarkdown]
+              # mgcv # Generalized additive models.
+              # mi
+              # mice
+              # missForest
+              mlr3 # Machine learning in R.
+              # multcomp # Multiple comparison testing.
+              # maps # Polygons for plotting.
+              # maptools # Spatial data, including shapefiles.
+              # MASS
+              naniar
+              # nlme # Nonlinear mixed-effects models.
+              # odbc
+              officer
+              outliers
+              # parallel # Parallel processing.
+              patchwork
+              plotly
+              # plumber
+              # plumbr
+              # plyr
+              # profvis # Code profiling.
+              purrr # Map functions.
+              # quantmod # Manage financial data.
+              # randomForest
+              Rcrawler # Web scraping.
+              readr # Data import.
+              # reticulate # Python interop.
+              # Rcpp # C++ interop.
+              renv
+              # reshape2
+              rhino
+              rgl # Interactive 3D visualization.
+              # rmarkdown # Convert R code and its results into various formats. [cf. markdown]
+              # ROCR
+              ROI
+              roxygen2 # R-package documentation.
+              # RPostgres
+              # RPostgreSQL
+              RSQLite
+              scales
+              shiny # Create web apps.
+              # shinyjs
+              skimr
+              # sp # spatial data, including shapefiles.
+              # stats
+              stringr # Manage regular expressions.
+              # survival
+              targets
+              # tdata
+              # tdaunif
+              # TDAvec
+              # TDbook
+              # TDboost
+              # TDCM
+              # testthat # Unit-testing suite.
+              # tibble
+              # tidymodels # Machine learning. (Includes broom, rsample, parsnip, recipes.)
+              tidyquant
+              tidyr
+              tidytable
+              # tidytext # Text mining.
+              tidyverse
+              timetk # Time-series analysis.
+              # torch
+              # vcd # Visualization of categorical data.
+              # VIM
+              vetiver
+              # voronoiTreemap
+              # wrangle
+              xgboost
+              # XLConnect # rsconnect? # Manage MS Excel files.
+              # xlsx # Manage MS Excel files.
+              XML
+              xtable # Convert R objects into latex or HTML.
+              # xts # Manage time series.
+              # zoo # Time-series serialization.
+            ];
+        })
 
         atop # console system performance monitor
         # autofs5 # kernel-based automounter
