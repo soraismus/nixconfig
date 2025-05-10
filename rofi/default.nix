@@ -281,7 +281,7 @@ in
           rofi-system-power
           rofi-touchpad
           rofi-theme
-          pkgs.rxvt_unicode # clone of rxvt (color vt102 terminal emulator)
+          pkgs.ghostty # terminal emulator
       ];
 
       environment.etc."rofi.conf".text = rofi-config;
