@@ -244,11 +244,11 @@ let
           Exit)
             i3-msg exit
             ;;
-          Reboot)
-            systemctl reboot
-            ;;
           Power-off)
             systemctl poweroff
+            ;;
+          Reboot)
+            systemctl reboot
             ;;
           Suspend)
             $($USE_LOCKER) && "$LOCKER"; systemctl suspend
@@ -281,7 +281,7 @@ in
           rofi-system-power
           rofi-touchpad
           rofi-theme
-          pkgs.ghostty # terminal emulator
+          pkgs.alacritty # terminal emulator
       ];
 
       environment.etc."rofi.conf".text = rofi-config;

@@ -7,7 +7,7 @@ let
 
     exec ${pkgs.feh}/bin/feh --bg-max '${./wallpapers/odin-on-sleipnir.jpg}'
 
-    exec ${pkgs.ghostty}/bin/ghostty
+    exec ${pkgs.alacritty}/bin/alacritty
 
     gaps inner 5
     gaps outer 3
@@ -25,7 +25,7 @@ let
     floating_modifier $mod
 
     # To start a terminal:
-    bindsym $mod+Return exec ${pkgs.ghostty}/bin/ghostty
+    bindsym $mod+Return exec ${pkgs.alacritty}/bin/alacritty
 
     # To kill focused window:
     bindsym $mod+Shift+q kill
@@ -148,7 +148,7 @@ in
       environment.systemPackages =
         [ pkgs.i3blocks # flexible scheduler for i3bar blocks
           pkgs.i3status # status line for i3bar, dzen2, xmobar, or lemonbar
-          pkgs.ghostty # terminal emulator
+          pkgs.alacritty # terminal emulator
         ];
       services.xserver.windowManager.i3 = {
         enable = true;
