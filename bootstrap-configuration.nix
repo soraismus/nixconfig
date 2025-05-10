@@ -105,7 +105,7 @@
     zathura # PDF viewer
     i3blocks # flexible scheduler for i3bar blocks
     i3status # status line for i3bar, dzen2, xmobar, or lemonbar
-    ghostty # terminal emulator
+    alacritty # terminal emulator
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
