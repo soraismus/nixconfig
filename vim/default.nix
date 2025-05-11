@@ -69,6 +69,7 @@ in
           # #  • Configuring coc.nvim and its extensions with JSON configuration |coc-configuration|.
           # #  • Configuring Language Servers that using Language Server Protocol (LSP) |coc-config-languageserver|.
           coc-nvim # Cf. ale.
+          coc-pyright # pyright extension for coc.nvim.
 
           # comfortable-motion-vim
           command-t
@@ -92,6 +93,7 @@ in
           vim-eunuch
           vim-gitgutter
           vim-javascript
+          vim-repeat
           vim-signature
           vim-snippets # Complement to ultisnips.
           vim-subversive
