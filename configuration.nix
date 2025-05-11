@@ -334,6 +334,7 @@
         powertop # utility to analyze power consumption on Intel-based laptops
         privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
+
         (python310.withPackages (pkgs:
           [
             pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
@@ -374,6 +375,16 @@
 
           ]
         ))
+        (python312.withPackages (pkgs:
+          [
+              pkgs.httpx
+              pkgs.openai
+              # pkgs.openapi-pydantic
+              pkgs.pydantic
+              pkgs.requests
+          ]
+        ))
+
         qpdf # C++ programs that inspect/manipulate PDF files
         qutebrowser # keyboard-focused browser
         ripgrep # regex utility that's faster than the silver searcher [cf. rg]
