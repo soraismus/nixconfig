@@ -281,7 +281,7 @@ in
           rofi-system-power
           rofi-touchpad
           rofi-theme
-          pkgs.alacritty # terminal emulator
+          pkgs.myGhostty # terminal emulator
       ];
 
       environment.etc."rofi.conf".text = rofi-config;

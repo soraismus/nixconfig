@@ -1,3 +1,6 @@
+!ghostty
+!alacritty
+
 !XTERM
 XTerm*faceName: fira:size=9:antialias=true
 XTerm*metaSendsEscape: true
