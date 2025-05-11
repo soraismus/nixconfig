@@ -489,14 +489,6 @@
             pinnedPkgs.ghostty;# terminal emulator.
         myVim = import ./vim { pkgs = pkgs; };
       };
-      # permittedInsecurePackages =
-      #   [
-      #     "nodejs-14.21.3"
-      #     "openssl-1.1.1u"
-      #     "python-2.7.18.6"
-      #     "python2.7-certifi-2021.10.8"
-      #     "python2.7-pyjwt-1.7.1"
-      #   ];
     };
     overlays = [ (import ./nixpkgs-mozilla/firefox-overlay.nix) ];
   };
