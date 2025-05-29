@@ -92,11 +92,11 @@ imap <C-C> <Esc>g=iW
 nmap <C-C> g=iW
 vmap <C-C> g=iW
 
- noremap <C-H> <C-W>h
- noremap <C-J> <C-W>j
- noremap <C-K> <C-W>k
- noremap <C-L> <C-W>l
- noremap <leader>/ :Commentary<cr>
+noremap <C-H> <C-W>h
+noremap <C-J> <C-W>j
+noremap <C-K> <C-W>k
+noremap <C-L> <C-W>l
+noremap <leader>/ :Commentary<cr>
 cnoremap w!! %!sudo tee > /dev/null %
 inoremap <C-A> <Esc>I
 inoremap <C-E> <Esc>A
@@ -105,10 +105,12 @@ inoremap kj <Esc>
 inoremap <C-L> <C-G>u<Esc>[s1z=`]a<C-G>u
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
+inoremap <silent> <Space> <C-R>=UltiSnips#ExpandSnippetOrJump() ? '' : ' '<CR>
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap Q @q
 nnoremap <leader>p "+
+nnoremap <leader>tl :ToggleLogograms<CR>
 nnoremap <leader>y "+y
 nnoremap <leader>Y "+y$
 nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
@@ -145,6 +147,9 @@ let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsEditSplit="vertical"
+" let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+let g:UltiSnipsSnippetDirectories=["logograms"]
+let g:UltiSnipsEnableSnipMate = 1
 
 " vim-crunch
 let g:crunch_result_type_append = 0
@@ -214,6 +219,32 @@ function! <SID>StripTrailingWhitespaces()
   %s/\s\+$//e       " [e] flag suppresses error messages.
   call cursor(l, c) " Restore former cursor position.
 endfunction
+
+function! LogogramReplace(mode)
+  " let l:filepath = expand('${../logograms/logograms.json}')
+  " let l:command = printf('${pkgs.python311} ${../logograms/logogram_replace.py} %s %s', a:mode, l:filepath)
+  let l:filepath = expand('/etc/nixos/logograms/logograms.json')
+  let l:command = printf('python3 /etc/nixos/logograms/logogram_replace.py %s %s', a:mode, l:filepath)
+  let l:original = join(getline(1, '$'), "\n")
+  let l:processed = system(l:command, l:original)
+  call setline(1, split(l:processed, "\n"))
+endfunction
+command! ToLogograms call LogogramReplace("to_logogram")
+command! ToASCII call LogogramReplace("to_ascii")
+
+let g:logogram_toggle = 0
+function! ToggleLogogramState()
+  if g:logogram_toggle
+    call LogogramReplace("to_ascii")
+    let g:logogram_toggle = 0
+    echo "Switched to ASCII"
+  else
+    call LogogramReplace("to_logogram")
+    let g:logogram_toggle = 1
+    echo "Switched to Logograms"
+  endif
+endfunction
+command! ToggleLogograms call ToggleLogogramState()
 
 augroup vimrc
   " Remove all vimrc autocommands so not to enter twice.
