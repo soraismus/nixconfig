@@ -1,0 +1,52 @@
+session_name: polytope-01
+windows:
+  - window_name: expl
+    layout: tiled
+    focus: true
+    shell_command_before:
+      - to expl
+    panes:
+      - pane
+  - window_name: arxiv
+    layout: tiled
+    shell_command_before:
+      - to arxiv
+    panes:
+      - pane
+  - window_name: videos
+    layout: tiled
+    shell_command_before:
+      - to videos
+    panes:
+      - shell_command:
+          - PATH="$PATH:/home/polytope/bin"
+          - nix shell nixpkgs#yt-dlp
+        focus: true
+      - shell_command:
+          - PATH="$PATH:/home/polytope/bin"
+      - shell_command:
+          - PATH="$PATH:/home/polytope/bin"
+      - shell_command:
+          - PATH="$PATH:/home/polytope/bin"
+  - window_name: backup
+    layout: tiled
+    shell_command_before:
+      - cd /
+    panes:
+      - shell_command:
+          - PATH="$PATH:/home/polytope/eb-bin"
+        focus: true
+      - shell_command:
+          - PATH="$PATH:/home/polytope/eb-bin"
+  - window_name: pdfs
+    layout: tiled
+    shell_command_before:
+      - to pdfs
+    panes:
+      - pane
+  - window_name: tsundoku-font
+    layout: tiled
+    shell_command_before:
+      - to dl/fonts/tsundoku-font
+    panes:
+      - pane
