@@ -88,7 +88,19 @@
     in
       with pkgs; [
         # Consider:
+        # delta # syntax-highlighting pager for git (diff alternative)
+        # espanso # cross-platform text expander
+        # evil-helix # modal text editor (vim alternative)
+        fselect # find files with SQL-like syntax
+        hyperfine # benchmarking tool
+        # just / justbuild ? # command runner (make alternative)
+        mprocs # TUI for running multiple commands
         # niri # scrollable-tiling wayland compositor
+        # presenterm # terminal-based slideshow tool
+        starship # customizable prompt for any shell
+        # tokei # counts files, line, comments, blanks.
+        wiki-tui # TUI for wikipedia
+        # zellij # tmux alternative
 
         # Reconsider:
         # borgmatic # configuration-driven backup software
