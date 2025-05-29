@@ -287,10 +287,11 @@
         fontforge-gtk # font editor with GTK UI
         fonttools
         fzf # command-line fuzzy finder
-        geogebra # math software with graphics, algebra, and spreadsheets (version 5)
-        gimp # GNU image-manipulation program
         gdrive # command-line utility for interacting with google drive
+        geogebra # math software with graphics, algebra, and spreadsheets (version 5)
         ghostscript # PostScript interpreter
+        gimp # GNU image-manipulation program
+        gitui # terminal IDE for git (lazygit alternative)
         glances # curses-bases monitoring tool (cf. htop)
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
         hashcat # password cracker
@@ -421,16 +422,18 @@
         units # unit-conversion tool
         unzip # extraction utility for archives cmopressed in .zip format
         usbutils # tools (e.g., lsusb) for working with USB devices
+        vieb # vim-inspired electron browser
         vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
         vlc # cross-platform media player and streaming server
         w3m # text-based web browser (cf. browsh, links2, lynx)
-        wget # tool for retrieving files using HTTP, HTTPS, and FTP
+        wget # tool for retrieving files using HTTP, HTTPS, and FTP [cf. curl]
         wireshark-cli # network-protocol analyzer
         xclip # clipboard utility
         xdotool # fake keyboard/mouse input, window management
         yazi # terminal file manager
         yt-dlp # command-line tool to download videos from video platforms
         xdragon # Simple drag-and-drop source/sink for X
+        xh # curl alternative for sending HTTP packets
         zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
         zip # compressor/achiver for creating and modifyig zipfiles
       ];
@@ -550,9 +553,9 @@
         gst = "git st";
         gti = "git";
         ixclip = "xclip -i -sel clip";
-        l = "ls -Alh --color=tty";
-        l1 = "ls -1A --color=tty --group-directories-first";
-        ls = "ls -A --color=tty --group-directories-first";
+        l = "eza -alhb --group-directories-first --git --tree --level 2 --git-ignore";
+        l1 = "eza -1a --group-directories-first";
+        ls = "eza -a --group-directories-first";
         oxclip = "xclip -o -sel clip";
         promptToggle = "togglePrompt";
         quit = "exit";
