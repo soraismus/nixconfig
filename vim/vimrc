@@ -1,3 +1,5 @@
+{ pkgs }:
+''
 filetype indent plugin on
 " syntax on " This is related to `syntax enable`, but it overrules my color/highlight settings.
 syntax enable " Equivalent to ':source $VIMRUNTIME/syntax/syntax.vim'
@@ -105,7 +107,7 @@ inoremap kj <Esc>
 inoremap <C-L> <C-G>u<Esc>[s1z=`]a<C-G>u
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
-inoremap <silent> <Space> <C-R>=UltiSnips#ExpandSnippetOrJump() ? '' : ' '<CR>
+inoremap <silent> <Space> <C-R>=UltiSnips#ExpandSnippetOrJump() ? ''' : ' '<CR>
 nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 nnoremap <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap Q @q
@@ -221,10 +223,8 @@ function! <SID>StripTrailingWhitespaces()
 endfunction
 
 function! LogogramReplace(mode)
-  " let l:filepath = expand('${../logograms/logograms.json}')
-  " let l:command = printf('${pkgs.python311} ${../logograms/logogram_replace.py} %s %s', a:mode, l:filepath)
-  let l:filepath = expand('/etc/nixos/logograms/logograms.json')
-  let l:command = printf('python3 /etc/nixos/logograms/logogram_replace.py %s %s', a:mode, l:filepath)
+  let l:filepath = expand('${../logograms/logograms.json}')
+  let l:command = printf('/run/current-system/sw/bin/python3 ${../logograms/logogram_replace.py} %s %s', a:mode, l:filepath)
   let l:original = join(getline(1, '$'), "\n")
   let l:processed = system(l:command, l:original)
   call setline(1, split(l:processed, "\n"))
@@ -251,3 +251,4 @@ augroup vimrc
   autocmd!
   autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 augroup END
+''

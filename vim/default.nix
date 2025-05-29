@@ -16,7 +16,7 @@ let
 in
   (pkgs.vim_configurable.override {}).customize {
     name = "vim";
-    vimrcConfig.customRC = builtins.readFile ./vimrc;
+    vimrcConfig.customRC = import ./vimrc { pkgs = pkgs; };
     vimrcConfig.packages.myplugins = with pkgs.vimPlugins; {
       opt = [];
       start =
