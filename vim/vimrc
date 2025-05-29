@@ -224,7 +224,7 @@ endfunction
 
 function! LogogramReplace(mode)
   let l:filepath = expand('${../logograms/logograms.json}')
-  let l:command = printf('/run/current-system/sw/bin/python3 ${../logograms/logogram_replace.py} %s %s', a:mode, l:filepath)
+  let l:command = printf('${pkgs.python311}/bin/python3.11 ${../logograms/logogram_replace.py} %s %s', a:mode, l:filepath)
   let l:original = join(getline(1, '$'), "\n")
   let l:processed = system(l:command, l:original)
   call setline(1, split(l:processed, "\n"))
