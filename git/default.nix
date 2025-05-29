@@ -28,6 +28,13 @@ let
     [grep]
       lineNumber = true
       patternType = perl
+    [init]
+      defaultbranch = master
+    [filter "lfs"]
+      clean = git-lfs clean -- %f
+      smudge = git-lfs smudge -- %f
+      process = git-lfs filter-process
+      required = true
   '';
 in
   {
@@ -44,6 +51,7 @@ in
           pkgs.gitAndTools.git-crypt # encrypts particular files
           pkgs.gitAndTools.gitRemoteGcrypt # encrypts an entire repository
           pkgs.gitAndTools.tig # text-mode interface for git
+          pkgs.git-lfs # extension for versioning large files
         ];
     };
   }
