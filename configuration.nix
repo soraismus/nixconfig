@@ -342,7 +342,7 @@
         patchelf
         pavucontrol # PulseAudio volume control
         pciutils # programs (like 'lspci') for managing PCI devices
-        poppler_utils # PDF tools like pdfunite and pdfseparate
+        poppler_utils # PDF tools like pdffonts, pdfunite, and pdfseparate
         powertop # utility to analyze power consumption on Intel-based laptops
         privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
@@ -352,6 +352,8 @@
             pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
             pkgs.beautifulsoup4 # html- and xml-parser
             # pkgs.bokeh # statistical and interactive HTML plots
+            pkgs.fpdf2 # PDF generation
+            pkgs.httpx
             # pkgs.ipdb # web-based notebook environment for interactive computing
             # pkgs.ipython # web-based notebook environment for interactive computing
             # pkgs.jupyter # web-based notebook environment for interactive computing
@@ -359,10 +361,8 @@
             # pkgs.matplotlib # plotting library
             # pkgs.networkx # network-management library
             # pkgs.nltk # natural-language processing toolkit
-
-            #
             # pkgs.numpy # scientific (num-processing) tools
-
+            # pkgs.openai
             # pkgs.opencv4 # Open Computer Vision library
             # pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
             # pkgs.pandas # python data-analysis library
@@ -370,30 +370,21 @@
             # pkgs.pikepdf # qpdf-utility to create/manipulate/repair PDFs
             # pkgs.pilkit # utilities for python imaging library
             # pkgs.pillow # fork of PIL (python imaging library)
+            # pkgs.pydantic
             # pkgs.pypdf
             # pkgs.pypdf2
             # pkgs.pypdf3
             # pkgs.pytorch # deep-learning platform
+            # pkgs.reportlab # generating PDFs and graphics
+            pkgs.requests
             # pkgs.requests_toolbelt
             # pkgs.scikit-learn # machine learning & data mining
             pkgs.scrapy # web crawler and scraper
             # pkgs.seaborn # statistical data visualization
             # pkgs.tensorflow-bin # machine learning
             # pkgs.tkinter
-            # pkgs.torchvision # deep-learning platform                             # *
-
-            #
+            # pkgs.torchvision # deep-learning platform
             pkgs.yt-dlp
-
-          ]
-        ))
-        (python312.withPackages (pkgs:
-          [
-              pkgs.httpx
-              pkgs.openai
-              # pkgs.openapi-pydantic
-              pkgs.pydantic
-              pkgs.requests
           ]
         ))
 
