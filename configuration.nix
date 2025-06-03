@@ -93,15 +93,18 @@
         # espanso # cross-platform text expander
         # evil-helix # modal text editor (vim alternative)
         fselect # find files with SQL-like syntax
+        graphviz # graph visualization tool
         hyperfine # benchmarking tool
         # just / justbuild ? # command runner (make alternative)
         mprocs # TUI for running multiple commands
         # niri # scrollable-tiling wayland compositor
+        obsidian # knowledge base [cf. zk]
         # presenterm # terminal-based slideshow tool
         starship # customizable prompt for any shell
         # tokei # counts files, line, comments, blanks.
         wiki-tui # TUI for wikipedia
         # zellij # tmux alternative
+        zk # Zettelkasten note-taking [cf. obsidian]
 
         # Reconsider:
         # borgmatic # configuration-driven backup software
@@ -111,6 +114,7 @@
         ffuf # fast web fuzzer
         file # program that shows the type of files
         koreader # ebook-reader application
+        # lc0 # neural-network-based chess engine
         lean4 # automatic and interactive theorem prover
         lorri # your project's nix-env
         manim # animation engine for explanatory mathematics videos
@@ -123,6 +127,8 @@
         pass # password-store manages passwords securely
         pychess # GTK chess client
         renameutils # a set of programs to make renaming of files faster
+        # scid # chess database with play and training functionality
+        # stockfish # chess engine
 
         (rstudioWrapper.override {
           packages = with rPackages;
@@ -384,7 +390,6 @@
             # pkgs.tensorflow-bin # machine learning
             # pkgs.tkinter
             # pkgs.torchvision # deep-learning platform
-            pkgs.yt-dlp
           ]
         ))
 

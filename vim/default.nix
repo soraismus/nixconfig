@@ -78,8 +78,11 @@ in
           fugitive
           gundo
           indentLine
-          # neoterm # Temporarily comment b/c of build issue.
           latex-live-preview
+          markdown-preview-nvim
+          # neoterm # Temporarily comment b/c of build issue.
+          neuron-vim # [cf. obsidian-nvim; vim-wiki; zk-vim]
+          obsidian-nvim # knowledge base # [cf. neuron-vim; vim-wiki; zk-vim]
           syntastic
           tabular
           tagbar
@@ -107,7 +110,9 @@ in
           vimux
           vim-vinegar
           vim-visual-multi
+          # vim-wiki
           YouCompleteMe
+          # zk-vim # Zettelkasten note-taking [cf. neuron-vim; obsidian-nvim; vim-wiki]
         ];
   };
 }
