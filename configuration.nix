@@ -20,6 +20,7 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages_6_1;
+    kernelParams   = [ "i2c_hid.polling_mode=1" ];
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = true;
