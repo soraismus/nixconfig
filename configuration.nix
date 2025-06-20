@@ -280,6 +280,7 @@
         bat-extras.prettybat
         bc # calculator
         bfs # breadth-first version of 'find'
+        brave # privacy-oriented browser
         broot # interactive tree view, fuzzy search, balanced BFS descent
         browsh # text-based browser that can render css and js (cf. links2, lynx, w3m)
         burpsuite # integrated platform for performing security testing
@@ -380,7 +381,7 @@
             # pkgs.pydantic
             # pkgs.pypdf
             # pkgs.pypdf2
-            # pkgs.pypdf3
+            pkgs.pypdf3
             # pkgs.pytorch # deep-learning platform
             # pkgs.reportlab # generating PDFs and graphics
             pkgs.requests
@@ -406,6 +407,7 @@
         signal-desktop # signal messenger
         silver-searcher # ag -> silver-searcher # silver-searcher
         sl # steam Locomotive runs across your terminal
+        sops # secret manager
         sqldiff # SQLite-db differ
         sqlite # self-contained SQL database engine
         sqlite-utils # CLI utility and library for manipulating SQLite databases
