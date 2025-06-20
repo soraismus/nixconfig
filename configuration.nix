@@ -90,6 +90,7 @@
     in
       with pkgs; [
         # Consider:
+        # atuin # db-persisted shell-history manager
         # delta # syntax-highlighting pager for git (diff alternative)
         # espanso # cross-platform text expander
         # evil-helix # modal text editor (vim alternative)
@@ -337,7 +338,60 @@
         mupdf # parsing engine for PDF, XPS, and EPUB
         myGhostty
         myVim # text editor
+
         neovim # text editor
+        # (neovim.override {}).customize {
+        #   name = "nvim";
+        #   vimrcConfig.customRC = builtins.readFile ./vimrc;
+        #   vimrcConfig.packages.myplugins = {
+        #     opt = [];
+        #     start =
+        #       [
+        #         awesome-vim-colorschemes
+        #         coc-fzf
+        #         coc-nvim # Cf. ale.
+        #         coc-pyright # pyright extension for coc.nvim.
+        #         command-t
+        #         fzf-vim
+        #         fzfWrapper
+        #         fugitive
+        #         gundo
+        #         indentLine
+        #         latex-live-preview
+        #         lua-language-server
+        #         nvim-lspconfig
+        #         syntastic
+        #         tabular
+        #         tagbar
+        #         telescope-nvim
+        #         ultisnips
+        #         unicode-vim
+        #         vim-capslock
+        #         vim-commentary
+        #         mhVimPlugins.vim-crunch
+        #         vim-dadbod
+        #         vim-easymotion
+        #         vim-eunuch
+        #         vim-gitgutter
+        #         vim-javascript
+        #         vim-repeat
+        #         vim-signature
+        #         vim-snippets # Complement to ultisnips.
+        #         vim-subversive
+        #         vim-surround
+        #         vim-tbone
+        #         vim-test
+        #         vimtex
+        #         vim-unicoder
+        #         vim-unimpaired
+        #         vimux
+        #         vim-vinegar
+        #         vim-visual-multi
+        #         YouCompleteMe
+        #       ];
+        #   };
+        # }
+
         # newsboat # terminal RSS/Atom-feed reader
         # nom # terminal RSS-feed reader
         nix-bash-completions
@@ -431,6 +485,8 @@
         typst # markup-based typesetting system
         units # unit-conversion tool
         unzip # extraction utility for archives cmopressed in .zip format
+        # ungoogled-chromium # open-source web browser from Google, with dependencies on Google web services removed # Conflicts with `chromium`. Perhaps alias to a different name?
+
         usbutils # tools (e.g., lsusb) for working with USB devices
         vieb # vim-inspired electron browser
         vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
@@ -450,6 +506,15 @@
 
   environment.theo = {
     programs = {
+      # atuin = {
+      #   enable = true;
+      #   settins = {
+      #     # dialect = "uk";
+      #     key_path = config.sops.secrets.atuin_key.path; # `config.sops.…`
+      #     # sync_address = "https://example.dev";
+      #     # sync_frequency = "15m";
+      #   };
+      # };
       backup.enable = true;
       bookmark.enable = true;
       execute-namespace.enable = true;
@@ -643,6 +708,11 @@
       };
     };
   };
+
+  # # key_path = config.sops.secrets.atuin_key.path; # `config.sops.…`
+  # sops.secrets.atuin_key = {
+  #   sopsFiles = ../secrets.yaml;
+  # };
 
   # Enable sound.
   sound.enable = true;
