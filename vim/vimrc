@@ -118,6 +118,7 @@ nnoremap <leader>Y "+y$
 nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
 nnoremap ## :set relativenumber!<CR>
 nnoremap <key> :ls<CR>:b<Space>
+vnoremap <Leader>n :<C-u>'<,'>s/^/\=printf('[%0*d] ', len(line("'>") - line("'<") + 1), line('.') - line("'<"))<CR>
 vnoremap Q :norm @q<CR>
 xnoremap <leader>p "+
 xnoremap <leader>y "+y
