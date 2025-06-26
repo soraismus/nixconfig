@@ -665,6 +665,11 @@
       shortcut = "f";
       terminal = "screen-256color"; # Default value is "screen".
     };
+
+    wireshark = {
+      enable = true;
+      # dumpcap.enable = true;
+    };
   };
 
   services = {
@@ -685,6 +690,7 @@
         with pkgs; [
           gutenprint
           hplip
+          # hplipWithPlugin
           postscript-lexmark
           brlaser
         ];
@@ -736,7 +742,13 @@
     isNormalUser = true;
     home = "/home/polytope";
     description = "polytope";
-    extraGroups = [ "audio" "networkmanager" "video" "wheel" ];
+    extraGroups = [
+      "audio"
+      "networkmanager"
+      "video"
+      "wheel"
+      "wireshark"
+    ];
     # openssh.authorizedKeys.keys = [ "ssh-dss AAAAB3Nza... alice@foobar" ];
   };
 
