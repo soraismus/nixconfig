@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -676,6 +676,8 @@
     };
     displayManager.defaultSession = "none+i3";
     libinput.enable = true;
+    openssh.enable = true;
+    pipewire.enable = lib.mkForce false;
     printing = {
       enable = true;
       browsing = true;
@@ -692,7 +694,6 @@
       listenAddresses = [ "*:631" ];
       defaultShared = true;
     };
-    openssh.enable = true;
     xserver = {
       enable = true;
       displayManager = {
