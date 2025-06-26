@@ -295,7 +295,7 @@
         coq_8_9 # coq theorem assistant
         ctags # utility for fast source-code browsing (exuberant ctags)
         ddgr # search DuckDuckGo from the terminal
-        dstat # monitor to replace vmstat, iostat, ifstat, netstat
+        dool # monitor to replace dstat, vmstat, iostat, ifstat, netstat
         dua # tool to learn about directories' disk usage
         du-dust # du + rust = dust; like du but more intuitive
         duf # disk usage / free utility ('du' substitute)
@@ -316,8 +316,9 @@
         gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
         hashcat # password cracker
         hashcat-utils # utilities for advanced password cracking
-        htop # interactive process viewer
+        hieroglyphic # replace tex-match; desktop version of detexify: search by sketching
         hound # fast code searching (react frontend; go backend; regex w/ trigram index)
+        htop # interactive process viewer
         iotop
         iperf3 # tool to measure IP/UDP & IP/TCP bandwith
         jq # command-line json processor
@@ -409,7 +410,7 @@
         privoxy # non-caching web proxy with advanced filtering capabilities
         psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
 
-        (python310.withPackages (pkgs:
+        (python313.withPackages (pkgs:
           [
             pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
             pkgs.beautifulsoup4 # html- and xml-parser
@@ -468,7 +469,6 @@
         stack # haskell tool stack
         sysstat # performance-monitoring tools (sar, iostat, pidstat)
         texmaker # Tex and LaTex editor
-        tex-match # desktop version of detexify: search by sketching
         texstudio # Tex and LaTex editor
         tcpdump # network sniffer
         termite # keyboard-centric VTE-based terminal
@@ -715,10 +715,18 @@
   # };
 
   # Enable sound.
-  sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  system.stateVersion = "18.09"; # Change only when NixOS release notes say so.
+  # hardware.sane = {
+  #   enable = true;
+  #   extraBackends = [ sane-airscan ];  # optional eSCL/WSD driverless scan
+  # };
+
+  system.stateVersion = "18.09";
+  # `system.stateVersion` records the NixOS release at installation
+  # in order to assist with legacy compatibility.
+  # The NixOS manual is blunt about this:
+  # “Most users should never change this value after the initial install, even when upgrading to a new release.”
 
   time.timeZone = "America/New_York";
 
