@@ -40,14 +40,12 @@
   # bash and inputrc # see also `programs.bash`
   environment = {
     etc."inputrc".source = ./bash/inputrc;
-
     interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
         (builtins.readFile ./bash/functions)
         (builtins.readFile ./bash/settings)
         (builtins.readFile ./bash/completion)
         (builtins.readFile ./bash/tmux-completion)
       ];
-
     variables =
       rec {
         BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
@@ -81,427 +79,197 @@
 
   environment.systemPackages =
     let
-      pinnedPkgs = import (fetchTarball {
-        url = "https://github.com/NixOS/nixpkgs/archive/b3582c75c7f21ce0b429898980eddbbf05c68e55.tar.gz";
-        sha256 = "1vf26scmz0826g49mqclmm4pblk5gzw5d4bk9bwql0psz916ij0n";
-      }) {};
-
-      pychess = pinnedPkgs.pychess; # GTK chess client
+      myPython = pkgs.python312.withPackages (ps: with ps; [
+        arxiv2bib
+        beautifulsoup4
+        pypdf3
+        requests
+        scrapy
+      ]);
+      myRstudio = pkgs.rstudioWrapper.override {
+        packages = with pkgs.rPackages; [
+          data_table
+          dplyr
+          ggplot2
+          ggraph
+          languageserver # LSP for neovim/emacs
+          patchwork
+          shiny
+          tidyr
+          tidyverse
+        ];
+      };
     in
       with pkgs; [
-        # Consider:
-        # atuin # db-persisted shell-history manager
-        # delta # syntax-highlighting pager for git (diff alternative)
-        # espanso # cross-platform text expander
-        # evil-helix # modal text editor (vim alternative)
-        fselect # find files with SQL-like syntax
-        graphviz # graph visualization tool
-        hyperfine # benchmarking tool
-        # just / justbuild ? # command runner (make alternative)
-        mprocs # TUI for running multiple commands
-        # niri # scrollable-tiling wayland compositor
-        obsidian # knowledge base [cf. zk]
-        # presenterm # terminal-based slideshow tool
-        starship # customizable prompt for any shell
-        # tokei # counts files, line, comments, blanks.
-        wiki-tui # TUI for wikipedia
-        # zellij # tmux alternative
-        zk # Zettelkasten note-taking [cf. obsidian]
-
-        # Reconsider:
-        # borgmatic # configuration-driven backup software
-        difftastic # syntax-aware diff
-        expect # tool for automating interactive applications
-        # neofetch # fastfetch # neofetch-like system-information tool
-        ffuf # fast web fuzzer
-        file # program that shows the type of files
-        koreader # ebook-reader application
-        # lc0 # neural-network-based chess engine
-        lean4 # automatic and interactive theorem prover
-        lorri # your project's nix-env
-        manim # animation engine for explanatory mathematics videos
-        # manim-slides # tool for live presenations using manim
-        niv # dependency manager for nix projects
-        nmap # utitlity for network discovery and security auditing
-        nushell # shell inspired by powershell written in rust
-        openssh # implementation of the SSH protocol
-        parallel # shell tool fro executing jobs in parallel [cf. xargs ?]
-        pass # password-store manages passwords securely
-        pychess # GTK chess client
-        renameutils # a set of programs to make renaming of files faster
-        # scid # chess database with play and training functionality
-        # stockfish # chess engine
-
-        (rstudioWrapper.override {
-          packages = with rPackages;
-            [ # Amelia
-              # arrow
-              # Bioconductor
-              box
-              bslib
-              # car # Type-II and -III ANOVA tables.
-              caret # Train regression and classification models.
-              # catdata
-              # CatDataAnalysis
-              # CatDyn
-              # Category
-              # CATkit
-              # catlearn
-              # clock
-              correlationfunnel
-              csv
-              data_table
-              # DBI # Manage relational database management systems.
-              # devtools # Create R packages.
-              # diffobj
-              dbplyr # dplyr backend.
-              dplyr # Data wrangling.
-              # DT # Wrapper of javascript 'Datatables'.
-              e1071
-              echarts4r
-              esquisse # Data visualization.
-              # faraway
-              flexdashboard # [cf. shiny]
-              # foreign # Manage SAS, SPSS, or other foreign datasets.
-              # frequency
-              fs
-              furrr
-              # ggmap # Google maps.
-              ggplot2
-              ggraph
-              # ggpubr
-              ggvis # Web-based graphics (grammar of graphics).
-              glmnet # Regression with regularization.
-              glue
-              golem
-              # googlenlp
-              # googleVis # Manage Google Chart tools. Cf. Gapminder.
-              gt
-              GWalkR
-              hablar
-              # haven # Manage SAS, SPSS, and Stata datasets.
-              htmlwidgets # leaflet, dygraphs, DT, diagrammeR, network3D, threeJS
-              # httr # Manage HTTP connections.
-              janitor
-              jsonlite # Manage JSON data.
-              # jsontools
-              # jsonvalidate
-              knitr # Generate reports.
-              leaflet # Interactive maps and geospatial analysis.
-              # lme4 # Linear mixed-effects models.
-              lubridate # Manage dates and times.
-              # magrittr
-              # mapgl # (Not yet available in nixpgs.)
-              # markdown # Convert R code and its results into various formats. [cf. rmarkdown]
-              # mgcv # Generalized additive models.
-              # mi
-              # mice
-              # missForest
-              mlr3 # Machine learning in R.
-              # multcomp # Multiple comparison testing.
-              # maps # Polygons for plotting.
-              # maptools # Spatial data, including shapefiles.
-              # MASS
-              naniar
-              # nlme # Nonlinear mixed-effects models.
-              # odbc
-              officer
-              outliers
-              # parallel # Parallel processing.
-              patchwork
-              plotly
-              # plumber
-              # plumbr
-              # plyr
-              # profvis # Code profiling.
-              purrr # Map functions.
-              # quantmod # Manage financial data.
-              # randomForest
-              Rcrawler # Web scraping.
-              readr # Data import.
-              # reticulate # Python interop.
-              # Rcpp # C++ interop.
-              renv
-              # reshape2
-              rhino
-              rgl # Interactive 3D visualization.
-              # rmarkdown # Convert R code and its results into various formats. [cf. markdown]
-              # ROCR
-              ROI
-              roxygen2 # R-package documentation.
-              # RPostgres
-              # RPostgreSQL
-              RSQLite
-              scales
-              shiny # Create web apps.
-              # shinyjs
-              skimr
-              # sp # spatial data, including shapefiles.
-              # stats
-              stringr # Manage regular expressions.
-              # survival
-              targets
-              # tdata
-              # tdaunif
-              # TDAvec
-              # TDbook
-              # TDboost
-              # TDCM
-              # testthat # Unit-testing suite.
-              # tibble
-              # tidymodels # Machine learning. (Includes broom, rsample, parsnip, recipes.)
-              tidyquant
-              tidyr
-              tidytable
-              # tidytext # Text mining.
-              tidyverse
-              timetk # Time-series analysis.
-              # torch
-              # vcd # Visualization of categorical data.
-              # VIM
-              vetiver
-              # voronoiTreemap
-              # wrangle
-              xgboost
-              # XLConnect # rsconnect? # Manage MS Excel files.
-              # xlsx # Manage MS Excel files.
-              XML
-              xtable # Convert R objects into latex or HTML.
-              # xts # Manage time series.
-              # zoo # Time-series serialization.
-            ];
-        })
-
-        atop # console system performance monitor
-        # autofs5 # kernel-based automounter
-        bat # a 'cat' clone with syntax highlighting and git integration
-        bat-extras.batdiff # integration of bat and diff
-        bat-extras.batgrep # integration of bat and ripgrep
-        bat-extras.batman # integration of bat and man
-        bat-extras.prettybat
-        bc # calculator
-        bfs # breadth-first version of 'find'
-        brave # privacy-oriented browser
-        broot # interactive tree view, fuzzy search, balanced BFS descent
-        browsh # text-based browser that can render css and js (cf. links2, lynx, w3m)
-        burpsuite # integrated platform for performing security testing
-        cabal-install # haskell packaging and build system
-        cabal2nix # nix utility that transforms cabal specs into nix specs
-        calibre # e-book software (calibredb, ebook-convert, ebook-viewer, etc.)
-        chromium # browser
-        cifs-utils # tools for managing CIFS client filesystems (CIFS is Microsoft's version of SMB)
-        cmatrix # simulates the falling characters theme from 'The Matrix' movie
-        conky # system monitor based on torsmo
-        coq_8_9 # coq theorem assistant
-        ctags # utility for fast source-code browsing (exuberant ctags)
-        ddgr # search DuckDuckGo from the terminal
-        dool # monitor to replace dstat, vmstat, iostat, ifstat, netstat
-        dua # tool to learn about directories' disk usage
-        du-dust # du + rust = dust; like du but more intuitive
-        duf # disk usage / free utility ('du' substitute)
-        eza # replacement for 'ls'
-        fd # alternative to 'find'
-        feh # light-weight image viewer
-        ffmpeg # manager and converter of audio/video files
-        firefox
-        fontforge-fonttools # Tools include showttf, ttf2eps, pfadecrypt, pcl2ttf.
-        # fontforge-gtk # font editor with GTK UI # Does this collide with `fontforge-fonttools`?
-        fzf # command-line fuzzy finder
-        gdrive # command-line utility for interacting with google drive
-        geogebra # math software with graphics, algebra, and spreadsheets (version 5)
-        ghostscript # PostScript interpreter
-        gimp # GNU image-manipulation program
-        gitui # terminal IDE for git (lazygit alternative)
-        glances # curses-bases monitoring tool (cf. htop)
-        gnupg # GNU Privacy Guard, a GPL OpenPGP implementation
-        hashcat # password cracker
-        hashcat-utils # utilities for advanced password cracking
-        hieroglyphic # replace tex-match; desktop version of detexify: search by sketching
-        hound # fast code searching (react frontend; go backend; regex w/ trigram index)
-        htop # interactive process viewer
-        iotop
-        iperf3 # tool to measure IP/UDP & IP/TCP bandwith
-        jq # command-line json processor
-        jqp # TUI playground for experimenting with jq
-        lazygit # simple terminal UI for git commands
-        libnotify # library that sends desktop notifications to a notification daemon
-        libreoffice # open-source office suite
-        librewolf # fork of Firefox, focused on privacy and security
-        librsvg # library to assist pandoc in rendering SVG images to Cairo surfaces
-        links2 # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
-        lsof # utility to list open files
-        lynx # terminal web-browser (cf. browsh, links2, w3m)
-        macchanger # utility for manipulating MAC addresses
-        maim # cli screenshot utility [cf. scrot]
-        mkpasswd # front-end for crypt (to make initial hashed pw: `mkpasswd -m sha-512`)
-        mmv # utility for wildcard renaming, copying, etc
-        mtr # network-diagnostics tool
-        mupdf # parsing engine for PDF, XPS, and EPUB
-        myGhostty
-        myVim # text editor
-
-        neovim # text editor
-        # (neovim.override {}).customize {
-        #   name = "nvim";
-        #   vimrcConfig.customRC = builtins.readFile ./vimrc;
-        #   vimrcConfig.packages.myplugins = {
-        #     opt = [];
-        #     start =
-        #       [
-        #         awesome-vim-colorschemes
-        #         coc-fzf
-        #         coc-nvim # Cf. ale.
-        #         coc-pyright # pyright extension for coc.nvim.
-        #         command-t
-        #         fzf-vim
-        #         fzfWrapper
-        #         fugitive
-        #         gundo
-        #         indentLine
-        #         latex-live-preview
-        #         lua-language-server
-        #         nvim-lspconfig
-        #         syntastic
-        #         tabular
-        #         tagbar
-        #         telescope-nvim
-        #         ultisnips
-        #         unicode-vim
-        #         vim-capslock
-        #         vim-commentary
-        #         mhVimPlugins.vim-crunch
-        #         vim-dadbod
-        #         vim-easymotion
-        #         vim-eunuch
-        #         vim-gitgutter
-        #         vim-javascript
-        #         vim-repeat
-        #         vim-signature
-        #         vim-snippets # Complement to ultisnips.
-        #         vim-subversive
-        #         vim-surround
-        #         vim-tbone
-        #         vim-test
-        #         vimtex
-        #         vim-unicoder
-        #         vim-unimpaired
-        #         vimux
-        #         vim-vinegar
-        #         vim-visual-multi
-        #         YouCompleteMe
-        #       ];
-        #   };
-        # }
-
-        # newsboat # terminal RSS/Atom-feed reader
-        # nom # terminal RSS-feed reader
-        nix-bash-completions
-        nix-diff # utility that compares nix derivations
-        nix-prefetch-git # nix utility that aids in pinning github revisions
-        nodejs_20 # nodejs-17_x -> ?? # javascript engine
-        openssl # cryptographic library that implements TSL protocol
-        openvpn # tunneling application
-        pandoc # utility that translates between markup formats
-        patchelf
-        pavucontrol # PulseAudio volume control
-        pciutils # programs (like 'lspci') for managing PCI devices
-        poppler_utils # PDF tools like pdffonts, pdfunite, and pdfseparate
-        powertop # utility to analyze power consumption on Intel-based laptops
-        privoxy # non-caching web proxy with advanced filtering capabilities
-        psmisc # utilities using the proc file-system (fuser, killall, pstree, etc)
-
-        (python313.withPackages (pkgs:
-          [
-            pkgs.arxiv2bib # get a BibTeX entry from an arXiv id number
-            pkgs.beautifulsoup4 # html- and xml-parser
-            # pkgs.bokeh # statistical and interactive HTML plots
-            pkgs.fpdf2 # PDF generation
-            pkgs.httpx
-            # pkgs.ipdb # web-based notebook environment for interactive computing
-            # pkgs.ipython # web-based notebook environment for interactive computing
-            # pkgs.jupyter # web-based notebook environment for interactive computing
-            # pkgs.keras # deep-learning library for Theano and TensorFlow
-            # pkgs.matplotlib # plotting library
-            # pkgs.networkx # network-management library
-            # pkgs.nltk # natural-language processing toolkit
-            # pkgs.numpy # scientific (num-processing) tools
-            # pkgs.openai
-            # pkgs.opencv4 # Open Computer Vision library
-            # pkgs.openpyxl # read/write Excel 2007 xlsx/xlsm files
-            # pkgs.pandas # python data-analysis library
-            # pkgs.pdfminer # PDF parser and analyzer
-            # pkgs.pikepdf # qpdf-utility to create/manipulate/repair PDFs
-            # pkgs.pilkit # utilities for python imaging library
-            # pkgs.pillow # fork of PIL (python imaging library)
-            # pkgs.pydantic
-            # pkgs.pypdf
-            # pkgs.pypdf2
-            pkgs.pypdf3
-            # pkgs.pytorch # deep-learning platform
-            # pkgs.reportlab # generating PDFs and graphics
-            pkgs.requests
-            # pkgs.requests_toolbelt
-            # pkgs.scikit-learn # machine learning & data mining
-            pkgs.scrapy # web crawler and scraper
-            # pkgs.seaborn # statistical data visualization
-            # pkgs.tensorflow-bin # machine learning
-            # pkgs.tkinter
-            # pkgs.torchvision # deep-learning platform
-          ]
-        ))
-
-        qpdf # C++ programs that inspect/manipulate PDF files
-        qutebrowser # keyboard-focused browser
-        ripgrep # regex utility that's faster than the silver searcher [cf. rg]
-        ripgrep-all # search utility for PDFs, e-books, office docs, zip, targ.gz, etc.
-        rofi # window switcher, run dialog and dmenu replacement
-        rofi-pass # script to make rofi work with password-store
-        sageWithDoc # open-source alternative to magma maple, mathematica, and matlab
-        scrot # command-line screen-capture utility [cf. maim]
-        shfmt # shell parser and formatter
-        signal-desktop # signal messenger
-        silver-searcher # ag -> silver-searcher # silver-searcher
-        sl # steam Locomotive runs across your terminal
-        sops # secret manager
-        sqldiff # SQLite-db differ
-        sqlite # self-contained SQL database engine
-        sqlite-utils # CLI utility and library for manipulating SQLite databases
-        stack # haskell tool stack
-        sysstat # performance-monitoring tools (sar, iostat, pidstat)
-        texmaker # Tex and LaTex editor
-        texstudio # Tex and LaTex editor
-        tcpdump # network sniffer
-        termite # keyboard-centric VTE-based terminal
-        termonad # termonad-with-packages -> termonad # terminal emulator configurable in haskell
-        texlive.combined.scheme-full # pdflatex, xcolor.sty for PDF conversion
-        tig # text-mode interface for git
-        # timeshift # system-restore tool [cf. snapper]
-        tldr # community-managed man pages
-        tmux # terminal multiplexer
-        tmuxp # manage tmux workspaces from JSON and YAML
-        topiary # uniform formatter for simple languages by tree-sitter
-        translate-shell # command-line translator
-        tree # commandline directory visualizer
-        typst # markup-based typesetting system
-        units # unit-conversion tool
-        unzip # extraction utility for archives cmopressed in .zip format
-        # ungoogled-chromium # open-source web browser from Google, with dependencies on Google web services removed # Conflicts with `chromium`. Perhaps alias to a different name?
-
-        usbutils # tools (e.g., lsusb) for working with USB devices
-        vieb # vim-inspired electron browser
-        vim-vint # vimscript linting tool by !gh/kuniwak/vint (in vim and at cli)
-        vlc # cross-platform media player and streaming server
-        w3m # text-based web browser (cf. browsh, links2, lynx)
-        wget # tool for retrieving files using HTTP, HTTPS, and FTP [cf. curl]
-        wireshark-cli # network-protocol analyzer
-        xclip # clipboard utility
-        xdotool # fake keyboard/mouse input, window management
-        yazi # terminal file manager
-        yt-dlp # command-line tool to download videos from video platforms
-        xdragon # Simple drag-and-drop source/sink for X
-        xh # curl alternative for sending HTTP packets
-        zathura # PDF reader with vim bindings; plugin-based document viewer; can use mupdf as plugin
-        zip # compressor/achiver for creating and modifyig zipfiles
+        ############################################################################
+        # Core CLI
+        ############################################################################
+          bat                 # pager + diff highlighter;
+                              # a 'cat' clone with syntax highlighting and git integration
+          bat-extras.batdiff  # pager + diff highlighter
+          broot               # interactive tree view, fuzzy search, balanced BFS descent
+          eza                 # ls replacement
+          fd                  # fast file-finder
+          file                # program that shows the type of files
+          fzf                 # fuzzy everything
+          jq                  # JSON wrangler
+          jqp                 # TUI playground for experimenting with jq
+          maim                # cli screenshot utility [cf. scrot]
+          mmv                 # utility for wildcard renaming, copying, etc
+          renameutils         # batch rename
+          ripgrep             # recursive grep
+          tldr                # community cheat-sheets
+          translate-shell     # command-line translator
+          tree                # directory tree
+          units               # unit-conversion tool
+          unzip               # extraction utility for archives cmopressed in .zip format
+          zip                 # compressor/achiver for creating and modifyig zipfiles
+        ############################################################################
+        # Nix helpers
+        ############################################################################
+          direnv                # automatic shell envs
+          niv                   # dependency manager for nix projects
+          nix-direnv            # automatic shell envs
+          # lorri               # project-scoped builds
+          nix-index
+          # nix-index-database  # “which package provides X?”
+          nix-diff              # utility that compares nix derivations
+          nix-prefetch-git      # nix utility that aids in pinning github revisions
+        ############################################################################
+        # Shell UX
+        ############################################################################
+          rofi      # window switcher, run dialog and dmenu replacement
+          rofi-pass # script to make rofi work with password-store
+        ############################################################################
+        # Monitoring & diagnostics
+        ############################################################################
+          dua                # tool to learn about directories' disk usage
+          duf                # disk
+          du-dust            # disk
+          glances            # processes / resources [cf. htop]
+          htop               # interactive process viewer
+          iotop              # processes / resources
+          iperf3             # tool to measure IP/UDP & IP/TCP bandwith
+          mtr                # network-diagnostics tool
+          fastfetch          # neofetch-like system-information tool
+          powertop           # utility to analyze power consumption on Intel-based laptops
+        ############################################################################
+        # Networking & security (kept small; heavy stuff via `nix run`)
+        ############################################################################
+          age           # file encryption tool.
+          # burpsuite   # integrated platform for performing security testing
+          gnupg         # gnu privacy guard, a gpl openpgp implementation
+          hashcat       # password cracker
+          hashcat-utils # utilities for advanced password cracking
+          macchanger    # utility for manipulating MAC addresses
+          nmap          # utitlity for network discovery and security auditing
+          openssh       # implementation of the SSH protocol
+          openssl       # cryptographic library that implements tsl protocol
+          pass          # password-store manages passwords securely
+          sops          # secret manager
+          tcpdump       # network sniffer
+          wget          # tool for retrieving files using http, https, and ftp [cf. curl]
+          wireshark-cli # network-protocol analyzer
+          xh            # curl alternative for sending http packets
+        ############################################################################
+        # Editing & terminals
+        ############################################################################
+          ghostty # gpu terminal
+          myVim
+          neovim
+          tmux
+          tmuxp   # manage tmux workspaces from JSON and YAML
+          xclip   # clipboard utility
+          xdotool # fake keyboard/mouse input, window management
+          xdragon # simple drag-and-drop source/sink for x
+        ############################################################################
+        # Dev tool-chain
+        ############################################################################
+          # cabal-install # haskell packaging and build system
+          # coq_8_9       # coq theorem assistant
+          delta           # syntax-highlighting pager for git (diff alternative)
+          # gitui         # terminal ide for git (lazygit alternative)
+          git             # vcs (version control system)
+          # lazygit       # terminal ui for git commands
+          # lean4         # automatic and interactive theorem prover
+          myPython
+          myRstudio
+          nodejs_20
+          # sageWithDoc   # cas / maths
+          sqlite          # self-contained SQL database engine
+          sqlite-utils    # CLI utility and library for manipulating SQLite databases
+          # stack         # haskell tool stack
+          # tig           # text-mode interface for git
+        ############################################################################
+        # Doc & media
+        ############################################################################
+          feh                            # light-weight image viewer and screenshot manager
+          ffmpeg                         # manager and converter of audio/video files
+          # hieroglyphic                 # tex-match; detexify; search by sketching
+          # libreoffice                  # open-source office suite
+          pandoc                         # utility that translates between markup formats
+          pavucontrol                    # pulseaudio volume control
+          poppler_utils                  # pdf rendering library
+          # qpdf                         # C++ programs that inspect/manipulate PDF files
+          # texlive.combined.scheme-full # pdflatex, xcolor.sty for pdf conversion
+          # texstudio                    # tex and latex editor
+          # typst                        # markup-based typesetting system
+          vlc                            # cross-platform media player and streaming server
+          # yt-dlp                       # command-line tool to download videos from video platforms
+          zathura                        # PDF reader with vim bindings; plugin-based document viewer;
+                                         # can use mupdf as plugin
+        ############################################################################
+        # Browsers
+        ############################################################################
+          brave         # privacy-oriented browser
+          # browsh      # text-based browser that can render css and js (cf. links2, lynx, w3m)
+          chromium
+          firefox
+          # librewolf
+          links2        # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
+          lynx          # terminal web-browser (cf. browsh, links2, w3m)
+          # qutebrowser # keyboard-focused browser
+          # vieb        # vim-inspired electron browser
+          w3m           # text-based web browser (cf. browsh, links2, lynx)
+        ############################################################################
+        # Consider
+        ############################################################################
+            # atuin              # db-persisted shell-history manager
+            # borgmatic          # configuration-driven backup software
+            # calibre            # e-book software (calibredb, ebook-convert, ebook-viewer, etc.)
+            # delta              # syntax-highlighting pager for git (diff alternative)
+            # difftastic         # syntax-aware diff
+            # espanso            # cross-platform text expander
+            # evil-helix         # modal text editor (vim alternative)
+            # expect             # tool for automating interactive applications
+            # ffuf               # fast web fuzzer; web scraper
+            # fselect            # find files with SQL-like syntax
+            # graphviz           # graph visualization tool
+            # hyperfine          # benchmarking tool
+            # just / justbuild ? # command runner (make alternative)
+            # koreader           # ebook-reader application
+            # lc0                # neural-network-based chess engine
+            # manim              # animation engine for explanatory mathematics videos
+            # manim-slides       # tool for live presenations using manim
+            # mprocs             # TUI for running multiple commands
+            # neofetch           # fastfetch; neofetch-like system-information tool
+            # newsboat           # terminal RSS/Atom-feed reader
+            # niri               # scrollable-tiling wayland compositor
+            # nom                # terminal RSS-feed reader
+            # nushell            # shell inspired by powershell written in rust
+            # obsidian           # knowledge base [cf. zk]
+            # parallel           # shell tool fro executing jobs in parallel [cf. xargs ?]
+            # presenterm         # terminal-based slideshow tool
+            # pychess            # GTK chess client
+            # scid               # chess database with play and training functionality
+            # starship           # customizable prompt for any shell
+            # stockfish          # chess engine
+            # tokei              # counts files, line, comments, blanks.
+            # wiki-tui           # TUI for wikipedia
+            # zellij             # tmux alternative
+            # zk                 # Zettelkasten note-taking [cf. obsidian]
+            # privoxy            # non-caching web proxy with advanced filtering capabilities
+            # psmisc             # utilities using the proc file-system (fuser, killall, pstree, etc)
       ];
 
   environment.theo = {
@@ -528,6 +296,8 @@
       i3.enable = true;
     };
   };
+
+  hardware.pulseaudio.enable = true;
 
   i18n = {
       defaultLocale = "en_US.UTF-8";
@@ -557,14 +327,6 @@
       allowUnfree = true;
       cudaSupport = false;
       packageOverrides = pkgs: {
-        myGhostty =
-          let
-            pinnedPkgs = import (fetchTarball {
-              url = "https://github.com/NixOS/nixpkgs/archive/b3582c75c7f21ce0b429898980eddbbf05c68e55.tar.gz";
-              sha256 = "1vf26scmz0826g49mqclmm4pblk5gzw5d4bk9bwql0psz916ij0n";
-            }) {};
-          in
-            pinnedPkgs.ghostty;# terminal emulator.
         myVim = import ./vim { pkgs = pkgs; };
       };
     };
@@ -596,7 +358,7 @@
 
   programs = {
     bash = {
-      enableCompletion = true;
+      completion.enable = true;
       interactiveShellInit = ''
           if [ ! -e "$CONFIG_ROOT/bash/history/" ]; then
             mkdir -p "$CONFIG_ROOT/bash/history/"
@@ -720,9 +482,6 @@
   # sops.secrets.atuin_key = {
   #   sopsFiles = ../secrets.yaml;
   # };
-
-  # Enable sound.
-  hardware.pulseaudio.enable = true;
 
   # hardware.sane = {
   #   enable = true;
