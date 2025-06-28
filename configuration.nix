@@ -436,12 +436,14 @@
 
   services = {
     avahi = {
+      openFirewall = true;  # Lets CUPS auto-discover.
       enable = true;
       publish.enable = true;
       publish.userServices = true;
       nssmdns4 = true;
     };
     displayManager.defaultSession = "none+i3";
+    ipp-usb.enable = true; # Turns any USB IPP device into localhost:60000.
     libinput.enable = true;
     openssh.enable = true;
     pipewire.enable = lib.mkForce false;
