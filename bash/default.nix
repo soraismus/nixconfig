@@ -1,16 +1,16 @@
 { config, lib, pkgs, ... }:
 let
-  concatStringsSep = pkgs.lib.concatStringsSep;
+  readFile = builtins.readFile;
 
   useTmux = config.environment.theo.programs.tmux.enable;
 
   interactive-shell-init-sources =
     [
-      (builtins.readFile ./functions)
-      (builtins.readFile ./settings)
-      (builtins.readFile ./completion)
+      (readFile ./functions)
+      (readFile ./settings)
+      (readFile ./completion)
     ] ++ lib.optionals useTmux [
-      (builtins.readFile ./tmux-completion)
+      (readFile ./tmux-completion)
     ];
 in
   {
@@ -22,8 +22,10 @@ in
 
       environment = {
         etc."inputrc".source = ./inputrc;
+
         interactiveShellInit =
-          concatStringsSep "\n" interactive-shell-init-sources;
+          lib.concatMapStrings (x: x + "\n") interactive-shell-init-sources;
+
         variables =
           rec {
             BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
