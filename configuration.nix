@@ -16,6 +16,11 @@
       ./i3
       ./mdb-to-sql
       ./rofi
+
+      # ./modules/programs/tmux
+      # ./modules/programs/tmux.nix
+      ./tmux/default.nix
+      # ./packages/editing-and-terminal-tools.nix
     ];
 
   boot = {
@@ -82,7 +87,10 @@
       browsers = import ./packages/browsers.nix { inherit pkgs; };
       cli-tools = import ./packages/cli-tools.nix { inherit pkgs; };
       dev-tools = import ./packages/dev-tools.nix { inherit pkgs; };
-      editing-and-terminal-tools = import ./packages/editing-and-terminal-tools.nix { inherit pkgs; };
+
+      editing-and-terminal-tools =
+        import ./packages/editing-and-terminal-tools.nix { inherit config lib pkgs; };
+
       media-tools = import ./packages/media-tools.nix { inherit pkgs; };
       monitoring-and-diagnostic-tools = import ./packages/monitoring-and-diagnostic-tools.nix { inherit pkgs; };
       networking-and-security-tools = import ./packages/networking-and-security-tools.nix { inherit pkgs; };
@@ -143,6 +151,7 @@
       git.enable = true;
       mdb-to-sql.enable = true;
       rofi.enable = true;
+      tmux.enable = true;
     };
     services = {
       automatic-mac-spoofing.enable = false;
@@ -266,24 +275,25 @@
       };
       shellInit = "";
     };
+    # tmux.enable = true;
 
-    tmux = {
-      enable = true;
-      aggressiveResize = false;
-      baseIndex = 0;
-      clock24 = true;
-      customPaneNavigationAndResize = true;
-      escapeTime = 500;
-      extraConfig = builtins.readFile ./tmux/tmux.conf;
-      historyLimit = 10000;
-      keyMode = "vi";
-      newSession = true;
-      reverseSplit = true;
-      resizeAmount = 10;
-      secureSocket = true;
-      shortcut = "f";
-      terminal = "screen-256color"; # Default value is "screen".
-    };
+    # tmux = {
+    #   enable = true;
+    #   aggressiveResize = false;
+    #   baseIndex = 0;
+    #   clock24 = true;
+    #   customPaneNavigationAndResize = true;
+    #   escapeTime = 500;
+    #   extraConfig = builtins.readFile ./tmux/tmux.conf;
+    #   historyLimit = 10000;
+    #   keyMode = "vi";
+    #   newSession = true;
+    #   reverseSplit = true;
+    #   resizeAmount = 10;
+    #   secureSocket = true;
+    #   shortcut = "f";
+    #   terminal = "screen-256color"; # Default value is "screen".
+    # };
 
     wireshark = {
       enable = true;
