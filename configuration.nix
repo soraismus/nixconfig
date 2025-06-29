@@ -155,7 +155,6 @@
       };
     };
     overlays = [
-      # (import ./nixpkgs-mozilla/firefox-overlay.nix)
       (import ./overlays/my-python.nix)
       (import ./overlays/my-rstudio.nix)
     ];
