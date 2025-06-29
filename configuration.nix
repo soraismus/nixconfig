@@ -79,198 +79,51 @@
 
   environment.systemPackages =
     let
-      myPython = pkgs.python312.withPackages (ps: with ps; [
-        arxiv2bib
-        beautifulsoup4
-        pypdf3
-        requests
-        scrapy
-      ]);
-      myRstudio = pkgs.rstudioWrapper.override {
-        packages = with pkgs.rPackages; [
-          data_table
-          dplyr
-          ggplot2
-          ggraph
-          languageserver # LSP for neovim/emacs
-          patchwork
-          shiny
-          tidyr
-          tidyverse
-        ];
-      };
+      browsers = import ./packages/browsers.nix { inherit pkgs; };
+      cli-tools = import ./packages/cli-tools.nix { inherit pkgs; };
+      dev-tools = import ./packages/dev-tools.nix { inherit pkgs; };
+      editing-and-terminal-tools = import ./packages/editing-and-terminal-tools.nix { inherit pkgs; };
+      media-tools = import ./packages/media-tools.nix { inherit pkgs; };
+      monitoring-and-diagnostic-tools = import ./packages/monitoring-and-diagnostic-tools.nix { inherit pkgs; };
+      networking-and-security-tools = import ./packages/networking-and-security-tools.nix { inherit pkgs; };
+      nix-tools = import ./packages/nix-tools.nix { inherit pkgs; };
+      shell-ux = import ./packages/shell-ux.nix { inherit pkgs; };
     in
-      with pkgs; [
-        ############################################################################
-        # Core CLI
-        ############################################################################
-          bat                 # pager + diff highlighter;
-                              # a 'cat' clone with syntax highlighting and git integration
-          bat-extras.batdiff  # pager + diff highlighter
-          broot               # interactive tree view, fuzzy search, balanced BFS descent
-          eza                 # ls replacement
-          fd                  # fast file-finder
-          file                # program that shows the type of files
-          fzf                 # fuzzy everything
-          jq                  # JSON wrangler
-          jqp                 # TUI playground for experimenting with jq
-          maim                # cli screenshot utility [cf. scrot]
-          mmv                 # utility for wildcard renaming, copying, etc
-          renameutils         # batch rename
-          ripgrep             # recursive grep
-          tldr                # community cheat-sheets
-          translate-shell     # command-line translator
-          tree                # directory tree
-          units               # unit-conversion tool
-          unzip               # extraction utility for archives cmopressed in .zip format
-          zip                 # compressor/achiver for creating and modifyig zipfiles
-        ############################################################################
-        # Nix helpers
-        ############################################################################
-          direnv                # automatic shell envs
-          niv                   # dependency manager for nix projects
-          nix-direnv            # automatic shell envs
-          # lorri               # project-scoped builds
-          nix-index
-          # nix-index-database  # “which package provides X?”
-          nix-diff              # utility that compares nix derivations
-          nix-prefetch-git      # nix utility that aids in pinning github revisions
-        ############################################################################
-        # Shell UX
-        ############################################################################
-          rofi      # window switcher, run dialog and dmenu replacement
-          rofi-pass # script to make rofi work with password-store
-        ############################################################################
-        # Monitoring & diagnostics
-        ############################################################################
-          dua                # tool to learn about directories' disk usage
-          duf                # disk
-          du-dust            # disk
-          glances            # processes / resources [cf. htop]
-          htop               # interactive process viewer
-          iotop              # processes / resources
-          iperf3             # tool to measure IP/UDP & IP/TCP bandwith
-          mtr                # network-diagnostics tool
-          fastfetch          # neofetch-like system-information tool
-          powertop           # utility to analyze power consumption on Intel-based laptops
-        ############################################################################
-        # Networking & security (kept small; heavy stuff via `nix run`)
-        ############################################################################
-          age           # file encryption tool.
-          # burpsuite   # integrated platform for performing security testing
-          gnupg         # gnu privacy guard, a gpl openpgp implementation
-          hashcat       # password cracker
-          hashcat-utils # utilities for advanced password cracking
-          macchanger    # utility for manipulating MAC addresses
-          nmap          # utitlity for network discovery and security auditing
-          openssh       # implementation of the SSH protocol
-          openssl       # cryptographic library that implements tsl protocol
-          pass          # password-store manages passwords securely
-          sops          # secret manager
-          tcpdump       # network sniffer
-          wget          # tool for retrieving files using http, https, and ftp [cf. curl]
-          wireshark-cli # network-protocol analyzer
-          xh            # curl alternative for sending http packets
-        ############################################################################
-        # Editing & terminals
-        ############################################################################
-          ghostty # gpu terminal
-          myVim
-          neovim
-          tmux
-          tmuxp   # manage tmux workspaces from JSON and YAML
-          xclip   # clipboard utility
-          xdotool # fake keyboard/mouse input, window management
-          xdragon # simple drag-and-drop source/sink for x
-        ############################################################################
-        # Dev tool-chain
-        ############################################################################
-          # cabal-install # haskell packaging and build system
-          # coq_8_9       # coq theorem assistant
-          delta           # syntax-highlighting pager for git (diff alternative)
-          # gitui         # terminal ide for git (lazygit alternative)
-          git             # vcs (version control system)
-          # lazygit       # terminal ui for git commands
-          # lean4         # automatic and interactive theorem prover
-          myPython
-          myRstudio
-          nodejs_20
-          # sageWithDoc   # cas / maths
-          sqlite          # self-contained SQL database engine
-          sqlite-utils    # CLI utility and library for manipulating SQLite databases
-          # stack         # haskell tool stack
-          # tig           # text-mode interface for git
-        ############################################################################
-        # Doc & media
-        ############################################################################
-          feh                            # light-weight image viewer and screenshot manager
-          ffmpeg                         # manager and converter of audio/video files
-          # hieroglyphic                 # tex-match; detexify; search by sketching
-          # libreoffice                  # open-source office suite
-          pandoc                         # utility that translates between markup formats
-          pavucontrol                    # pulseaudio volume control
-          poppler_utils                  # pdf rendering library
-          # qpdf                         # C++ programs that inspect/manipulate PDF files
-          # texlive.combined.scheme-full # pdflatex, xcolor.sty for pdf conversion
-          # texstudio                    # tex and latex editor
-          # typst                        # markup-based typesetting system
-          vlc                            # cross-platform media player and streaming server
-          # yt-dlp                       # command-line tool to download videos from video platforms
-          zathura                        # PDF reader with vim bindings; plugin-based document viewer;
-                                         # can use mupdf as plugin
-        ############################################################################
-        # Browsers
-        ############################################################################
-          brave         # privacy-oriented browser
-          # browsh      # text-based browser that can render css and js (cf. links2, lynx, w3m)
-          chromium
-          firefox
-          # librewolf
-          links2        # small browser with graphics support (`-g`) (cf. browsh, lynx, w3m)
-          lynx          # terminal web-browser (cf. browsh, links2, w3m)
-          # qutebrowser # keyboard-focused browser
-          # vieb        # vim-inspired electron browser
-          w3m           # text-based web browser (cf. browsh, links2, lynx)
-        ############################################################################
-        # Consider
-        ############################################################################
-            # atuin              # db-persisted shell-history manager
-            # borgmatic          # configuration-driven backup software
-            # calibre            # e-book software (calibredb, ebook-convert, ebook-viewer, etc.)
-            # delta              # syntax-highlighting pager for git (diff alternative)
-            # difftastic         # syntax-aware diff
-            # espanso            # cross-platform text expander
-            # evil-helix         # modal text editor (vim alternative)
-            # expect             # tool for automating interactive applications
-            # ffuf               # fast web fuzzer; web scraper
-            # fselect            # find files with SQL-like syntax
-            # graphviz           # graph visualization tool
-            # hyperfine          # benchmarking tool
-            # just / justbuild ? # command runner (make alternative)
-            # koreader           # ebook-reader application
-            # lc0                # neural-network-based chess engine
-            # manim              # animation engine for explanatory mathematics videos
-            # manim-slides       # tool for live presenations using manim
-            # mprocs             # TUI for running multiple commands
-            # neofetch           # fastfetch; neofetch-like system-information tool
-            # newsboat           # terminal RSS/Atom-feed reader
-            # niri               # scrollable-tiling wayland compositor
-            # nom                # terminal RSS-feed reader
-            # nushell            # shell inspired by powershell written in rust
-            # obsidian           # knowledge base [cf. zk]
-            # parallel           # shell tool fro executing jobs in parallel [cf. xargs ?]
-            # presenterm         # terminal-based slideshow tool
-            # pychess            # GTK chess client
-            # scid               # chess database with play and training functionality
-            # starship           # customizable prompt for any shell
-            # stockfish          # chess engine
-            # tokei              # counts files, line, comments, blanks.
-            # wiki-tui           # TUI for wikipedia
-            # zellij             # tmux alternative
-            # zk                 # Zettelkasten note-taking [cf. obsidian]
-            # privoxy            # non-caching web proxy with advanced filtering capabilities
-            # psmisc             # utilities using the proc file-system (fuser, killall, pstree, etc)
-      ];
+         browsers
+      ++ cli-tools
+      ++ dev-tools
+      ++ editing-and-terminal-tools
+      ++ media-tools
+      ++ monitoring-and-diagnostic-tools
+      ++ networking-and-security-tools
+      ++ nix-tools
+      ++ shell-ux
+      ++ [ pkgs.myPython
+           pkgs.myRstudio
+         ];
+    # Consider (This section is for documentation.)
+    # ----------------------------------------------
+      # borgmatic         # configuration-driven backup software
+      # difftastic        # syntax-aware diff
+      # espanso           # cross-platform text expander
+      # expect            # tool for automating interactive applications
+      # ffuf              # fast web fuzzer; web scraper
+      # fselect           # find files with sql-like syntax
+      # hyperfine         # benchmarking tool
+      # just / justbuild  # command runner (make alternative)
+      # lc0               # neural-network-based chess engine
+      # mprocs            # tui for running multiple commands
+      # niri              # scrollable-tiling wayland compositor
+      # obsidian          # knowledge base [cf. zk]
+      # parallel          # shell tool fro executing jobs in parallel [cf. xargs ?]
+      # privoxy           # non-caching web proxy with advanced filtering capabilities
+      # psmisc            # utilities using the proc file-system (fuser, killall, pstree, etc)
+      # pychess           # gtk chess client
+      # scid              # chess database with play and training functionality
+      # stockfish         # chess engine
+      # tokei             # counts files, line, comments, blanks.
+      # wiki-tui          # tui for wikipedia
+      # zk                # zettelkasten note-taking [cf. obsidian]
 
   environment.theo = {
     programs = {
@@ -330,7 +183,11 @@
         myVim = import ./vim { pkgs = pkgs; };
       };
     };
-    overlays = [ (import ./nixpkgs-mozilla/firefox-overlay.nix) ];
+    overlays = [
+      # (import ./nixpkgs-mozilla/firefox-overlay.nix)
+      (import ./overlays/my-python.nix)
+      (import ./overlays/my-rstudio.nix)
+    ];
   };
 
   fonts = {
