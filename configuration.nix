@@ -5,22 +5,23 @@
 { config, lib, pkgs, ... }:
 {
   imports =
-    [ # Include the results of the hardware scan.
-      ./automatic-mac-spoofing
-      ./backup
-      ./bookmark
-      ./execute-namespace
-      ./format-purs-json-errors-output
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./git
-      ./i3
-      ./mdb-to-sql
-      ./rofi
 
-      # ./modules/programs/tmux
-      # ./modules/programs/tmux.nix
+      # Modules:
+      # --------
+      ./automatic-mac-spoofing/default.nix
+      ./backup/default.nix
+      ./bash/default.nix
+      ./bookmark/default.nix
+      ./execute-namespace/default.nix
+      ./format-purs-json-errors-output/default.nix
+      ./git/default.nix
+      ./i3/default.nix
+      ./mdb-to-sql/default.nix
+      ./rofi/default.nix
       ./tmux/default.nix
-      # ./packages/editing-and-terminal-tools.nix
     ];
 
   boot = {
@@ -41,46 +42,6 @@
       keyMap = "us";
       packages = [ workman ];
     };
-
-  # bash and inputrc # see also `programs.bash`
-  environment = {
-    etc."inputrc".source = ./bash/inputrc;
-    interactiveShellInit = pkgs.lib.concatStringsSep "\n" [
-        (builtins.readFile ./bash/functions)
-        (builtins.readFile ./bash/settings)
-        (builtins.readFile ./bash/completion)
-        (builtins.readFile ./bash/tmux-completion)
-      ];
-    variables =
-      rec {
-        BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
-        CONFIG_ROOT = "${VOLATILE_CONFIG}/$USER";
-        EDITOR = "vim";
-        FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
-        HISTCONTROL = "ignoredups:erasedups";
-        HISTFILE = "${CONFIG_ROOT}/bash/history/.history";
-        HISTFILESIZE = "10000000";
-        HISTIGNORE =
-          "b:b1:b2:b3:b4:b5:bg:exit:fg:hist:history:ixclip:l:l1:ls:lsm"
-            + ":oxclip:promptToggle:pwd:quit"
-            + ":startStackShell:togglePrompt:toggleTouchpad"
-            + ":touchpadToggle:worto";
-        HISTSIZE = "100000";
-        MARKPATH = "${CONFIG_ROOT}/.marks";
-        NAMESPACES = "/etc/nixos/namespaces";
-        NIXOS_UNSTABLE_NIX_PATH =
-          "nixpkgs="
-            + "https://github.com/NixOS/nixpkgs-channels/archive/"
-            + "nixos-unstable.tar.gz";
-        PRIV_BKM_PATH = "${CONFIG_ROOT}/private-bookmarks";
-        PROMPT_COMMAND = "_promptCommand";
-        TAGPATH = "${CONFIG_ROOT}/.tags";
-        TAGSOURCES = "${CONFIG_ROOT}/.tag_sources";
-        VISUAL = "vim";
-        VOLATILE_CONFIG = "/etc/nixos/volatile_config";
-        VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";
-      };
-  };
 
   environment.systemPackages =
     let
@@ -145,6 +106,7 @@
       #   };
       # };
       backup.enable = true;
+      bash.enable = true;
       bookmark.enable = true;
       execute-namespace.enable = true;
       format-purs-json-errors-output.enable = true;
@@ -223,78 +185,6 @@
   };
 
   programs = {
-    bash = {
-      completion.enable = true;
-      interactiveShellInit = ''
-          if [ ! -e "$CONFIG_ROOT/bash/history/" ]; then
-            mkdir -p "$CONFIG_ROOT/bash/history/"
-          fi
-        '';
-      loginShellInit = "";
-      promptInit = builtins.readFile ./bash/prompt;
-      shellAliases = {
-        ".." = "cd ..";
-        "..." = "cd ../..";
-        "...." = "cd ../../..";
-        b = "cd ..";
-        b1 = "cd ..";
-        b2 = "cd ../..";
-        b3 = "cd ../../..";
-        b4 = "cd ../../../..";
-        b5 = "cd ../../../../..";
-        date = "date +%Y.%m.%d.%H.%M";
-        duf = "duf -hide special -hide-mp /boot,/nix/store";
-        format-purs = "format-purs-json-errors-output";
-        gco = "git co";
-        gcob = "git cob";
-        gd = "git diff";
-        gdc = "git diff --cached";
-        gdiff = "git diff";
-        gits = "git s";
-        gitst = "git st";
-        gs = "git status";
-        gst = "git st";
-        gti = "git";
-        ixclip = "xclip -i -sel clip";
-        l = "eza -alhb --group-directories-first --git --tree --level 2 --git-ignore";
-        l1 = "eza -1a --group-directories-first";
-        ls = "eza -a --group-directories-first";
-        oxclip = "xclip -o -sel clip";
-        promptToggle = "togglePrompt";
-        quit = "exit";
-        rm = "rm -I";
-        sb = "spago-build-json";
-        sbp = "spago-build-json-pretty";
-        spago-build-json = "spago -q build --purs-args --no-prefix --purs-args --json-errors";
-        spago-build-json-pretty = "spago -q build --purs-args --no-prefix --purs-args --json-errors 2>&1 | grep -v Compiling | format-purs-json-errors-output";
-        stackBuild = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH stack build --nix --fast";
-        startStackShell = "NIX_PATH=$NIXOS_UNSTABLE_NIX_PATH nix-shell -p stack";
-        touchpadToggle = "toggleTouchpad";
-        v = "vim";
-        worto = "vim $MARKPATH/expl/wortolisto";
-      };
-      shellInit = "";
-    };
-    # tmux.enable = true;
-
-    # tmux = {
-    #   enable = true;
-    #   aggressiveResize = false;
-    #   baseIndex = 0;
-    #   clock24 = true;
-    #   customPaneNavigationAndResize = true;
-    #   escapeTime = 500;
-    #   extraConfig = builtins.readFile ./tmux/tmux.conf;
-    #   historyLimit = 10000;
-    #   keyMode = "vi";
-    #   newSession = true;
-    #   reverseSplit = true;
-    #   resizeAmount = 10;
-    #   secureSocket = true;
-    #   shortcut = "f";
-    #   terminal = "screen-256color"; # Default value is "screen".
-    # };
-
     wireshark = {
       enable = true;
       # dumpcap.enable = true;
