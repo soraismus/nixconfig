@@ -3,6 +3,7 @@
 with pkgs; [
   delta        # syntax-highlighting pager for git (diff alternative)
   git          # vcs (version control system)
+  gitui        # terminal ide for git
   lean4        # automatic and interactive theorem prover
   nodejs_20
   sqlite       # self-contained SQL database engine
@@ -13,9 +14,10 @@ with pkgs; [
   # agda
   # cabal-install  # haskell packaging and build system
   # coq_8_9        # coq theorem assistant
-  # gitui          # terminal ide for git (lazygit alternative)
-  # lazygit        # terminal ui for git commands
   # sageWithDoc    # cas / maths
   # stack          # haskell tool stack
-  # tig            # text-mode interface for git
+
+  # tig            # text-mode interface for git;
+                   # pager-style Git history explorer;
+                   # more conservative than GitUI, but effective
 ]

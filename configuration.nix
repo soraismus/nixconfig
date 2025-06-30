@@ -48,15 +48,6 @@
 
   environment.theo = {
     programs = {
-      # atuin = {
-      #   enable = true;
-      #   settins = {
-      #     # dialect = "uk";
-      #     key_path = config.sops.secrets.atuin_key.path; # `config.sops.…`
-      #     # sync_address = "https://example.dev";
-      #     # sync_frequency = "15m";
-      #   };
-      # };
       backup.enable = true;
       bash.enable = true;
       bookmark.enable = true;

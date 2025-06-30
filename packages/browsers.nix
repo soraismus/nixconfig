@@ -10,8 +10,6 @@ with pkgs; [
 
   # Consider
   # --------
-  # browsh       # text-based browser that can render css and js (cf. links2, lynx, w3m)
   # librewolf
   # qutebrowser  # keyboard-focused browser
-  # vieb         # vim-inspired electron browser
 ]

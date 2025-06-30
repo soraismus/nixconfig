@@ -13,6 +13,7 @@ let
   networking-and-security-tools = import ./networking-and-security-tools.nix { inherit pkgs; };
   nix-tools = import ./nix-tools.nix { inherit pkgs; };
   shell-ux = import ./shell-ux.nix { inherit pkgs; };
+  workflow-and-automation-tools = import ./workflow-and-automation-tools.nix { inherit pkgs; };
 in
      browsers
   ++ cli-tools
@@ -23,30 +24,27 @@ in
   ++ networking-and-security-tools
   ++ nix-tools
   ++ shell-ux
+  ++ workflow-and-automation-tools
   ++ [ pkgs.myPython
        pkgs.myRstudio
      ]
 
 # Consider (This section is for documentation.)
 # ----------------------------------------------
-# borgmatic         # configuration-driven backup software
-# difftastic        # syntax-aware diff
-# espanso           # cross-platform text expander
-# expect            # tool for automating interactive applications
-# ffuf              # fast web fuzzer; web scraper
-# fselect           # find files with sql-like syntax
-# hyperfine         # benchmarking tool
-# just / justbuild  # command runner (make alternative)
-# lc0               # neural-network-based chess engine
-# mprocs            # tui for running multiple commands
-# niri              # scrollable-tiling wayland compositor
-# obsidian          # knowledge base [cf. zk]
-# parallel          # shell tool fro executing jobs in parallel [cf. xargs ?]
-# privoxy           # non-caching web proxy with advanced filtering capabilities
-# psmisc            # utilities using the proc file-system (fuser, killall, pstree, etc)
-# pychess           # gtk chess client
-# scid              # chess database with play and training functionality
-# stockfish         # chess engine
-# tokei             # counts files, line, comments, blanks.
-# wiki-tui          # tui for wikipedia
-# zk                # zettelkasten note-taking [cf. obsidian]
+
+# 0. Chess
+# --------
+# lc0        # neural-network-based chess engine
+# pychess    # gtk chess client
+# scid       # chess database with play and training functionality
+# stockfish  # chess engine
+
+# 1. Miscellaneous
+# -----------------
+# borgmatic  # configuration-driven backup software
+# espanso    # cross-platform text expander;
+#            # text expansion; great for typing macros, but has runtime daemons
+# expect     # tool for automating interactive cli programs that require user input
+# ffuf       # fast web fuzzer; web scraper; web recon.
+# privoxy    # non-caching web proxy with advanced filtering capabilities;
+#            # programmable local proxy
