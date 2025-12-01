@@ -22,6 +22,7 @@
       ./mdb-to-sql/default.nix
       ./rofi/default.nix
       ./tmux/default.nix
+      ./zk/default.nix
     ];
 
   boot = {
@@ -57,6 +58,7 @@
       mdb-to-sql.enable = true;
       rofi.enable = true;
       tmux.enable = true;
+      zk.enable = true;
     };
     services = {
       automatic-mac-spoofing.enable = false;
@@ -80,14 +82,17 @@
   };
 
   nix = {
+    extraOptions = ''
+        experimental-features = nix-command flakes
+      '';
     gc = {
       automatic = true;
       dates = "Sun 03:15";
     };
-    extraOptions = ''
-        experimental-features = nix-command flakes
-      '';
+    settings.download-buffer-size = 524288000;
   };
+
+
 
   nixpkgs = {
     config = {

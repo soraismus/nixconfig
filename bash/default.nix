@@ -4,6 +4,8 @@ let
 
   useTmux = config.environment.theo.programs.tmux.enable;
 
+  useZk = config.environment.theo.programs.zk.enable;
+
   interactive-shell-init-sources =
     [
       (readFile ./functions)
@@ -54,6 +56,9 @@ in
             VISUAL = "vim";
             VOLATILE_CONFIG = "/etc/nixos/volatile_config";
             VOLATILE_EXPORTS = "${CONFIG_ROOT}/.volatile_exports";
+          } // lib.optionals useZk {
+            ZK_EDITOR = "vim";
+            ZK_NOTEBOOK_DIR = "/home/${config.users.users.polytope.name}/zk-vault";
           };
       };
 
