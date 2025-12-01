@@ -10,8 +10,8 @@ with pkgs; [
   fd                 # fast file-finder
   file               # program that shows the type of files
   fzf                # fuzzy everything
-  jq                 # JSON wrangler
-  jqp                # TUI playground for experimenting with jq
+  jq                 # json wrangler
+  jqp                # tui playground for experimenting with jq
   maim               # cli screenshot utility [cf. scrot]
   mmv                # utility for wildcard renaming, copying, etc
   p7zip              # zip compressor/archiver

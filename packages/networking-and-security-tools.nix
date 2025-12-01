@@ -5,9 +5,10 @@ with pkgs; [
   gnupg         # gnu privacy guard, a gpl openpgp implementation
   hashcat       # password cracker
   hashcat-utils # utilities for advanced password cracking
-  macchanger    # utility for manipulating MAC addresses
+  macchanger    # utility for manipulating mac addresses
+  netcat        # utility
   nmap          # utitlity for network discovery and security auditing
-  openssh       # implementation of the SSH protocol
+  openssh       # implementation of the ssh protocol
   openssl       # cryptographic library that implements tsl protocol
   pass          # password-store manages passwords securely
   sops          # secret manager
@@ -19,4 +20,6 @@ with pkgs; [
   # Consider
   # --------
   # burpsuite   # integrated platform for performing security testing
+  # mitmproxy   # man-in-the-middle proxy; like burpsuite but cli
+  # doppler     # manage doppler enclave secrets and configuration
 ]

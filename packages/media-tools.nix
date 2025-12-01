@@ -17,9 +17,6 @@ with pkgs; [
   zathura       # pdf reader with vim bindings; plugin-based document viewer;
                 # can use mupdf as plugin
 
-  zk            # zettelkasten note-taking [cf. obsidian]
-
-
   # Consider
   # --------
   # calibre      # e-book software (calibredb, ebook-convert, ebook-viewer, etc.)
@@ -29,7 +26,7 @@ with pkgs; [
   # libreoffice  # open-source office suite
   # manim        # animation engine for explanatory mathematics videos
 
-  # neuron       # functional Zettelkasten with a web ui;
+  # neuron       # functional zettelkasten with a web ui;
                  # written in haskell;
                  # focuses on permanent note ids, backlinks, and a web-based browser
 
