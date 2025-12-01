@@ -343,3 +343,69 @@ In vim 8.0, you can select a range of lines and run :terminal bash. This will op
 \v(;|!|—|\)|\.|\?)\zs\s+(\=)@!\ze
 :let @/=@+
 :execute '/' . @+
+
+
+[0] q:
+[1] q/
+[2] q?
+        --
+        Open the command-line window.
+        --
+        This starts editing an Ex command-line ("q:") or search string ("q/" or "q?").
+        --
+        When the window opens, it is filled with the command-line history.
+        --
+        The last line contains the command as typed so far.
+        --
+        You can now use commands to move around and edit the text in the window.
+        --
+          [0] Both in Normal mode
+          [1] and Insert mode.
+        --
+        The command-line window is not a normal window.
+        It is not possible to move to another window or edit another buffer.
+        Of course it _is_ possible to execute any command that you entered in the command-line window.
+        --
+        There are several ways to leave the command-line window:
+        --
+        --
+        [0] <CR>   :  Execute the command-line under the cursor.
+                      Works
+                        [0] both in Insert
+                        [1] and in Normal mode.
+            --        --
+        [1] CTRL-C :  Continue in Command-line mode.
+                      The command-line under the cursor is used as the command-line.
+                      Works both in Insert and in Normal mode.
+                      There is no redraw, thus the window will remain visible.
+            --        --
+        [2] :quit  :  Discard the command line and go back to Normal mode.
+
+        207b 00b9
+        ⁻¹
+
+nnoremap <leader>1 :let @/ = '\(-1\\|–1\\|—1\\|−1\)' \| normal! cgn⁻¹<Esc><CR>
+
+gn    Search forward for the last used search pattern, like with `n`,
+      and then start Visual mode to select the match.
+      --
+      If the cursor is on the match, visually selects it.
+      --
+      If an operator is pending, operates on the match.
+      --
+      E.g., "dgn" deletes the text of the next match.
+      --
+      If Visual mode is active, extends the selection until the end of the next match.
+
+function! NoteInverseAtCursor()
+  let l:pattern = '\(-1\\|–1\\|—1\\|−1\)'
+  let l:save_pos = getpos('.')
+  " Search for pattern at cursor.
+  if matchstr(getline('.'), l:pattern, col('.') - 1) =~# '^\(-1\\|–1\\|—1\\|−1\)$'
+    " Replace using :substitute on current line and column.
+    execute 'silent! s/\%'.col('.').'c' . l:pattern . '/⁻¹/'
+  endif
+  call setpos('.', l:save_pos)
+endfunction
+
+nnoremap <leader>1 :call NoteInverseAtCursor()<CR>
