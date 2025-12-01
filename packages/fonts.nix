@@ -6,7 +6,7 @@ in
     pkgs.font-awesome # font-awesome-ttf -> font-awesome
     pkgs.hasklig
     pkgs.inconsolata
-    pkgs.ubuntu_font_family
+    pkgs.ubuntu-classic
     pkgs.liberation_ttf
     pkgs.unifont
     pkgs.fira-code

@@ -2,8 +2,8 @@
 
 with pkgs; [
   dua        # tool to learn about directories' disk usage
-  du-dust    # disk
   duf        # disk
+  dust       # disk
   fastfetch  # neofetch-like system-information tool
   glances    # processes / resources [cf. htop]
   htop       # interactive process viewer

@@ -46,11 +46,11 @@ in
       environment.etc."gitconfig".source = gitConfig;
 
       environment.systemPackages =
-        [ pkgs.gitAndTools.git
-          pkgs.gitAndTools.git-annex # manage files without committing file contents
-          pkgs.gitAndTools.git-crypt # encrypts particular files
-          pkgs.gitAndTools.gitRemoteGcrypt # encrypts an entire repository
-          pkgs.gitAndTools.tig # text-mode interface for git
+        [ pkgs.git
+          pkgs.git-annex # manage files without committing file contents
+          pkgs.git-crypt # encrypts particular files
+          # pkgs.gitRemoteGcrypt # encrypts an entire repository
+          pkgs.tig # text-mode interface for git
           pkgs.git-lfs # extension for versioning large files
         ];
     };

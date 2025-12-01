@@ -44,33 +44,38 @@
       packages = [ workman ];
     };
 
-  environment.systemPackages =
+  environment = {
+    systemPackages =
       import ./packages/system-packages.nix { inherit config lib pkgs; };
-
-  environment.theo = {
-    programs = {
-      backup.enable = true;
-      bash.enable = true;
-      bookmark.enable = true;
-      execute-namespace.enable = true;
-      format-purs-json-errors-output.enable = true;
-      git.enable = true;
-      mdb-to-sql.enable = true;
-      rofi.enable = true;
-      tmux.enable = true;
-      zk.enable = true;
-    };
-    services = {
-      automatic-mac-spoofing.enable = false;
-      i3.enable = true;
+    theo = {
+      programs = {
+        backup.enable = true;
+        bash.enable = true;
+        bookmark.enable = true;
+        execute-namespace.enable = true;
+        format-purs-json-errors-output.enable = true;
+        git.enable = true;
+        mdb-to-sql.enable = true;
+        rofi.enable = true;
+        tmux.enable = true;
+        zk.enable = true;
+      };
+      services = {
+        automatic-mac-spoofing.enable = false;
+        i3.enable = true;
+      };
     };
   };
 
-  hardware.pulseaudio.enable = true;
+  fonts = {
+    enableGhostscriptFonts = true;
+    fontDir.enable = true;
+    packages = import ./packages/fonts.nix { inherit pkgs; };
+  };
 
   i18n = {
-      defaultLocale = "en_US.UTF-8";
-    };
+    defaultLocale = "en_US.UTF-8";
+  };
 
   networking = {
     firewall = {
@@ -92,8 +97,6 @@
     settings.download-buffer-size = 524288000;
   };
 
-
-
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -106,12 +109,6 @@
       (import ./overlays/my-python.nix)
       (import ./overlays/my-rstudio.nix)
     ];
-  };
-
-  fonts = {
-    fontDir.enable = true;
-    enableGhostscriptFonts = true;
-    packages = import ./packages/fonts.nix { inherit pkgs; };
   };
 
   programs = {
@@ -139,7 +136,6 @@
         with pkgs; [
           gutenprint
           hplip
-          # hplipWithPlugin
           postscript-lexmark
           brlaser
         ];
@@ -149,6 +145,7 @@
       listenAddresses = [ "*:631" ];
       defaultShared = true;
     };
+    pulseaudio.enable = true;
     xserver = {
       enable = true;
       displayManager = {

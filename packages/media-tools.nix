@@ -5,7 +5,7 @@ with pkgs; [
   ffmpeg        # manager and converter of audio/video files
   pandoc        # utility that translates between markup formats
   pavucontrol   # pulseaudio volume control
-  poppler_utils # pdf rendering library
+  poppler-utils # pdf rendering library
 
   qpdf          # c++ programs that inspect/manipulate pdf files;
                 # swiss-army knife for PDF structure;

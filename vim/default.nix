@@ -14,7 +14,7 @@ let
     };
   };
 in
-  (pkgs.vim_configurable.override {}).customize {
+  (pkgs.vim-full.override {}).customize {
     name = "vim";
     vimrcConfig.customRC = import ./vimrc { pkgs = pkgs; };
     vimrcConfig.packages.myplugins = with pkgs.vimPlugins; {

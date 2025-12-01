@@ -5,12 +5,12 @@ let
   useTmux = config.environment.theo.programs.tmux.enable;
 in
   lib.optionals useTmux [ tmux tmuxp ] ++ [
+    dragon-drop # simple drag-and-drop source/sink for x
     ghostty # gpu terminal
     myVim
     neovim
     xclip   # clipboard utility
     xdotool # fake keyboard/mouse input, window management
-    xdragon # simple drag-and-drop source/sink for x
 
     # Consider
     # --------

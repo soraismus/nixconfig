@@ -155,7 +155,7 @@ in
         configFile = pkgs.writeText "i3.conf" i3Config;
         extraPackages = [];
         extraSessionCommands = "";
-        package = pkgs.i3-gaps;
+        package = pkgs.i3;
       };
     };
   }
