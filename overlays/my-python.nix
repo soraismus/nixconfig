@@ -6,6 +6,13 @@ self: super: {
     requests
     scrapy
 
+    playwright
+    pytest
+    pytest-playwright
+    tenacity
+    pydantic
+    pandas
+
     # Consider
     # ---------
     # bpython
