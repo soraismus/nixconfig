@@ -110,7 +110,7 @@ in
           vimux
           vim-vinegar
           vim-visual-multi
-          # vim-wiki
+          vimwiki
           YouCompleteMe
           # zk-vim # Zettelkasten note-taking [cf. neuron-vim; obsidian-nvim; vim-wiki]
         ];
