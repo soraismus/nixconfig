@@ -146,6 +146,24 @@
       defaultShared = true;
     };
     pulseaudio.enable = true;
+
+    # udev (userspace /dev) is a device manager for the Linux kernel.
+    # It manages device nodes in the /dev directory.
+    # It also handles all user space events raised when hardware devices are added into the system or removed from it
+    # (that is, hotplug-capable),
+    # including firmware loading as required by certain devices.
+    # --
+    # The following rule applies only to 'block' devices.
+    # It matches optical drives ('sr0', 'sr1', …).
+    # Owner: 'root'
+    # Group: 'cdrom'
+    # Permissions: read/write for owner and group
+
+    udev.extraRules = ''
+      # Optical drives: Allow 'cdrom' group to burn discs.
+      SUBSYSTEM=="block", KERNEL=="sr[0-9]*", GROUP="cdrom", MODE="0660"
+    '';
+
     xserver = {
       enable = true;
       displayManager = {
@@ -187,6 +205,7 @@
     description = "polytope";
     extraGroups = [
       "audio"
+      "cdrom"
       "networkmanager"
       "video"
       "wheel"
