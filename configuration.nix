@@ -26,6 +26,7 @@
     ];
 
   boot = {
+    kernel.sysctl."vm.swappiness" = 60;
     kernelPackages = pkgs.linuxPackages_6_1;
     kernelParams   = [ "i2c_hid.polling_mode=1" ];
     loader = {
@@ -211,6 +212,8 @@
   # The NixOS manual is blunt about this:
   # “Most users should never change this value after the initial install, even when upgrading to a new release.”
 
+  systemd.oomd.enable = true;
+
   time.timeZone = "America/New_York";
 
   # New users, don't forget to set a password with ‘passwd’.
@@ -227,6 +230,12 @@
       "wireshark"
     ];
     # openssh.authorizedKeys.keys = [ "ssh-dss AAAAB3Nza... alice@foobar" ];
+  };
+
+  zramSwap = {
+    enable = true;
+    memoryPercent = 25;
+    algorithm = "zstd";
   };
 
 }
