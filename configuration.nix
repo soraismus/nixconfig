@@ -119,10 +119,17 @@
   };
 
   security = {
-    pam.loginLimits = [
-      { domain = "@users"; type = "hard"; item = "memlock"; value = "64M"; }
-      { domain = "@users"; type = "soft"; item = "memlock"; value = "64M"; }
-    ];
+    pam = {
+      loginLimits = [
+        { domain = "@users"; type = "hard"; item = "memlock"; value = "64M"; }
+        { domain = "@users"; type = "soft"; item = "memlock"; value = "64M"; }
+      ];
+      services = {
+        lightdm.rules.session.limits.enable = true;
+        login.rules.session.limits.enable = true;
+        "system-login".rules.session.limits.enable = true;
+      };
+    };
     rtkit.enable = true;
   };
 
