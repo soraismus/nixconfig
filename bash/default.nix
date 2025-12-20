@@ -95,7 +95,7 @@ in
           gst = "git st";
           gti = "git";
           ixclip = "xclip -i -sel clip";
-          l = "eza -alhb --group-directories-first --git --tree --level 2 --git-ignore";
+          l = "eza -alghb --group-directories-first --git --tree --level 2 --git-ignore";
           l1 = "eza -1a --group-directories-first";
           ls = "eza -a --group-directories-first";
           oxclip = "xclip -o -sel clip";

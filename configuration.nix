@@ -118,6 +118,14 @@
     };
   };
 
+  security = {
+    pam.loginLimits = [
+      { domain = "@users"; type = "hard"; item = "memlock"; value = "64M"; }
+      { domain = "@users"; type = "soft"; item = "memlock"; value = "64M"; }
+    ];
+    rtkit.enable = true;
+  };
+
   services = {
     avahi = {
       enable = true;
