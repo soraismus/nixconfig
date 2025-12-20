@@ -122,8 +122,9 @@
   security = {
     pam = {
       loginLimits = [
-        { domain = "@users"; type = "hard"; item = "memlock"; value = "64M"; }
-        { domain = "@users"; type = "soft"; item = "memlock"; value = "64M"; }
+        { domain = "@users"; type = "hard"; item = "memlock"; value = "65536k"; }
+        { domain = "@users"; type = "soft"; item = "memlock"; value = "65536k"; }
+
       ];
       services = {
         lightdm.rules.session.limits.enable = true;
