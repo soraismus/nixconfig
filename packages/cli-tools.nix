@@ -10,6 +10,7 @@ with pkgs; [
   fd                 # fast file-finder
   file               # program that shows the type of files
   fzf                # fuzzy everything
+  jless              # json pager
   jq                 # json wrangler
   jqp                # tui playground for experimenting with jq
   maim               # cli screenshot utility [cf. scrot]

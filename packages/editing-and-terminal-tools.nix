@@ -6,11 +6,12 @@ let
 in
   lib.optionals useTmux [ tmux tmuxp ] ++ [
     dragon-drop # simple drag-and-drop source/sink for x
-    ghostty # gpu terminal
+    ghostty     # gpu terminal
     myVim
     neovim
-    xclip   # clipboard utility
-    xdotool # fake keyboard/mouse input, window management
+    xclip       # clipboard utility
+    xdotool     # fake keyboard/mouse input, window management
+    yazi        # file manager
 
     # Consider
     # --------
