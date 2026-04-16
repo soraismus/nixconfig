@@ -32,6 +32,7 @@ in
           rec {
             BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
             CONFIG_ROOT = "${VOLATILE_CONFIG}/$USER";
+            DELTA_FEATURES = "diff-so-fancy";
             EDITOR = "vim";
             FILE_ANNOTATIONS = "${CONFIG_ROOT}/.file_annotations";
             HISTCONTROL = "ignoredups:erasedups";

@@ -5,6 +5,7 @@ with pkgs; [
   git          # vcs (version control system)
   gitui        # terminal ide for git
   grex         # regex generator based on test cases
+  lazygit      # tui for git
   lean4        # automatic and interactive theorem prover
   nodejs_20
   sqlite       # self-contained SQL database engine

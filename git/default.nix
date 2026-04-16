@@ -24,7 +24,23 @@ let
       type = cat-file -t
       strestore = restore --staged
     [core]
+      editor = vim
       excludesFile = ${./ignore}
+      pager = delta
+    [delta]
+      navigate = true
+    [interactive]
+      diffFilter = delta --color-only
+    [diff]
+      tool = vimdiff
+    [difftool "vimdiff"]
+      cmd = "vim -d \"$LOCAL\" \"$REMOTE\""
+    [merge]
+      tool = vimdiff
+      conflictStyle = zdiff3
+    [mergetool]
+      keepBackup = false
+      prompt = false
     [grep]
       lineNumber = true
       patternType = perl

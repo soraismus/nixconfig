@@ -46,5 +46,6 @@ in
 #            # text expansion; great for typing macros, but has runtime daemons
 # expect     # tool for automating interactive cli programs that require user input
 # ffuf       # fast web fuzzer; web scraper; web recon.
+# ghidra     # reverse-engineering tool suite
 # privoxy    # non-caching web proxy with advanced filtering capabilities;
 #            # programmable local proxy

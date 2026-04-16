@@ -2,10 +2,14 @@
 
 with pkgs; [
   age           # file encryption tool
+  # atac          # postman-like cli api client
+  # firejail    # namespace-based sandboxing tool
   gnupg         # gnu privacy guard, a gpl openpgp implementation
   hashcat       # password cracker
   hashcat-utils # utilities for advanced password cracking
+  # httpie        # cli http client
   macchanger    # utility for manipulating mac addresses
+  # mosh        # "mobile shell" ssh replacement
   netcat        # utility
   nmap          # utitlity for network discovery and security auditing
   openssh       # implementation of the ssh protocol

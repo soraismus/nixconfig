@@ -15,6 +15,7 @@
       ./backup/default.nix
       ./bash/default.nix
       ./bookmark/default.nix
+      ./discipline.nix
       ./execute-namespace/default.nix
       ./format-purs-json-errors-output/default.nix
       ./git/default.nix
@@ -113,6 +114,26 @@
   };
 
   programs = {
+    firefox = {
+      enable = true;
+      policies = {
+        WebsiteFilter = {
+          Block = [
+            "*://*.hckernews.com/*"
+            "*://*.marginalrevolution.com/*"
+            "*://*.nationalreview.com/*"
+            "*://*.newyorker.com/*"
+            "*://*.nitter.com/*"
+            "*://*.reddit.com/*"
+            "*://*.theatlantic.com/*"
+            "*://*.twitter.com/*"
+            "*://*.ycombinator.com/*"
+            "*://*.youtube.com/*"
+          ];
+          Exceptions = [];
+        };
+      };
+    };
     wireshark = {
       enable = true;
       # dumpcap.enable = true;
@@ -141,6 +162,13 @@
       publish.enable = true;
       publish.userServices = true;
       nssmdns4 = true;
+    };
+    discipline = {
+      enable = true;
+      blockNews = true;
+      blockSocialMedia = true;
+      blockVideo = true;
+      extraBlocked = [];
     };
     displayManager.defaultSession = "none+i3";
     libinput.enable = true;

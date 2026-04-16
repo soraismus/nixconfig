@@ -10,6 +10,7 @@ with pkgs; [
 
   # Consider
   # --------
-  # librewolf
+  # librewolf # privacy-oriented browser
+  # palemoon-bin
   # qutebrowser  # keyboard-focused browser
 ]

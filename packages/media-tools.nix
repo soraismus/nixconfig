@@ -3,6 +3,7 @@
 with pkgs; [
   feh           # light-weight image viewer and screenshot manager
   ffmpeg        # manager and converter of audio/video files
+  kew           # cli music player
   mpv           # media player, fork of mplayer (for cli workflow)
   pandoc        # utility that translates between markup formats
   pavucontrol   # pulseaudio volume control

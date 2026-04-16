@@ -1,11 +1,12 @@
 { pkgs }:
 
 with pkgs; [
+  # astroterm          # in-terminal celestial viewer
   bat                # pager + diff highlighter;
                      # a 'cat' clone with syntax highlighting and git integration
   bat-extras.batdiff # pager + diff highlighter
   broot              # interactive tree view, fuzzy search, balanced BFS descent
-  difftastic         # syntax-aware diff-tool
+  delta              # syntax-aware diff-tool pager for git
   eza                # ls replacement
   fd                 # fast file-finder
   file               # program that shows the type of files
@@ -19,6 +20,7 @@ with pkgs; [
   psmisc             # utilities using the proc file-system (fuser, killall, pstree, etc)
   renameutils        # batch rename
   ripgrep            # recursive grep
+  television         # general-purpose fuzzy finder TUI
   tldr               # community cheat-sheets
   tokei              # counts files, lines, code, comments, etc by language/file type
   translate-shell    # command-line translator
