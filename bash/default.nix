@@ -2,6 +2,8 @@
 let
   readFile = builtins.readFile;
 
+  keys = import /keys/default.nix;
+
   useTmux = config.environment.theo.programs.tmux.enable;
 
   useZk = config.environment.theo.programs.zk.enable;
@@ -30,6 +32,7 @@ in
 
         variables =
           rec {
+            ANTHROPIC_API_KEY = keys.anthropic.claude;
             BOOKMARKPATH = "${CONFIG_ROOT}/bookmarks";
             CONFIG_ROOT = "${VOLATILE_CONFIG}/$USER";
             DELTA_FEATURES = "diff-so-fancy";
