@@ -85,6 +85,7 @@ in
           b3 = "cd ../../..";
           b4 = "cd ../../../..";
           b5 = "cd ../../../../..";
+          cat = "bat -A";
           date = "date +%Y.%m.%d.%H.%M";
           duf = "duf -hide special -hide-mp /boot,/nix/store";
           format-purs = "format-purs-json-errors-output";

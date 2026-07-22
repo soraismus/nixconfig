@@ -21,6 +21,7 @@ with pkgs; [
 
   nix-prefetch-git     # nix utility that aids in pinning github revisions
   nix-tree             # visualizer of dependecy closures
+  nvd                  # nix-package version-diff tool
 
   # Consider
   # --------

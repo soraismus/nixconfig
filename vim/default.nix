@@ -74,11 +74,11 @@ in
           # comfortable-motion-vim
           command-t
           fzf-vim
-          fzfWrapper
-          fugitive
-          gundo
+          fzf-wrapper
+          vim-fugitive
+          gundo-vim
           indentLine
-          latex-live-preview
+          vim-latex-live-preview
           markdown-preview-nvim
           # neoterm # Temporarily comment b/c of build issue.
           neuron-vim # [cf. obsidian-nvim; vim-wiki; zk-vim]
