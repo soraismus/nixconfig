@@ -15,9 +15,10 @@ in
 
     # Consider
     # --------
-    # atuin      # db-persisted shell-history manager
-    # evil-helix # modal text editor (vim alternative)
-    # nushell    # shell inspired by powershell written in rust
-    # zellij     # tmux alternative
+    # atuin         # db-persisted shell-history manager
+    # evil-helix    # modal text editor (vim alternative)
+    # nushell       # shell inspired by powershell written in rust
+    # warp-terminal # terminal
+    # waveterm      # terminal (Pretty impressive but prob. unnecessary.)
+    # zellij        # tmux alternative
   ]
-

@@ -24,6 +24,7 @@ with pkgs; [
   # Consider
   # --------
   # burpsuite   # integrated platform for performing security testing
-  # mitmproxy   # man-in-the-middle proxy; like burpsuite but cli
   # doppler     # manage doppler enclave secrets and configuration
+  # mitmproxy   # man-in-the-middle proxy; like burpsuite but cli
+  # rage        # rust port of 'age'
 ]

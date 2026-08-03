@@ -227,34 +227,29 @@ let
   rofi-system-power = pkgs.writeScriptBin "rofi-pow" ''
     #!${pkgs.bash}/bin/bash
 
-    OPTIONS="Reboot system\nPower-off system\nSuspend system\nHibernate system"
-    LAUNCHER="rofi -width 30 -theme ${./flat-orange.rasi} -dmenu -i -p rofi-power:"
-    USE_LOCKER="false"
-    LOCKER="i3lock"
+    OPTIONS="Poweroff\nExit\nReboot\nSuspend\nHibernate"
 
-    # Show exit wm option if exit command is provided as an argument
-    if [ ''${#1} -gt 0 ]; then
-      OPTIONS="Exit window manager\n$OPTIONS"
-    fi
+    LAUNCHER="rofi -width 30 -theme ${./flat-orange.rasi} -dmenu -i -p rofi-power:"
 
     option=`echo -e $OPTIONS | $LAUNCHER | awk '{print $1}' | tr -d '\r\n'`
+
     if [ ''${#option} -gt 0 ]
     then
         case $option in
+          Poweroff)
+            systemctl poweroff
+            ;;
           Exit)
             i3-msg exit
-            ;;
-          Power-off)
-            systemctl poweroff
             ;;
           Reboot)
             systemctl reboot
             ;;
           Suspend)
-            $($USE_LOCKER) && "$LOCKER"; systemctl suspend
+            systemctl suspend
             ;;
           Hibernate)
-            $($USE_LOCKER) && "$LOCKER"; systemctl hibernate
+            systemctl hibernate
             ;;
           *)
             ;;

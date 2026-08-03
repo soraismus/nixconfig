@@ -13,11 +13,14 @@ with pkgs; [
                 # swiss-army knife for PDF structure;
                 # extracts, encrypts, linearizes, etc.
 
+  texlive.combined.scheme-basic # pdflatex tex engine (for vim plugin)
+
   vlc           # cross-platform media player and streaming server
   xournalpp     # math-adjacent pdf annotator
 
   zathura       # pdf reader with vim bindings; plugin-based document viewer;
                 # can use mupdf as plugin
+
 
   # Consider
   # --------
