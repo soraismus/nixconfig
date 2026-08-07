@@ -181,3 +181,5 @@ togglePrompt () {
     export PROMPT_TOGGLE=0
   fi
 }
+
+PROMPT_COMMAND=_promptCommand
